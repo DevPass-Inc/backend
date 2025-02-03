@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 @Getter
 @Builder
 public class ReasonDto {
-    private HttpStatus httpStatus;
+    private HttpStatus status;
     private String code;
     private String message;
 }
