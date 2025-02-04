@@ -1,8 +1,8 @@
-package com.devpass.global.error.exception;
+package com.devpass.backend.global.error.exception;
 
-import com.devpass.global.error.ErrorCode;
-import com.devpass.global.error.ErrorResponse;
-import com.devpass.global.error.ErrorResponse.FieldError;
+import com.devpass.backend.global.error.ErrorCode;
+import com.devpass.backend.global.error.ErrorResponse;
+import com.devpass.backend.global.error.ErrorResponse.FieldError;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;

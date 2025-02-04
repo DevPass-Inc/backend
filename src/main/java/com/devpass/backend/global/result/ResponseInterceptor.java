@@ -1,6 +1,6 @@
-package com.devpass.global.result;
+package com.devpass.backend.global.result;
 
-import com.devpass.global.common.response.CustomResponse;
+import com.devpass.backend.global.common.response.CustomResponse;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,8 +21,8 @@ public class ResponseInterceptor implements ResponseBodyAdvice<Object> {
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType,
                                   Class selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
         if (body instanceof CustomResponse) {
-            CustomResponse<?> commonResponse = (CustomResponse<?>) body;
-            HttpStatus status = commonResponse.getHttpStatus();
+            CustomResponse<?> customResponse = (CustomResponse<?>) body;
+            HttpStatus status = customResponse.getHttpStatus();
             response.setStatusCode(status);
         }
 

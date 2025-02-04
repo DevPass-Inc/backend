@@ -1,4 +1,4 @@
-package com.devpass.global.common.response;
+package com.devpass.backend.global.common.response;
 
 import lombok.Builder;
 import lombok.Getter;

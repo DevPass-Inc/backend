@@ -1,8 +1,8 @@
-package com.devpass.global.config;
+package com.devpass.backend.global.config;
 
+import io.swagger.v3.oas.models.Components;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 
@@ -12,8 +12,8 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI openAPI() {
         return new OpenAPI()
-                .info(apiInfo())
-                ;
+                .components(new Components())
+                .info(apiInfo());
     }
 
     private Info apiInfo() {

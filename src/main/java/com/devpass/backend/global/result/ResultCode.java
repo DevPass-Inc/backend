@@ -1,7 +1,7 @@
-package com.devpass.global.result;
+package com.devpass.backend.global.result;
 
-import com.devpass.global.common.response.ReasonDto;
-import com.devpass.global.common.status.BaseStatus;
+import com.devpass.backend.global.common.status.BaseStatus;
+import com.devpass.backend.global.common.response.ReasonDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

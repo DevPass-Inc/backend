@@ -1,10 +1,12 @@
-package com.devpass.global.error;
+package com.devpass.backend.global.error;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import jakarta.validation.ConstraintViolation;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -59,6 +61,14 @@ public class ErrorResponse {
     }
 
     /**
+     * ConstraintViolationException 기반 오류 응답 생성
+     */
+    public static ErrorResponse of(ErrorCode errorCode, Set<ConstraintViolation<?>> violations, String path) {
+        List<FieldError> fieldErrors = FieldError.of(violations);
+        return new ErrorResponse(errorCode, fieldErrors, path);
+    }
+
+    /**
      * MethodArgumentNotValidException 기반 오류 응답 생성
      */
     public static ErrorResponse of(ErrorCode errorCode, BindingResult bindingResult, String path) {
@@ -98,6 +108,21 @@ public class ErrorResponse {
                             error.getField(),
                             error.getRejectedValue() == null ? "" : error.getRejectedValue().toString(),
                             error.getDefaultMessage()))
+                    .collect(Collectors.toList());
+        }
+
+        /**
+         * ConstraintViolation에서 필드 오류 추출
+         */
+        public static List<FieldError> of(Set<ConstraintViolation<?>> violations) {
+            return violations.stream()
+                    .map(violation -> {
+                        String fieldPath = violation.getPropertyPath().toString();
+                        return new FieldError(
+                                fieldPath,
+                                violation.getInvalidValue() == null ? "" : violation.getInvalidValue().toString(),
+                                violation.getMessage());
+                    })
                     .collect(Collectors.toList());
         }
 

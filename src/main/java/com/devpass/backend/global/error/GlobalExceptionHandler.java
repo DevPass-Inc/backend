@@ -1,8 +1,11 @@
-package com.devpass.global.error;
+package com.devpass.backend.global.error;
 
-import com.devpass.global.error.exception.BusinessException;
+import com.devpass.backend.global.error.exception.BusinessException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import java.util.List;
+import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -99,6 +102,22 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * ConstraintViolationException 처리
+     */
+    @ExceptionHandler(ConstraintViolationException.class)
+    protected ResponseEntity<ErrorResponse> handleConstraintViolationException(
+            ConstraintViolationException e, HttpServletRequest request) {
+        Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
+        ErrorResponse response = ErrorResponse.of(
+                ErrorCode.INPUT_VALUE_INVALID,
+                violations,
+                request.getRequestURI()
+        );
+        log.warn("ConstraintViolationException: {}", e.getMessage());
+        return new ResponseEntity<>(response, ErrorCode.INPUT_VALUE_INVALID.getHttpStatus());
+    }
+
+    /**
      * MissingServletRequestPartException 처리
      */
     @ExceptionHandler(MissingServletRequestPartException.class)
@@ -144,4 +163,3 @@ public class GlobalExceptionHandler {
     }
 
 }
-

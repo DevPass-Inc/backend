@@ -1,11 +1,10 @@
-package com.devpass.global.common.response;
+package com.devpass.backend.global.common.response;
 
-import com.devpass.global.common.status.BaseStatus;
-import com.devpass.global.error.ErrorCode;
+import com.devpass.backend.global.common.status.BaseStatus;
+import com.devpass.backend.global.error.ErrorCode;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import jakarta.xml.ws.Response;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -38,7 +37,7 @@ public class CustomResponse<T> {
     }
 
     public static <T> CustomResponse<T> ok(BaseStatus status){
-        return new CustomResponse(status.getReason().getStatus(),
+        return new CustomResponse<>(status.getReason().getStatus(),
                 status.getReason().getCode(),
                 status.getReason().getMessage(),
                 null);
