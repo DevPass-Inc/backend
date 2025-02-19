@@ -1,10 +1,16 @@
 package com.devpass.backend.domain.recruitment.domain;
 
+import com.devpass.backend.domain.stack.domain.Stack;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -47,4 +53,12 @@ public class Recruitment {
 
     @Column(name = "deadline")
     private String deadline;
+
+    @ManyToMany
+    @JoinTable(
+        name = "recruitment_stack",
+    joinColumns = @JoinColumn(name = "recruitment_id"),
+    inverseJoinColumns = @JoinColumn(name = "stack_id")
+    )
+    private List<Stack> stacks = new ArrayList<>();
 }
