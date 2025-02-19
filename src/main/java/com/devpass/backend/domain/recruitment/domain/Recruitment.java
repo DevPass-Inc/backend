@@ -48,11 +48,11 @@ public class Recruitment {
     @Column(name = "benefit", columnDefinition = "TEXT")
     private String benefit;
 
-    @Column(name = "recruiting", nullable = true, columnDefinition = "TEXT")
-    private String recruiting;
-
     @Column(name = "deadline")
     private String deadline;
+
+    @Column(name = "image_url")
+    private String imageUrl;
 
     @ManyToMany
     @JoinTable(
