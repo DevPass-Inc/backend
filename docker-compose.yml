@@ -1,4 +1,20 @@
 services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    restart: always
+    env_file:
+      - .env
+    environment:
+      SPRING_DATASOURCE_URL: ${DB_URL}
+      SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+    depends_on:
+      db:
+        condition: service_healthy
   db:
     image: mysql/mysql-server:8.0
     container_name: devpass-db
@@ -17,12 +33,15 @@ services:
     volumes:
       - db_vol:/var/lib/mysql
     healthcheck:
-      test: [ "CMD-SHELL", "mysqladmin ping -h localhost -u root --password=password || exit 1" ]
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "--password=${DB_ROOT_PASSWORD}" ]
       interval: 10s
       timeout: 5s
       retries: 5
-      start_period: 30s
 
 volumes:
   db_vol:
     driver: local
+
+networks:
+  default:
+    name: devpass-network
