@@ -1,7 +1,7 @@
 package com.devpass.backend.domain.recruitment.controller;
 
-import com.devpass.backend.domain.recruitment.dto.request.RecommendRecruitRequest;
-import com.devpass.backend.domain.recruitment.dto.response.RecommendRecruitResponse;
+import com.devpass.backend.domain.recruitment.dto.request.RecommendRecruitRequestDTO;
+import com.devpass.backend.domain.recruitment.dto.response.RecommendRecruitResponseDTO;
 import com.devpass.backend.domain.recruitment.service.RecruitmentService;
 import com.devpass.backend.global.common.response.CustomResponse;
 import com.devpass.backend.global.result.ResultCode;
@@ -23,8 +23,8 @@ public class RecruitmentController {
 
     @Operation(summary = "AI 기업 매칭", description = "AI 기업 매칭 조회")
     @PostMapping("/ai")
-    public Mono<CustomResponse<List<RecommendRecruitResponse>>> getRecommendRecruit(
-        @RequestBody RecommendRecruitRequest request) {
+    public Mono<CustomResponse<List<RecommendRecruitResponseDTO>>> getRecommendRecruit(
+        @RequestBody RecommendRecruitRequestDTO request) {
 
         return recruitmentService.getRecommendRecruit(request)
             .map(recommendations -> CustomResponse.of(ResultCode.OK, recommendations));
