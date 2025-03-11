@@ -1,5 +1,10 @@
 package com.devpass.backend.domain.recruitment.service;
 
+import com.devpass.backend.domain.recruitment.domain.Recruitment;
+import com.devpass.backend.domain.recruitment.dto.request.RecommendRecruitRequest;
+import com.devpass.backend.domain.recruitment.dto.response.RecommendRecruitResponse;
+import com.devpass.backend.domain.recruitment.exception.RecruitmentNotFoundException;
+import com.devpass.backend.domain.recruitment.repository.RecruitmentRepository;
 import com.devpass.backend.domain.recruitment.dto.request.RecommendRecruitRequestDTO;
 import com.devpass.backend.domain.recruitment.dto.response.RecommendRecruitResponseDTO;
 import java.util.List;
@@ -14,12 +19,22 @@ import reactor.core.publisher.Mono;
 public class RecruitmentService {
 
     private final WebClient webClient;
+    private final RecruitmentRepository recruitmentRepository;
 
+    // 추천 채용공고 조회 (AI 서버 연결)
     public Mono<List<RecommendRecruitResponseDTO>> getRecommendRecruit(RecommendRecruitRequestDTO request) {
         return webClient.post()
             .uri("/recommend")
             .bodyValue(request)
             .retrieve()
             .bodyToMono(new ParameterizedTypeReference<List<RecommendRecruitResponseDTO>>() {});
+    }
+
+    // 채용공고 개별 조회
+    public Recruitment getRecruitment(Long recruitmentId) {
+        Recruitment recruitment = recruitmentRepository.findById(recruitmentId)
+            .orElseThrow(RecruitmentNotFoundException::new);
+
+        return recruitment;
     }
 }
