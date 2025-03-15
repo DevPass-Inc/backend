@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class StackStatusResponse {
+public class StackStatusResponseDTO {
     private String stack;
     private boolean isRequired;
 }

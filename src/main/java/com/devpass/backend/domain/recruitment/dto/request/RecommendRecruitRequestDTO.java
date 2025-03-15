@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RecommendRecruitRequest {
+public class RecommendRecruitRequestDTO {
     private List<String> userStacks;
     private String userResume;
 }
