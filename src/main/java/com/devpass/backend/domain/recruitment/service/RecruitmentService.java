@@ -1,8 +1,6 @@
 package com.devpass.backend.domain.recruitment.service;
 
-import com.devpass.backend.domain.recruitment.domain.Recruitment;
-import com.devpass.backend.domain.recruitment.dto.request.RecommendRecruitRequest;
-import com.devpass.backend.domain.recruitment.dto.response.RecommendRecruitResponse;
+import com.devpass.backend.domain.recruitment.entity.Recruitment;
 import com.devpass.backend.domain.recruitment.exception.RecruitmentNotFoundException;
 import com.devpass.backend.domain.recruitment.repository.RecruitmentRepository;
 import com.devpass.backend.domain.recruitment.dto.request.RecommendRecruitRequestDTO;

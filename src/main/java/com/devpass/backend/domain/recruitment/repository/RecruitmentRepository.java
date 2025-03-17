@@ -1,6 +1,6 @@
 package com.devpass.backend.domain.recruitment.repository;
 
-import com.devpass.backend.domain.recruitment.domain.Recruitment;
+import com.devpass.backend.domain.recruitment.entity.Recruitment;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 

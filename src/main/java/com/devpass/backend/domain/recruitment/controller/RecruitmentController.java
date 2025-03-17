@@ -1,10 +1,10 @@
 package com.devpass.backend.domain.recruitment.controller;
 
 import com.devpass.backend.domain.recruitment.converter.RecruitmentConverter;
-import com.devpass.backend.domain.recruitment.domain.Recruitment;
-import com.devpass.backend.domain.recruitment.dto.request.RecommendRecruitRequest;
-import com.devpass.backend.domain.recruitment.dto.response.RecommendRecruitResponse;
+import com.devpass.backend.domain.recruitment.dto.request.RecommendRecruitRequestDTO;
+import com.devpass.backend.domain.recruitment.dto.response.RecommendRecruitResponseDTO;
 import com.devpass.backend.domain.recruitment.dto.response.RecruitmentDetailResponse;
+import com.devpass.backend.domain.recruitment.entity.Recruitment;
 import com.devpass.backend.domain.recruitment.service.RecruitmentService;
 import com.devpass.backend.global.common.response.CustomResponse;
 import com.devpass.backend.global.result.ResultCode;

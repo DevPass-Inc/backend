@@ -1,7 +1,7 @@
 package com.devpass.backend.domain.recruitment.converter;
 
-import com.devpass.backend.domain.recruitment.domain.Recruitment;
 import com.devpass.backend.domain.recruitment.dto.response.RecruitmentDetailResponse;
+import com.devpass.backend.domain.recruitment.entity.Recruitment;
 
 public class RecruitmentConverter {
 
