@@ -3,7 +3,7 @@ package com.devpass.backend.domain.recruitment.controller;
 import com.devpass.backend.domain.recruitment.converter.RecruitmentConverter;
 import com.devpass.backend.domain.recruitment.dto.request.RecommendRecruitRequestDTO;
 import com.devpass.backend.domain.recruitment.dto.response.RecommendRecruitResponseDTO;
-import com.devpass.backend.domain.recruitment.dto.response.RecruitmentDetailResponse;
+import com.devpass.backend.domain.recruitment.dto.response.RecruitmentDetailResponseDTO;
 import com.devpass.backend.domain.recruitment.entity.Recruitment;
 import com.devpass.backend.domain.recruitment.service.RecruitmentService;
 import com.devpass.backend.global.common.response.CustomResponse;
@@ -37,10 +37,10 @@ public class RecruitmentController {
 
     @Operation(summary = "채용공고 조회", description = "채용공고 개별 조회")
     @GetMapping("/{recruitment_id}")
-    public CustomResponse<RecruitmentDetailResponse> getRecruitment(@PathVariable("recruitment_id") Long recruitmentId) {
+    public CustomResponse<RecruitmentDetailResponseDTO> getRecruitment(@PathVariable("recruitment_id") Long recruitmentId) {
         Recruitment recruitment = recruitmentService.getRecruitment(recruitmentId);
 
-        RecruitmentDetailResponse recruitmentDetail = RecruitmentConverter.toRecruitmentDetailResponse(recruitment);
+        RecruitmentDetailResponseDTO recruitmentDetail = RecruitmentConverter.toRecruitmentDetailResponse(recruitment);
         return CustomResponse.of(ResultCode.OK, recruitmentDetail);
     }
 }

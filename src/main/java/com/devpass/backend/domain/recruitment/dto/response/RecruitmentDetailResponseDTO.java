@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 @Builder
 @AllArgsConstructor
-public class RecruitmentDetailResponse {
+public class RecruitmentDetailResponseDTO {
 
       private Long recruitmentId;
 
