@@ -1,4 +1,4 @@
-package com.devpass.backend.domain.recruitment.repository;
+package com.devpass.backend.domain.recruitment.infrastructure;
 
 import com.devpass.backend.domain.recruitment.dto.request.RecommendRecruitRequestDTO;
 import com.devpass.backend.domain.recruitment.dto.response.RecommendRecruitResponseDTO;
