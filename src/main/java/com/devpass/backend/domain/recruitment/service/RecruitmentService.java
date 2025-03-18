@@ -1,25 +1,21 @@
 package com.devpass.backend.domain.recruitment.service;
 
-import com.devpass.backend.domain.recruitment.dto.request.RecommendRecruitRequest;
-import com.devpass.backend.domain.recruitment.dto.response.RecommendRecruitResponse;
-import java.util.List;
+import com.devpass.backend.domain.recruitment.entity.Recruitment;
+import com.devpass.backend.domain.recruitment.exception.RecruitmentNotFoundException;
+import com.devpass.backend.domain.recruitment.repository.RecruitmentRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
 @Service
 @RequiredArgsConstructor
 public class RecruitmentService {
+    private final RecruitmentRepository recruitmentRepository;
 
-    private final WebClient webClient;
+    // 채용공고 개별 조회
+    public Recruitment getRecruitment(Long recruitmentId) {
+        Recruitment recruitment = recruitmentRepository.findById(recruitmentId)
+            .orElseThrow(RecruitmentNotFoundException::new);
 
-    public Mono<List<RecommendRecruitResponse>> getRecommendRecruit(RecommendRecruitRequest request) {
-        return webClient.post()
-            .uri("/recommend")
-            .bodyValue(request)
-            .retrieve()
-            .bodyToMono(new ParameterizedTypeReference<List<RecommendRecruitResponse>>() {});
+        return recruitment;
     }
 }
