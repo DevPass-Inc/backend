@@ -23,8 +23,8 @@ public class ProjectController {
     }
 
     // 프로젝트 조회 API
-    @GetMapping("/{id}")
-    public CustomResponse<Project> getProject(@PathVariable Long id) {
+    @GetMapping("/{project_id}")
+    public CustomResponse<Project> getProject(@PathVariable("project_id") Long id) {
         Project project = projectService.getProjectById(id);
         return CustomResponse.of(ResultCode.OK, project);
     }
