@@ -12,6 +12,7 @@ services:
       SPRING_DATASOURCE_URL: ${DB_URL}
       SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      SPRING_DATA_MONGODB_URI: ${MONGODB_URI}
     depends_on:
       db:
         condition: service_healthy
@@ -37,9 +38,24 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+  mongodb:
+    image: mongo:5.0
+    container_name: devpass-mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: devpass
+    networks:
+      - default
+
 
 volumes:
   db_vol:
+    driver: local
+  mongo_data:
     driver: local
 
 networks:
