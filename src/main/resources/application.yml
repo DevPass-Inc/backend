@@ -6,6 +6,7 @@ spring:
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -19,6 +20,14 @@ spring:
       enabled: true
     swagger-ui:
       enabled: true
+
+oauth:
+  github:
+    client-id: ${OAUTH_GITHUB_CLIENT_ID}
+    client-secret: ${OAUTH_GITHUB_CLIENT_SECRET}
+    redirect-uri: ${OAUTH_GITHUB_REDIRECT_URI}
+    token-uri: ${OAUTH_GITHUB_TOKEN_URI}
+    user-info-uri: ${OAUTH_GITHUB_USER_INFO_URI}
 
 logging:
   level:
