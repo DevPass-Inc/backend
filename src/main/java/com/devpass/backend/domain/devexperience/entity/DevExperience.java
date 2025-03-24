@@ -28,15 +28,19 @@ public class DevExperience extends BaseEntity {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id", nullable = false)
+	@JoinColumn(name = "user_id")
 	private User user;
+
+	@Column(name = "title", nullable = false)
+	private String title;
 
 	@Column(name = "description", nullable = false, columnDefinition = "TEXT")
 	private String description;
 
 	@Builder
-	public DevExperience(User user, String description) {
+	public DevExperience(User user, String title, String description) {
 		this.user = user;
+		this.title = title;
 		this.description = description;
 	}
 }
