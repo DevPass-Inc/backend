@@ -8,6 +8,11 @@ import com.devpass.backend.domain.stack.entity.Stack;
 import com.devpass.backend.domain.stack.service.StackService;
 import com.devpass.backend.global.common.response.CustomResponse;
 import com.devpass.backend.global.result.ResultCode;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,10 +21,15 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/developments/stacks")
+@Tag(name = "Stack API", description = "개발 경험 등록 -> 기술 스택 관련 API")
 public class StackController {
 
     private final StackService stackService;
 
+    @Operation(
+            summary = "기술스택 등록",
+            description = "기술스택 등록 api"
+    )
     @PostMapping("/{devExperience_id}")
     public CustomResponse<List<Stack>> addStacks(
             @PathVariable("devExperience_id") Long devExperienceId,
