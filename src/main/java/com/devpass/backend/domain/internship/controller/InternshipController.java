@@ -19,7 +19,7 @@ public class InternshipController {
     private final InternshipService internshipService;
     @Operation(
             summary = "인턴십 경험 등록",
-            description = "개발 경험 등록 페이지 - 인턴십 경험 등록"
+            description = "개발 경험 등록 페이지 - 인턴십 경험 등록(개발 경험 id를 기준으로 등록)"
     )
     @PostMapping("/{devExperience_id}")
     public CustomResponse<InternshipResponseDTO> addInternship(
