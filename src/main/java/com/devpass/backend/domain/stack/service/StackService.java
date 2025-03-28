@@ -28,19 +28,18 @@ public class StackService {
     public List<Stack> addStacks(Long devExperienceId, StackAddRequest request) {
         DevExperience devExperience = devExperienceRepository.findById(devExperienceId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND));
-        List<Stack> savedStacks = new ArrayList<>();
 
         for (String stackName : request.getStacks()) {
             Optional<Stack> existing = stackRepository.findByName(stackName);
             if(existing.isEmpty()){
                 Stack stack = Stack.builder()
                         .name(stackName)
-                        .devExperience(devExperience)  // 연관관계 설정
+                        .devExperience(devExperience)
                         .build();
-                savedStacks.add(stackRepository.save(stack));
+                stackRepository.save(stack);
             }
         }
-        return savedStacks;
+        return stackRepository.findAllByDevExperience_Id(devExperienceId);
     }
 
     @Transactional(readOnly = true)

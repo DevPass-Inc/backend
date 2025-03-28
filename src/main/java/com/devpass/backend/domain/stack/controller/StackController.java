@@ -31,12 +31,15 @@ public class StackController {
             description = "기술스택 등록 api"
     )
     @PostMapping("/{devExperience_id}")
-    public CustomResponse<List<Stack>> addStacks(
+    public CustomResponse<StackListResponseDTO> addStacks(
             @PathVariable("devExperience_id") Long devExperienceId,
             @RequestBody StackAddRequest request) {
         List<Stack> stacks = stackService.addStacks(devExperienceId, request);
-        return CustomResponse.of(ResultCode.CREATED, stacks);
+        List<StackStatusResponseDTO> stackDTOs = StackConverter.toStatusResponseDTOList(stacks);
+        StackListResponseDTO responseDTO = new StackListResponseDTO(stackDTOs);
+        return CustomResponse.of(ResultCode.CREATED, responseDTO);
     }
+
 
     @GetMapping
     public CustomResponse<StackListResponseDTO> getStacks() {
