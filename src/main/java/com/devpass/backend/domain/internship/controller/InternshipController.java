@@ -15,10 +15,11 @@ public class InternshipController {
 
     private final InternshipService internshipService;
 
-    // 인턴십 등록 API
-    @PostMapping
-    public CustomResponse<InternshipResponseDTO> addInternship(@RequestBody InternshipAddRequest request) {
-        InternshipResponseDTO response = internshipService.addInternship(request);
+    @PostMapping("/{devExperience_id}")
+    public CustomResponse<InternshipResponseDTO> addInternship(
+            @PathVariable("devExperience_id") Long devExperienceId,
+            @RequestBody InternshipAddRequest request) {
+        InternshipResponseDTO response = internshipService.addInternship(devExperienceId, request);
         return CustomResponse.of(ResultCode.CREATED, response);
     }
 }

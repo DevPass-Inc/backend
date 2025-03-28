@@ -28,17 +28,18 @@ public class DevExperienceService {
     }
 
     @Transactional(readOnly = true)
+    public List<DevExperienceResponseDTO> getAllDevExperiences() {
+        return devExperienceRepository.findAll().stream()
+                .map(DevExperienceConverter::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
     public DevExperienceResponseDTO getDevExperienceById(Long id) {
         DevExperience devExperience = devExperienceRepository.findById(id)
                 .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND));
         return DevExperienceConverter.toResponse(devExperience);
     }
 
-    @Transactional(readOnly = true)
-    public List<DevExperienceResponseDTO> getAllDevExperiences() {
-        return devExperienceRepository.findAll().stream()
-                .map(DevExperienceConverter::toResponse)
-                .collect(Collectors.toList());
-    }
 
 }

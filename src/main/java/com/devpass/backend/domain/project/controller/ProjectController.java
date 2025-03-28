@@ -16,11 +16,14 @@ public class ProjectController {
     private final ProjectService projectService;
 
     // 프로젝트 등록 API
-    @PostMapping
-    public CustomResponse<Project> addProject(@RequestBody ProjectAddRequest request) {
-        Project project = projectService.addProject(request);
+    @PostMapping("/{devExperience_id}")
+    public CustomResponse<Project> addProject(
+            @PathVariable("devExperience_id") Long devExperienceId,
+            @RequestBody ProjectAddRequest request) {
+        Project project = projectService.addProject(devExperienceId, request);
         return CustomResponse.of(ResultCode.CREATED, project);
     }
+
 
     // 프로젝트 조회 API
     @GetMapping("/{project_id}")

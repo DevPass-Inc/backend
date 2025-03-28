@@ -1,5 +1,7 @@
 package com.devpass.backend.domain.internship.service;
 
+import com.devpass.backend.domain.devexperience.entity.DevExperience;
+import com.devpass.backend.domain.devexperience.repository.DevExperienceRepository;
 import com.devpass.backend.domain.internship.converter.InternshipConverter;
 import com.devpass.backend.domain.internship.dto.request.InternshipAddRequest;
 import com.devpass.backend.domain.internship.dto.response.InternshipResponseDTO;
@@ -7,6 +9,8 @@ import com.devpass.backend.domain.internship.entity.Internship;
 import com.devpass.backend.domain.internship.repository.InternshipRepository;
 import com.devpass.backend.global.error.ErrorCode;
 import com.devpass.backend.global.error.exception.BusinessException;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,10 +20,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class InternshipService {
 
     private final InternshipRepository internshipRepository;
+    private final DevExperienceRepository devExperienceRepository;
 
     @Transactional
-    public InternshipResponseDTO addInternship(InternshipAddRequest request) {
-        Internship internship = InternshipConverter.toEntity(request);
+    public InternshipResponseDTO addInternship(Long devExperienceId, InternshipAddRequest request) {
+        DevExperience devExperience = devExperienceRepository.findById(devExperienceId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND));
+        Internship internship = InternshipConverter.toEntity(request, devExperience);
         Internship saved = internshipRepository.save(internship);
         return InternshipConverter.toResponse(saved);
     }
@@ -29,5 +36,13 @@ public class InternshipService {
         Internship internship = internshipRepository.findById(id)
                 .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND));
         return InternshipConverter.toResponse(internship);
+    }
+
+    @Transactional(readOnly = true)
+    public List<InternshipResponseDTO> getInternshipsByDevExperienceId(Long devExperienceId) {
+        return internshipRepository.findAllByDevExperience_Id(devExperienceId)
+                .stream()
+                .map(InternshipConverter::toResponse)
+                .collect(Collectors.toList());
     }
 }

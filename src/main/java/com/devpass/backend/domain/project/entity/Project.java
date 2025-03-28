@@ -1,5 +1,9 @@
 package com.devpass.backend.domain.project.entity;
 
+import com.devpass.backend.domain.devexperience.entity.DevExperience;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
 
 import com.devpass.backend.global.common.BaseEntity;
@@ -43,9 +47,14 @@ public class Project extends BaseEntity {
 	@Column(name = "content", nullable = false, columnDefinition = "TEXT")
 	private String content;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "dev_experience_id", nullable = false)
+	private DevExperience devExperience;
+
 	@Builder
-	public Project(String title, String introduce, String position, LocalDate startDate, LocalDate endDate,
-		String content) {
+	public Project(DevExperience devExperience, String title, String introduce, String position, LocalDate startDate, LocalDate endDate,
+				   String content) {
+		this.devExperience = devExperience;
 		this.title = title;
 		this.introduce = introduce;
 		this.position = position;

@@ -20,9 +20,11 @@ public class StackController {
 
     private final StackService stackService;
 
-    @PostMapping
-    public CustomResponse<List<Stack>> addStacks(@RequestBody StackAddRequest request) {
-        List<Stack> stacks = stackService.addStacks(request);
+    @PostMapping("/{devExperience_id}")
+    public CustomResponse<List<Stack>> addStacks(
+            @PathVariable("devExperience_id") Long devExperienceId,
+            @RequestBody StackAddRequest request) {
+        List<Stack> stacks = stackService.addStacks(devExperienceId, request);
         return CustomResponse.of(ResultCode.CREATED, stacks);
     }
 
