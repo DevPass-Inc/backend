@@ -24,19 +24,21 @@ public class ProjectService {
 
 
     @Transactional
-    public Project addProject(Long devExperienceId, ProjectAddRequest request) {
+    public ProjectResponseDTO addProject(Long devExperienceId, ProjectAddRequest request) {
         DevExperience devExperience = devExperienceRepository.findById(devExperienceId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND));
         Project project = ProjectConverter.toEntity(request, devExperience);
-        return projectRepository.save(project);
+        Project saved = projectRepository.save(project);
+        return ProjectConverter.toResponse(saved);
     }
-
 
     @Transactional(readOnly = true)
-    public Project getProjectById(Long id) {
-        return projectRepository.findById(id)
+    public ProjectResponseDTO getProjectById(Long id) {
+        Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND));
+        return ProjectConverter.toResponse(project);
     }
+
 
     @Transactional(readOnly = true)
     public List<ProjectResponseDTO> getProjectsByDevExperienceId(Long devExperienceId) {

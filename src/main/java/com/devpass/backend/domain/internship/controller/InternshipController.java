@@ -25,7 +25,7 @@ public class InternshipController {
     public CustomResponse<InternshipResponseDTO> addInternship(
             @PathVariable("devExperience_id") Long devExperienceId,
             @RequestBody InternshipAddRequest request) {
-        InternshipResponseDTO response = internshipService.addInternship(devExperienceId, request);
-        return CustomResponse.of(ResultCode.CREATED, response);
+        internshipService.addInternship(devExperienceId, request);
+        return CustomResponse.of(ResultCode.CREATED);
     }
 }

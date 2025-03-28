@@ -9,7 +9,7 @@ public class ProjectConverter {
     public static Project toEntity(ProjectAddRequest request, DevExperience devExperience) {
         return Project.builder()
                 .devExperience(devExperience)
-                .title(request.getProjectName())
+                .title(request.getTitle())
                 .introduce(request.getIntroduce())
                 .position(request.getPosition())
                 .startDate(request.getStartDate())

@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StackStatusResponseDTO {
-
-    @Schema(description = "기술 스택", example = "springBoot, django, docker")
     private String stack;
     private boolean isRequired;
 }
