@@ -1,8 +1,6 @@
 package com.devpass.backend.domain.company.controller;
 
-import com.devpass.backend.domain.company.converter.CompanyConverter;
 import com.devpass.backend.domain.company.dto.response.CompanyDetailResponseDTO;
-import com.devpass.backend.domain.company.entity.Company;
 import com.devpass.backend.domain.company.service.CompanyService;
 import com.devpass.backend.global.common.response.CustomResponse;
 import com.devpass.backend.global.result.ResultCode;
@@ -20,11 +18,10 @@ public class CompanyController {
     private final CompanyService companyService;
 
     @Operation(summary = "기업 조회", description = "기업 개별 조회")
-    @GetMapping("/{company_id}")
-    public CustomResponse<CompanyDetailResponseDTO> getCompany(@PathVariable("company_id") Long companyId) {
-        Company company = companyService.getCompany(companyId);
+    @GetMapping("/{companyId}")
+    public CustomResponse<CompanyDetailResponseDTO> getCompanyById(@PathVariable Long companyId) {
+        CompanyDetailResponseDTO responseDto = companyService.getCompanyById(companyId);
 
-        CompanyDetailResponseDTO companyDetail = CompanyConverter.toCompanyDetailResponse(company);
-        return CustomResponse.of(ResultCode.OK, companyDetail);
+        return CustomResponse.of(ResultCode.OK, responseDto);
     }
 }
