@@ -39,6 +39,8 @@ dependencies {
 
     // swagger
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
+
+    implementation 'io.netty:netty-resolver-dns-native-macos:4.1.109.Final:osx-aarch_64'
 }
 
 tasks.named('test') {

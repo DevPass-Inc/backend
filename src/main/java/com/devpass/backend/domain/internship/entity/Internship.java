@@ -1,5 +1,9 @@
 package com.devpass.backend.domain.internship.entity;
 
+import com.devpass.backend.domain.devexperience.entity.DevExperience;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
 
 import com.devpass.backend.global.common.BaseEntity;
@@ -40,8 +44,13 @@ public class Internship extends BaseEntity {
 	@Column(name = "content", nullable = false, columnDefinition = "TEXT")
 	private String content;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "dev_experience_id", nullable = false)
+	private DevExperience devExperience;
+
 	@Builder
-	public Internship(String companyName, String position, LocalDate startDate, LocalDate endDate, String content) {
+	public Internship(DevExperience devExperience, String companyName, String position, LocalDate startDate, LocalDate endDate, String content) {
+		this.devExperience = devExperience;
 		this.companyName = companyName;
 		this.position = position;
 		this.startDate = startDate;

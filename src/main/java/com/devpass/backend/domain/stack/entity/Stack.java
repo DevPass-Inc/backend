@@ -1,5 +1,9 @@
 package com.devpass.backend.domain.stack.entity;
 
+import com.devpass.backend.domain.devexperience.entity.DevExperience;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import java.util.List;
 
 import com.devpass.backend.domain.recruitment.entity.Recruitment;
@@ -34,8 +38,14 @@ public class Stack extends BaseEntity {
 	@ManyToMany(mappedBy = "stacks")
 	private List<Recruitment> recruitments;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "dev_experience_id", nullable = false)
+	private DevExperience devExperience;
+
 	@Builder
-	public Stack(String name) {
+	public Stack(String name, DevExperience devExperience) {
 		this.name = name;
+		this.devExperience = devExperience;
+
 	}
 }
