@@ -24,20 +24,25 @@ public class OpenAIConfig {
     @Value("${openai.api.key}")
     private String openaiApiKey;
 
-
     public String callGPTApi(String prompt) {
         String url = "https://api.openai.com/v1/chat/completions";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(openaiApiKey);
 
-        // OpenAI chat API 메시지 포맷 구성
         List<Map<String, String>> messages = new ArrayList<>();
         messages.add(Map.of("role", "user", "content", prompt));
 
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("model", "gpt-3.5-turbo");
         requestBody.put("messages", messages);
+
+        try {
+            String requestBodyStr = objectMapper.writeValueAsString(requestBody);
+            logger.info("Sending GPT API request: {}", requestBodyStr);
+        } catch (Exception e) {
+            logger.error("Failed to serialize request body", e);
+        }
 
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, headers);
         ResponseEntity<String> response = restTemplate.postForEntity(url, entity, String.class);
@@ -57,5 +62,4 @@ public class OpenAIConfig {
             throw new RuntimeException("GPT API 호출 실패: " + response.getStatusCode());
         }
     }
-
 }

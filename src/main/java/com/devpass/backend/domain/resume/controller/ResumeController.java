@@ -17,9 +17,9 @@ public class ResumeController {
 
     private final ResumeService resumeService;
 
-    @GetMapping("/{devExprience_id}")
-    public CustomResponse<ResumeResponseDTO> getResume(@PathVariable("devExprience_id") Long devExprienceId) {
-        ResumeResponseDTO resume = resumeService.generateResume(devExprienceId);
+    @GetMapping("/{devExperience_id}")
+    public CustomResponse<ResumeResponseDTO> getResume(@PathVariable("devExperience_id") Long devExperienceId) {
+        ResumeResponseDTO resume = resumeService.generateAndSaveResume(devExperienceId);
         return CustomResponse.of(ResultCode.OK, resume);
     }
 }
