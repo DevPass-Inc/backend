@@ -27,3 +27,7 @@ logging:
   level:
     org.hibernate.orm.connections: WARN
     org.hibernate.orm.deprecation: WARN
+
+openai:
+  api:
+    key: ${OPENAI_API_KEY}
