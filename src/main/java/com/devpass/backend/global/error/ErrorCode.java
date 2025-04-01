@@ -23,6 +23,9 @@ public enum ErrorCode implements BaseStatus {
 
     // Recruitment
     RECRUITMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "RECRUITMENT_404", "해당 채용 정보를 찾을 수 없습니다."),
+
+    // Company
+    COMPANY_NOT_FOUND(HttpStatus.NOT_FOUND, "COMPANY_404", "해당 회사 정보를 찾을 수 없습니다."),
     ;
 
     private final HttpStatus httpStatus;
