@@ -19,7 +19,7 @@ public class ResumeController {
 
     @GetMapping("/{devExperience_id}")
     public CustomResponse<ResumeResponseDTO> getResume(@PathVariable("devExperience_id") Long devExperienceId) {
-        ResumeResponseDTO resume = resumeService.generateAndSaveResume(devExperienceId);
+        ResumeResponseDTO resume = resumeService.generateResume(devExperienceId);
         return CustomResponse.of(ResultCode.OK, resume);
     }
 }

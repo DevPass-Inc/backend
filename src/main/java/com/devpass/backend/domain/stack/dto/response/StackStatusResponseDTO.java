@@ -11,4 +11,8 @@ import lombok.NoArgsConstructor;
 public class StackStatusResponseDTO {
     private String stack;
     private boolean isRequired;
+
+    public String getName() {
+        return this.stack;
+    }
 }

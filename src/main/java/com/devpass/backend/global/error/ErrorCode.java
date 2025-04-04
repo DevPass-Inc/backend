@@ -23,6 +23,8 @@ public enum ErrorCode implements BaseStatus {
 
     // Recruitment
     RECRUITMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "RECRUITMENT_404", "해당 채용 정보를 찾을 수 없습니다."),
+
+    GPT_RESPONSE_PARSE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "GPT_PARSE_500", "GPT 응답 파싱에 실패했습니다."),
     ;
 
     private final HttpStatus httpStatus;
