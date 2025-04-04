@@ -48,4 +48,8 @@ public class Stack extends BaseEntity {
 		this.devExperience = devExperience;
 
 	}
+
+	public String getName() {
+		return this.name;
+	}
 }
