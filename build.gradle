@@ -41,6 +41,9 @@ dependencies {
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
 
     implementation 'io.netty:netty-resolver-dns-native-macos:4.1.109.Final:osx-aarch_64'
+
+    // elasticsearch
+    implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
 }
 
 tasks.named('test') {

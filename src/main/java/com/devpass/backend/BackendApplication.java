@@ -17,6 +17,9 @@ public class BackendApplication {
         System.setProperty("DB_PASSWORD", dotenv.get("DB_PASSWORD"));
         System.setProperty("DB_URL", dotenv.get("DB_URL"));
         System.setProperty("MONGODB_URI", dotenv.get("MONGODB_URI"));
+        System.setProperty("ELASTICSEARCH_USERNAME", dotenv.get("ELASTICSEARCH_USERNAME"));
+        System.setProperty("ELASTICSEARCH_PASSWORD", dotenv.get("ELASTICSEARCH_PASSWORD"));
+        System.setProperty("ELASTICSEARCH_URL", dotenv.get("ELASTICSEARCH_URL"));
 
         SpringApplication.run(BackendApplication.class, args);
     }
