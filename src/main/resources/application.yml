@@ -10,6 +10,11 @@ spring:
     mongodb:
       uri: ${MONGODB_URI}
 
+  elasticsearch:
+    username: ${ELASTICSEARCH_USERNAME}
+    password: ${ELASTICSEARCH_PASSWORD}
+    uris: ${ELASTICSEARCH_URL}
+
   jpa:
     hibernate:
       ddl-auto: update
