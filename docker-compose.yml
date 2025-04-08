@@ -6,13 +6,6 @@ services:
     ports:
       - "8080:8080"
     restart: always
-    env_file:
-      - .env
-    environment:
-      SPRING_DATASOURCE_URL: ${DB_URL}
-      SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
-      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
-      SPRING_DATA_MONGODB_URI: ${MONGODB_URI}
     depends_on:
       db:
         condition: service_healthy
@@ -53,6 +46,7 @@ services:
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.11.1
+    container_name: devpass-elasticsearch
     ports:
       - '9200:9200'
     environment:
