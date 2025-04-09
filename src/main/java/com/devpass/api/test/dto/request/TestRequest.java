@@ -1,4 +1,4 @@
-package com.devpass.test.dto.request;
+package com.devpass.api.test.dto.request;
 
 
 import lombok.AllArgsConstructor;

@@ -1,11 +1,11 @@
-package com.devpass.test.service;
+package com.devpass.api.test.service;
 
-import com.devpass.test.converter.TestConverter;
-import com.devpass.test.domain.Test;
-import com.devpass.test.dto.request.TestRequest;
-import com.devpass.test.repository.TestRepository;
-import com.devpass.global.error.ErrorCode;
-import com.devpass.global.error.exception.BusinessException;
+import com.devpass.api.test.dto.request.TestRequest;
+import com.devpass.api.test.repository.TestRepository;
+import com.devpass.api.test.converter.TestConverter;
+import com.devpass.api.test.domain.Test;
+import com.devpass.global.payload.apicode.ErrorCode;
+import com.devpass.global.payload.error.exception.BusinessException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

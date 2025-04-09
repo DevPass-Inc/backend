@@ -1,6 +1,6 @@
-package com.devpass.test.repository;
+package com.devpass.api.test.repository;
 
-import com.devpass.test.domain.Test;
+import com.devpass.api.test.domain.Test;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TestRepository extends JpaRepository<Test, Long> {

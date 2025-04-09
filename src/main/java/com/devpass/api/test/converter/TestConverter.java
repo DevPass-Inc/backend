@@ -1,8 +1,8 @@
-package com.devpass.test.converter;
+package com.devpass.api.test.converter;
 
-import com.devpass.test.domain.Test;
-import com.devpass.test.dto.request.TestRequest;
-import com.devpass.test.dto.response.TestResponse;
+import com.devpass.api.test.dto.request.TestRequest;
+import com.devpass.api.test.domain.Test;
+import com.devpass.api.test.dto.response.TestResponse;
 
 public class TestConverter {
 

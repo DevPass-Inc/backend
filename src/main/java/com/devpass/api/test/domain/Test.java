@@ -1,6 +1,6 @@
-package com.devpass.test.domain;
+package com.devpass.api.test.domain;
 
-import com.devpass.global.common.BaseEntity;
+import com.devpass.global.common.entity.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
