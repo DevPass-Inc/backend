@@ -5,7 +5,7 @@ import com.devpass.domain.devexperience.dto.response.DevExperienceAggregateRespo
 import com.devpass.domain.devexperience.dto.response.DevExperienceResponseDTO;
 import com.devpass.domain.devexperience.service.DevExperienceService;
 import com.devpass.domain.devexperience.service.DevExperienceAggregateService;
-import com.devpass.global.payload.wrapper.ApiResponse;
+import com.devpass.global.payload.ApiResponse;
 import com.devpass.global.payload.apicode.SuccessCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

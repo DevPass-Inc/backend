@@ -6,7 +6,7 @@ import com.devpass.domain.devexperience.dto.response.DevExperienceResponseDTO;
 import com.devpass.domain.devexperience.entity.DevExperience;
 import com.devpass.domain.devexperience.repository.DevExperienceRepository;
 import com.devpass.global.payload.apicode.ErrorCode;
-import com.devpass.global.payload.error.exception.BusinessException;
+import com.devpass.global.payload.error.exception.GeneralException;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +36,7 @@ public class DevExperienceService {
     @Transactional(readOnly = true)
     public DevExperienceResponseDTO getDevExperienceById(Long id) {
         DevExperience devExperience = devExperienceRepository.findById(id)
-                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND));
+                .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND));
         return DevExperienceConverter.toResponse(devExperience);
     }
 

@@ -2,7 +2,7 @@ package com.devpass.domain.recruitment.controller;
 
 import com.devpass.domain.recruitment.dto.response.RecruitmentDetailResponseDTO;
 import com.devpass.domain.recruitment.service.RecruitmentService;
-import com.devpass.global.payload.wrapper.ApiResponse;
+import com.devpass.global.payload.ApiResponse;
 import com.devpass.global.payload.apicode.SuccessCode;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;

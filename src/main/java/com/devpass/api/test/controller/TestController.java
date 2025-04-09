@@ -5,7 +5,7 @@ import com.devpass.api.test.domain.Test;
 import com.devpass.api.test.dto.request.TestRequest;
 import com.devpass.api.test.dto.response.TestResponse;
 import com.devpass.api.test.service.TestService;
-import com.devpass.global.payload.wrapper.ApiResponse;
+import com.devpass.global.payload.ApiResponse;
 import com.devpass.global.payload.apicode.SuccessCode;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;

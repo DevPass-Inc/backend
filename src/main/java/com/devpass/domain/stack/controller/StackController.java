@@ -6,7 +6,7 @@ import com.devpass.domain.stack.dto.response.StackListResponseDTO;
 import com.devpass.domain.stack.dto.response.StackStatusResponseDTO;
 import com.devpass.domain.stack.entity.Stack;
 import com.devpass.domain.stack.service.StackService;
-import com.devpass.global.payload.wrapper.ApiResponse;
+import com.devpass.global.payload.ApiResponse;
 import com.devpass.global.payload.apicode.SuccessCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

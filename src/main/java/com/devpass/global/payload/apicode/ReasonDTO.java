@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class Reason {
+public class ReasonDTO {
 	private HttpStatus status;
 	private String code;
 	private String message;

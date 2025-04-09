@@ -8,7 +8,7 @@ import com.devpass.domain.project.dto.response.ProjectResponseDTO;
 import com.devpass.domain.project.entity.Project;
 import com.devpass.domain.project.repository.ProjectRepository;
 import com.devpass.global.payload.apicode.ErrorCode;
-import com.devpass.global.payload.error.exception.BusinessException;
+import com.devpass.global.payload.error.exception.GeneralException;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ public class ProjectService {
     @Transactional
     public ProjectResponseDTO addProject(Long devExperienceId, ProjectAddRequest request) {
         DevExperience devExperience = devExperienceRepository.findById(devExperienceId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND));
+                .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND));
         Project project = ProjectConverter.toEntity(request, devExperience);
         Project saved = projectRepository.save(project);
         return ProjectConverter.toResponse(saved);
@@ -35,7 +35,7 @@ public class ProjectService {
     @Transactional(readOnly = true)
     public ProjectResponseDTO getProjectById(Long id) {
         Project project = projectRepository.findById(id)
-                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND));
+                .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND));
         return ProjectConverter.toResponse(project);
     }
 

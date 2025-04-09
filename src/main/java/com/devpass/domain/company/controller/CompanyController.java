@@ -2,7 +2,7 @@ package com.devpass.domain.company.controller;
 
 import com.devpass.domain.company.dto.response.CompanyDetailResponseDTO;
 import com.devpass.domain.company.service.CompanyService;
-import com.devpass.global.payload.wrapper.ApiResponse;
+import com.devpass.global.payload.ApiResponse;
 import com.devpass.global.payload.apicode.SuccessCode;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;

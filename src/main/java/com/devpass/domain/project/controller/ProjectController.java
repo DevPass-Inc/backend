@@ -3,7 +3,7 @@ package com.devpass.domain.project.controller;
 import com.devpass.domain.project.dto.request.ProjectAddRequest;
 import com.devpass.domain.project.dto.response.ProjectResponseDTO;
 import com.devpass.domain.project.service.ProjectService;
-import com.devpass.global.payload.wrapper.ApiResponse;
+import com.devpass.global.payload.ApiResponse;
 import com.devpass.global.payload.apicode.SuccessCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

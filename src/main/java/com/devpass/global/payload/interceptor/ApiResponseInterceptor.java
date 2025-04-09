@@ -1,4 +1,4 @@
-package com.devpass.global.payload.advice;
+package com.devpass.global.payload.interceptor;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
@@ -8,10 +8,10 @@ import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
-import com.devpass.global.payload.wrapper.ApiResponse;
+import com.devpass.global.payload.ApiResponse;
 
 @RestControllerAdvice
-public class ApiResponseStatusSetter implements ResponseBodyAdvice<Object> {
+public class ApiResponseInterceptor implements ResponseBodyAdvice<Object> {
 
 	@Override
 	public boolean supports(MethodParameter returnType, Class converterType) {

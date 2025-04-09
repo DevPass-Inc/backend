@@ -2,7 +2,7 @@ package com.devpass.domain.resume.controller;
 
 import com.devpass.domain.resume.document.ResumeDocument;
 import com.devpass.domain.resume.service.ResumeService;
-import com.devpass.global.payload.wrapper.ApiResponse;
+import com.devpass.global.payload.ApiResponse;
 import com.devpass.global.payload.apicode.SuccessCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

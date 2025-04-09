@@ -35,8 +35,8 @@ public enum ErrorCode implements ResponseCode {
 	private final String message;
 
 	@Override
-	public Reason getReason() {
-		return Reason.builder()
+	public ReasonDTO getReason() {
+		return ReasonDTO.builder()
 			.status(httpStatus)
 			.code(this.code)
 			.message(this.message)

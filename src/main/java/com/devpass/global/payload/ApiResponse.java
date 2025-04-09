@@ -1,4 +1,4 @@
-package com.devpass.global.payload.wrapper;
+package com.devpass.global.payload;
 
 import org.springframework.http.HttpStatus;
 

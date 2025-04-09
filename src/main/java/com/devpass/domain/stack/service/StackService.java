@@ -8,7 +8,7 @@ import com.devpass.domain.stack.dto.response.StackStatusResponseDTO;
 import com.devpass.domain.stack.entity.Stack;
 import com.devpass.domain.stack.repository.StackRepository;
 import com.devpass.global.payload.apicode.ErrorCode;
-import com.devpass.global.payload.error.exception.BusinessException;
+import com.devpass.global.payload.error.exception.GeneralException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +26,7 @@ public class StackService {
     @Transactional
     public List<Stack> addStacks(Long devExperienceId, StackAddRequest request) {
         DevExperience devExperience = devExperienceRepository.findById(devExperienceId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND));
+                .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND));
 
         for (String stackName : request.getStacks()) {
             Optional<Stack> existing = stackRepository.findByName(stackName);

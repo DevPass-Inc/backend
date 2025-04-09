@@ -8,7 +8,7 @@ import com.devpass.domain.internship.dto.response.InternshipResponseDTO;
 import com.devpass.domain.internship.entity.Internship;
 import com.devpass.domain.internship.repository.InternshipRepository;
 import com.devpass.global.payload.apicode.ErrorCode;
-import com.devpass.global.payload.error.exception.BusinessException;
+import com.devpass.global.payload.error.exception.GeneralException;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class InternshipService {
     @Transactional
     public InternshipResponseDTO addInternship(Long devExperienceId, InternshipAddRequest request) {
         DevExperience devExperience = devExperienceRepository.findById(devExperienceId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND));
+                .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND));
         Internship internship = InternshipConverter.toEntity(request, devExperience);
         Internship saved = internshipRepository.save(internship);
         return InternshipConverter.toResponse(saved);
@@ -34,7 +34,7 @@ public class InternshipService {
     @Transactional(readOnly = true)
     public InternshipResponseDTO getInternshipById(Long id) {
         Internship internship = internshipRepository.findById(id)
-                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND));
+                .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND));
         return InternshipConverter.toResponse(internship);
     }
 

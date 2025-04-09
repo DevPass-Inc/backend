@@ -3,7 +3,7 @@ package com.devpass.domain.internship.controller;
 import com.devpass.domain.internship.dto.request.InternshipAddRequest;
 import com.devpass.domain.internship.dto.response.InternshipResponseDTO;
 import com.devpass.domain.internship.service.InternshipService;
-import com.devpass.global.payload.wrapper.ApiResponse;
+import com.devpass.global.payload.ApiResponse;
 import com.devpass.global.payload.apicode.SuccessCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

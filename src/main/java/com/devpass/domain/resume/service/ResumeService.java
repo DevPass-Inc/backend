@@ -9,7 +9,7 @@ import com.devpass.domain.resume.repository.ResumeRepository;
 import com.devpass.domain.resume.util.ResumePrompt;
 import com.devpass.global.config.OpenAIConfig;
 import com.devpass.global.payload.apicode.ErrorCode;
-import com.devpass.global.payload.error.exception.BusinessException;
+import com.devpass.global.payload.error.exception.GeneralException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -42,7 +42,7 @@ public class ResumeService {
         try {
             resumeResponseDTO = objectMapper.readValue(gptResponse, ResumeResponseDTO.class);
         } catch (Exception e) {
-            throw new BusinessException(ErrorCode.GPT_RESPONSE_PARSE_ERROR);
+            throw new GeneralException(ErrorCode.GPT_RESPONSE_PARSE_ERROR);
         }
 
         // 5. builder 패턴을 사용하여 사용자 관련 정보 필드는 빈 문자열로 설정
@@ -84,14 +84,14 @@ public class ResumeService {
         try {
             return objectMapper.writeValueAsString(promptDTO);
         } catch (Exception e) {
-            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
+            throw new GeneralException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
 
     @Transactional(readOnly = true)
     public ResumeDocument getResumeById(String resumeId) {
         return resumeRepository.findById(resumeId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.RESUME_NOT_FOUND));
+                .orElseThrow(() -> new GeneralException(ErrorCode.RESUME_NOT_FOUND));
     }
 
 }
