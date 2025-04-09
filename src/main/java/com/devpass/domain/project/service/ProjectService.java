@@ -3,7 +3,7 @@ package com.devpass.domain.project.service;
 import com.devpass.domain.devexperience.entity.DevExperience;
 import com.devpass.domain.devexperience.repository.DevExperienceRepository;
 import com.devpass.domain.project.converter.ProjectConverter;
-import com.devpass.domain.project.dto.request.ProjectAddRequest;
+import com.devpass.domain.project.dto.request.ProjectAddRequestDTO;
 import com.devpass.domain.project.dto.response.ProjectResponseDTO;
 import com.devpass.domain.project.entity.Project;
 import com.devpass.domain.project.repository.ProjectRepository;
@@ -24,7 +24,7 @@ public class ProjectService {
 
 
     @Transactional
-    public ProjectResponseDTO addProject(Long devExperienceId, ProjectAddRequest request) {
+    public ProjectResponseDTO addProject(Long devExperienceId, ProjectAddRequestDTO request) {
         DevExperience devExperience = devExperienceRepository.findById(devExperienceId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND));
         Project project = ProjectConverter.toEntity(request, devExperience);

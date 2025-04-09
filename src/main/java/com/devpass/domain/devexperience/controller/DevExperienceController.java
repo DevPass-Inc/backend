@@ -1,6 +1,6 @@
 package com.devpass.domain.devexperience.controller;
 
-import com.devpass.domain.devexperience.dto.request.DevExperienceAddRequest;
+import com.devpass.domain.devexperience.dto.request.DevExperienceAddRequestDTO;
 import com.devpass.domain.devexperience.dto.response.DevExperienceAggregateResponseDTO;
 import com.devpass.domain.devexperience.dto.response.DevExperienceResponseDTO;
 import com.devpass.domain.devexperience.service.DevExperienceService;
@@ -28,7 +28,7 @@ public class DevExperienceController {
     )
     @PostMapping
     public ApiResponse<DevExperienceResponseDTO> addDevExperience(
-            @RequestBody DevExperienceAddRequest request
+            @RequestBody DevExperienceAddRequestDTO request
     ) {
         DevExperienceResponseDTO response = devExperienceService.addDevExperience(request);
         return ApiResponse.of(SuccessCode.CREATED, response);

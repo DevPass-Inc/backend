@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class StackAddRequest {
+public class StackAddRequestDTO {
     @Schema(description = "기술 스택", example = "[\"springBoot\", \"django\", \"docker\"]")
     private List<String> stacks;
 }

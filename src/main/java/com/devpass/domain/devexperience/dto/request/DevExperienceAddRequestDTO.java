@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class DevExperienceAddRequest {
+public class DevExperienceAddRequestDTO {
     @Schema(description = "개발경험 명", example = "개발경험1")
     private String title;
 

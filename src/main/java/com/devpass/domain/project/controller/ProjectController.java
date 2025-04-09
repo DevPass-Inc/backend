@@ -1,6 +1,6 @@
 package com.devpass.domain.project.controller;
 
-import com.devpass.domain.project.dto.request.ProjectAddRequest;
+import com.devpass.domain.project.dto.request.ProjectAddRequestDTO;
 import com.devpass.domain.project.dto.response.ProjectResponseDTO;
 import com.devpass.domain.project.service.ProjectService;
 import com.devpass.global.payload.ApiResponse;
@@ -26,7 +26,7 @@ public class ProjectController {
     @PostMapping("/{devExperience_id}")
     public ApiResponse<ProjectResponseDTO> addProject(
             @PathVariable("devExperience_id") Long devExperienceId,
-            @RequestBody ProjectAddRequest request) {
+            @RequestBody ProjectAddRequestDTO request) {
         ProjectResponseDTO projectResponseDTO = projectService.addProject(devExperienceId, request);
         return ApiResponse.of(SuccessCode.CREATED, projectResponseDTO);
     }

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class InternshipAddRequest {
+public class InternshipAddRequestDTO {
     @Schema(description = "인턴십 회사명", example = "Toss bank")
     private String companyName;
 

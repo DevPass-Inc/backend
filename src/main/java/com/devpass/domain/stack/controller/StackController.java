@@ -1,7 +1,7 @@
 package com.devpass.domain.stack.controller;
 
 import com.devpass.domain.stack.converter.StackConverter;
-import com.devpass.domain.stack.dto.request.StackAddRequest;
+import com.devpass.domain.stack.dto.request.StackAddRequestDTO;
 import com.devpass.domain.stack.dto.response.StackListResponseDTO;
 import com.devpass.domain.stack.dto.response.StackStatusResponseDTO;
 import com.devpass.domain.stack.entity.Stack;
@@ -30,7 +30,7 @@ public class StackController {
     @PostMapping("/{devExperience_id}")
     public ApiResponse<StackListResponseDTO> addStacks(
             @PathVariable("devExperience_id") Long devExperienceId,
-            @RequestBody StackAddRequest request) {
+            @RequestBody StackAddRequestDTO request) {
         List<Stack> stacks = stackService.addStacks(devExperienceId, request);
         List<StackStatusResponseDTO> stackDTOs = StackConverter.toStatusResponseDTOList(stacks);
         StackListResponseDTO responseDTO = new StackListResponseDTO(stackDTOs);

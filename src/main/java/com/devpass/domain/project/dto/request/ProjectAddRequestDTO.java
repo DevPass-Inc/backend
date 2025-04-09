@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProjectAddRequest {
+public class ProjectAddRequestDTO {
     @Schema(description = "프로젝트 명", example = "devPass")
     private String title;
 

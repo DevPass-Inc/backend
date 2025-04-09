@@ -3,7 +3,7 @@ package com.devpass.domain.internship.service;
 import com.devpass.domain.devexperience.entity.DevExperience;
 import com.devpass.domain.devexperience.repository.DevExperienceRepository;
 import com.devpass.domain.internship.converter.InternshipConverter;
-import com.devpass.domain.internship.dto.request.InternshipAddRequest;
+import com.devpass.domain.internship.dto.request.InternshipAddRequestDTO;
 import com.devpass.domain.internship.dto.response.InternshipResponseDTO;
 import com.devpass.domain.internship.entity.Internship;
 import com.devpass.domain.internship.repository.InternshipRepository;
@@ -23,7 +23,7 @@ public class InternshipService {
     private final DevExperienceRepository devExperienceRepository;
 
     @Transactional
-    public InternshipResponseDTO addInternship(Long devExperienceId, InternshipAddRequest request) {
+    public InternshipResponseDTO addInternship(Long devExperienceId, InternshipAddRequestDTO request) {
         DevExperience devExperience = devExperienceRepository.findById(devExperienceId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND));
         Internship internship = InternshipConverter.toEntity(request, devExperience);

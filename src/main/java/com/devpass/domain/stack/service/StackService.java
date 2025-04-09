@@ -3,7 +3,7 @@ package com.devpass.domain.stack.service;
 import com.devpass.domain.devexperience.entity.DevExperience;
 import com.devpass.domain.devexperience.repository.DevExperienceRepository;
 import com.devpass.domain.stack.converter.StackConverter;
-import com.devpass.domain.stack.dto.request.StackAddRequest;
+import com.devpass.domain.stack.dto.request.StackAddRequestDTO;
 import com.devpass.domain.stack.dto.response.StackStatusResponseDTO;
 import com.devpass.domain.stack.entity.Stack;
 import com.devpass.domain.stack.repository.StackRepository;
@@ -24,7 +24,7 @@ public class StackService {
     private final DevExperienceRepository devExperienceRepository; // DevExperience 조회용
 
     @Transactional
-    public List<Stack> addStacks(Long devExperienceId, StackAddRequest request) {
+    public List<Stack> addStacks(Long devExperienceId, StackAddRequestDTO request) {
         DevExperience devExperience = devExperienceRepository.findById(devExperienceId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND));
 

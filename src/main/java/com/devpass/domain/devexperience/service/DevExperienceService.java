@@ -1,7 +1,7 @@
 package com.devpass.domain.devexperience.service;
 
 import com.devpass.domain.devexperience.converter.DevExperienceConverter;
-import com.devpass.domain.devexperience.dto.request.DevExperienceAddRequest;
+import com.devpass.domain.devexperience.dto.request.DevExperienceAddRequestDTO;
 import com.devpass.domain.devexperience.dto.response.DevExperienceResponseDTO;
 import com.devpass.domain.devexperience.entity.DevExperience;
 import com.devpass.domain.devexperience.repository.DevExperienceRepository;
@@ -20,7 +20,7 @@ public class DevExperienceService {
     private final DevExperienceRepository devExperienceRepository;
 
     @Transactional
-    public DevExperienceResponseDTO addDevExperience(DevExperienceAddRequest request) {
+    public DevExperienceResponseDTO addDevExperience(DevExperienceAddRequestDTO request) {
         DevExperience devExperience = DevExperienceConverter.toEntity(request);
         DevExperience saved = devExperienceRepository.save(devExperience);
         return DevExperienceConverter.toResponse(saved);

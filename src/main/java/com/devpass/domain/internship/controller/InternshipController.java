@@ -1,6 +1,6 @@
 package com.devpass.domain.internship.controller;
 
-import com.devpass.domain.internship.dto.request.InternshipAddRequest;
+import com.devpass.domain.internship.dto.request.InternshipAddRequestDTO;
 import com.devpass.domain.internship.dto.response.InternshipResponseDTO;
 import com.devpass.domain.internship.service.InternshipService;
 import com.devpass.global.payload.ApiResponse;
@@ -24,7 +24,7 @@ public class InternshipController {
     @PostMapping("/{devExperience_id}")
     public ApiResponse<InternshipResponseDTO> addInternship(
             @PathVariable("devExperience_id") Long devExperienceId,
-            @RequestBody InternshipAddRequest request) {
+            @RequestBody InternshipAddRequestDTO request) {
         internshipService.addInternship(devExperienceId, request);
         return ApiResponse.of(SuccessCode.CREATED);
     }
