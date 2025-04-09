@@ -8,8 +8,8 @@ import com.devpass.domain.resume.dto.response.ResumeResponseDTO;
 import com.devpass.domain.resume.repository.ResumeRepository;
 import com.devpass.domain.resume.util.ResumePrompt;
 import com.devpass.global.config.OpenAIConfig;
-import com.devpass.global.error.ErrorCode;
-import com.devpass.global.error.exception.BusinessException;
+import com.devpass.global.payload.apicode.ErrorCode;
+import com.devpass.global.payload.error.exception.BusinessException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;

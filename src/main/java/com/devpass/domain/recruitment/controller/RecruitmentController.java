@@ -2,8 +2,8 @@ package com.devpass.domain.recruitment.controller;
 
 import com.devpass.domain.recruitment.dto.response.RecruitmentDetailResponseDTO;
 import com.devpass.domain.recruitment.service.RecruitmentService;
-import com.devpass.global.common.response.CustomResponse;
-import com.devpass.global.result.ResultCode;
+import com.devpass.global.payload.wrapper.ApiResponse;
+import com.devpass.global.payload.apicode.SuccessCode;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,9 +20,9 @@ public class RecruitmentController {
 
     @Operation(summary = "채용공고 조회", description = "채용공고 개별 조회")
     @GetMapping("/{recruitmentId}")
-    public CustomResponse<RecruitmentDetailResponseDTO> getRecruitment(@PathVariable Long recruitmentId) {
+    public ApiResponse<RecruitmentDetailResponseDTO> getRecruitment(@PathVariable Long recruitmentId) {
         RecruitmentDetailResponseDTO responseDTO = recruitmentService.getRecruitmentById(recruitmentId);
 
-        return CustomResponse.of(ResultCode.OK, responseDTO);
+        return ApiResponse.of(SuccessCode.OK, responseDTO);
     }
 }

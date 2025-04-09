@@ -1,7 +1,7 @@
 package com.devpass.domain.recruitment.exception;
 
-import com.devpass.global.error.ErrorCode;
-import com.devpass.global.error.exception.EntityNotFoundException;
+import com.devpass.global.payload.apicode.ErrorCode;
+import com.devpass.global.payload.error.exception.EntityNotFoundException;
 
 public class RecruitmentNotFoundException extends EntityNotFoundException {
 

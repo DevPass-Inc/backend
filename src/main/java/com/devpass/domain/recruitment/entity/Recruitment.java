@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.devpass.domain.stack.entity.Stack;
-import com.devpass.global.common.BaseEntity;
+import com.devpass.global.common.entity.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

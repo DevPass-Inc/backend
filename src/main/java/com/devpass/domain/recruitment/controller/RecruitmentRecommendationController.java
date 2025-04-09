@@ -3,8 +3,8 @@ package com.devpass.domain.recruitment.controller;
 import com.devpass.domain.recruitment.dto.request.RecommendRecruitRequestDTO;
 import com.devpass.domain.recruitment.dto.response.RecommendRecruitResponseDTO;
 import com.devpass.domain.recruitment.service.RecruitmentRecommendationService;
-import com.devpass.global.common.response.CustomResponse;
-import com.devpass.global.result.ResultCode;
+import com.devpass.global.payload.wrapper.ApiResponse;
+import com.devpass.global.payload.apicode.SuccessCode;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +23,10 @@ public class RecruitmentRecommendationController {
 
     @Operation(summary = "AI 기업 매칭", description = "AI 기업 매칭 조회")
     @PostMapping
-    public Mono<CustomResponse<List<RecommendRecruitResponseDTO>>> getRecommendRecruit(
+    public Mono<ApiResponse<List<RecommendRecruitResponseDTO>>> getRecommendRecruit(
         @RequestBody RecommendRecruitRequestDTO request) {
 
         return recruitmentRecommendationService.getRecommendRecruit(request)
-            .map(recommendations -> CustomResponse.of(ResultCode.OK, recommendations));
+            .map(recommendations -> ApiResponse.of(SuccessCode.OK, recommendations));
     }
 }

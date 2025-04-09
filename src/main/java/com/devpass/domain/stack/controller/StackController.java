@@ -6,8 +6,8 @@ import com.devpass.domain.stack.dto.response.StackListResponseDTO;
 import com.devpass.domain.stack.dto.response.StackStatusResponseDTO;
 import com.devpass.domain.stack.entity.Stack;
 import com.devpass.domain.stack.service.StackService;
-import com.devpass.global.common.response.CustomResponse;
-import com.devpass.global.result.ResultCode;
+import com.devpass.global.payload.wrapper.ApiResponse;
+import com.devpass.global.payload.apicode.SuccessCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -28,21 +28,21 @@ public class StackController {
             description = "기술스택 등록 api"
     )
     @PostMapping("/{devExperience_id}")
-    public CustomResponse<StackListResponseDTO> addStacks(
+    public ApiResponse<StackListResponseDTO> addStacks(
             @PathVariable("devExperience_id") Long devExperienceId,
             @RequestBody StackAddRequest request) {
         List<Stack> stacks = stackService.addStacks(devExperienceId, request);
         List<StackStatusResponseDTO> stackDTOs = StackConverter.toStatusResponseDTOList(stacks);
         StackListResponseDTO responseDTO = new StackListResponseDTO(stackDTOs);
-        return CustomResponse.of(ResultCode.CREATED, responseDTO);
+        return ApiResponse.of(SuccessCode.CREATED, responseDTO);
     }
 
 
     @GetMapping
-    public CustomResponse<StackListResponseDTO> getStacks() {
+    public ApiResponse<StackListResponseDTO> getStacks() {
         List<Stack> stacks = stackService.getAllStacks();
         List<StackStatusResponseDTO> stackDTOs = StackConverter.toStatusResponseDTOList(stacks);
         StackListResponseDTO responseDTO = new StackListResponseDTO(stackDTOs);
-        return CustomResponse.of(ResultCode.OK, responseDTO);
+        return ApiResponse.of(SuccessCode.OK, responseDTO);
     }
 }

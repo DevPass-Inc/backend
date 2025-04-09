@@ -2,7 +2,7 @@ package com.devpass.domain.recruitmentstack.entity;
 
 import com.devpass.domain.recruitment.entity.Recruitment;
 import com.devpass.domain.stack.entity.Stack;
-import com.devpass.global.common.BaseEntity;
+import com.devpass.global.common.entity.BaseEntity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

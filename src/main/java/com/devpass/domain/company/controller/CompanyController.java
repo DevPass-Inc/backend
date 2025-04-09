@@ -2,8 +2,8 @@ package com.devpass.domain.company.controller;
 
 import com.devpass.domain.company.dto.response.CompanyDetailResponseDTO;
 import com.devpass.domain.company.service.CompanyService;
-import com.devpass.global.common.response.CustomResponse;
-import com.devpass.global.result.ResultCode;
+import com.devpass.global.payload.wrapper.ApiResponse;
+import com.devpass.global.payload.apicode.SuccessCode;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,9 +19,9 @@ public class CompanyController {
 
     @Operation(summary = "기업 조회", description = "기업 개별 조회")
     @GetMapping("/{companyId}")
-    public CustomResponse<CompanyDetailResponseDTO> getCompanyById(@PathVariable Long companyId) {
+    public ApiResponse<CompanyDetailResponseDTO> getCompanyById(@PathVariable Long companyId) {
         CompanyDetailResponseDTO responseDto = companyService.getCompanyById(companyId);
 
-        return CustomResponse.of(ResultCode.OK, responseDto);
+        return ApiResponse.of(SuccessCode.OK, responseDto);
     }
 }

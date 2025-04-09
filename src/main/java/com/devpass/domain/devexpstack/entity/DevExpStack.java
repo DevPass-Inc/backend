@@ -2,7 +2,7 @@ package com.devpass.domain.devexpstack.entity;
 
 import com.devpass.domain.project.entity.Project;
 import com.devpass.domain.stack.entity.Stack;
-import com.devpass.global.common.BaseEntity;
+import com.devpass.global.common.entity.BaseEntity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

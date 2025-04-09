@@ -5,8 +5,8 @@ import com.devpass.domain.devexperience.dto.response.DevExperienceAggregateRespo
 import com.devpass.domain.devexperience.dto.response.DevExperienceResponseDTO;
 import com.devpass.domain.devexperience.service.DevExperienceService;
 import com.devpass.domain.devexperience.service.DevExperienceAggregateService;
-import com.devpass.global.common.response.CustomResponse;
-import com.devpass.global.result.ResultCode;
+import com.devpass.global.payload.wrapper.ApiResponse;
+import com.devpass.global.payload.apicode.SuccessCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
@@ -27,20 +27,20 @@ public class DevExperienceController {
             description = "개발 경험 등록 페이지에서 경험 추가할 때 사용"
     )
     @PostMapping
-    public CustomResponse<DevExperienceResponseDTO> addDevExperience(
+    public ApiResponse<DevExperienceResponseDTO> addDevExperience(
             @RequestBody DevExperienceAddRequest request
     ) {
         DevExperienceResponseDTO response = devExperienceService.addDevExperience(request);
-        return CustomResponse.of(ResultCode.CREATED, response);
+        return ApiResponse.of(SuccessCode.CREATED, response);
     }
     @Operation(
             summary = "devExprience(개발경험) 리스트 조회",
             description = "개발 경험 리스트 조회"
     )
     @GetMapping
-    public CustomResponse<List<DevExperienceResponseDTO>> getAllDevExperiences() {
+    public ApiResponse<List<DevExperienceResponseDTO>> getAllDevExperiences() {
         List<DevExperienceResponseDTO> responses = devExperienceService.getAllDevExperiences();
-        return CustomResponse.of(ResultCode.OK, responses);
+        return ApiResponse.of(SuccessCode.OK, responses);
     }
 
     @Operation(
@@ -48,9 +48,9 @@ public class DevExperienceController {
             description = "개발 경험(프로젝트, 기술스택, 인턴십 경험)을 한 번에 조회"
     )
     @GetMapping("/{devExperienceId}")
-    public CustomResponse<DevExperienceAggregateResponseDTO> getAggregateByDevExperienceId(
+    public ApiResponse<DevExperienceAggregateResponseDTO> getAggregateByDevExperienceId(
             @PathVariable("devExperienceId") Long devExperienceId) {
         DevExperienceAggregateResponseDTO response = aggregateService.getAggregateByDevExperienceId(devExperienceId);
-        return CustomResponse.of(ResultCode.OK, response);
+        return ApiResponse.of(SuccessCode.OK, response);
     }
 }

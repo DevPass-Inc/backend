@@ -1,6 +1,6 @@
 package com.devpass.domain.company.entity;
 
-import com.devpass.global.common.BaseEntity;
+import com.devpass.global.common.entity.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

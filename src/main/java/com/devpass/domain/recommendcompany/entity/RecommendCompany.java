@@ -2,7 +2,7 @@ package com.devpass.domain.recommendcompany.entity;
 
 import com.devpass.domain.company.entity.Company;
 import com.devpass.domain.user.entity.User;
-import com.devpass.global.common.BaseEntity;
+import com.devpass.global.common.entity.BaseEntity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

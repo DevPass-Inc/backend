@@ -7,7 +7,7 @@ import jakarta.persistence.ManyToOne;
 import java.util.List;
 
 import com.devpass.domain.recruitment.entity.Recruitment;
-import com.devpass.global.common.BaseEntity;
+import com.devpass.global.common.entity.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

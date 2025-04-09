@@ -1,4 +1,4 @@
-package com.devpass.global.common;
+package com.devpass.global.common.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Column;
