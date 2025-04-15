@@ -9,6 +9,7 @@ import com.devpass.domain.stack.entity.Stack;
 import com.devpass.domain.stack.repository.StackRepository;
 import com.devpass.global.payload.apicode.ErrorCode;
 import com.devpass.global.payload.error.exception.GeneralException;
+import java.util.ArrayList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,4 +52,36 @@ public class StackService {
         List<Stack> stacks = stackRepository.findAllByDevExperience_Id(devExperienceId);
         return StackConverter.toStatusResponseDTOList(stacks);
     }
+
+    @Transactional
+    public List<Stack> updateStacks(Long devExperienceId, StackAddRequestDTO request) {
+        DevExperience devExperience = devExperienceRepository.findById(devExperienceId)
+                .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND));
+
+        // 기존 스택 삭제
+        List<Stack> existingStacks = stackRepository.findAllByDevExperience_Id(devExperienceId);
+        stackRepository.deleteAll(existingStacks);
+
+        // 새로운 스택 저장
+        List<Stack> newStacks = new ArrayList<>();
+        for (String stackName : request.getStacks()) {
+            Stack stack = Stack.builder()
+                    .name(stackName)
+                    .devExperience(devExperience)
+                    .build();
+            newStacks.add(stackRepository.save(stack));
+        }
+        return newStacks;
+    }
+
+
+    @Transactional
+    public void deleteStacksByDevExperienceId(Long devExperienceId) {
+        List<Stack> stacks = stackRepository.findAllByDevExperience_Id(devExperienceId);
+        if (stacks.isEmpty()) {
+            throw new GeneralException(ErrorCode.NOT_FOUND);
+        }
+        stackRepository.deleteAll(stacks);
+    }
+
 }
