@@ -3,8 +3,10 @@ package com.devpass.backend.domain.resume.service;
 import com.devpass.backend.domain.resume.document.ResumeDocument;
 import com.devpass.backend.domain.resume.dto.response.ResumeResponseDTO;
 import com.devpass.backend.domain.resume.repository.ResumeRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,4 +19,10 @@ public class ResumePersistenceService {
         document.setResume(resumeResponseDTO);
         return resumeRepository.save(document);
     }
+
+    @Transactional(readOnly = true)
+    public Optional<ResumeDocument> findById(String resumeId) {
+        return resumeRepository.findById(resumeId);
+    }
+
 }
