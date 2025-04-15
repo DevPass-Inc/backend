@@ -37,4 +37,19 @@ public class ProjectController {
         ProjectResponseDTO projectResponseDTO = projectService.getProjectById(id);
         return ApiResponse.of(SuccessCode.OK, projectResponseDTO);
     }
+
+    @DeleteMapping("/dev/{devExperience_id}")
+    public ApiResponse<Void> deleteProjects(@PathVariable("devExperience_id") Long devExperienceId) {
+        projectService.deleteProjectsByDevExperienceId(devExperienceId);
+        return ApiResponse.of(SuccessCode.OK);
+    }
+
+    @PutMapping("/{project_id}")
+    public ApiResponse<ProjectResponseDTO> updateProject(
+            @PathVariable("project_id") Long projectId,
+            @RequestBody ProjectAddRequestDTO request) {
+        ProjectResponseDTO updated = projectService.updateProject(projectId, request);
+        return ApiResponse.of(SuccessCode.OK, updated);
+    }
+
 }
