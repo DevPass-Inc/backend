@@ -1,6 +1,7 @@
 package com.devpass.domain.project.entity;
 
 import com.devpass.domain.devexperience.entity.DevExperience;
+import com.devpass.domain.project.dto.request.ProjectAddRequestDTO;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -62,4 +63,14 @@ public class Project extends BaseEntity {
 		this.endDate = endDate;
 		this.content = content;
 	}
+
+	public void update(ProjectAddRequestDTO request) {
+		this.title = request.getTitle();
+		this.introduce = request.getIntroduce();
+		this.position = request.getPosition();
+		this.startDate = request.getStartDate();
+		this.endDate = request.getEndDate();
+		this.content = request.getContent();
+	}
+
 }

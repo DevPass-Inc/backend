@@ -48,4 +48,22 @@ public class ProjectService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
+    public void deleteProjectsByDevExperienceId(Long devExperienceId) {
+        List<Project> projects = projectRepository.findAllByDevExperience_Id(devExperienceId);
+        if (projects.isEmpty()) {
+            throw new GeneralException(ErrorCode.NOT_FOUND);
+        }
+        projectRepository.deleteAll(projects);
+    }
+
+    @Transactional
+    public ProjectResponseDTO updateProject(Long projectId, ProjectAddRequestDTO request) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND));
+        project.update(request);
+        return ProjectConverter.toResponse(project);
+    }
+
+
 }

@@ -1,6 +1,7 @@
 package com.devpass.domain.internship.entity;
 
 import com.devpass.domain.devexperience.entity.DevExperience;
+import com.devpass.domain.internship.dto.request.InternshipAddRequestDTO;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -57,4 +58,13 @@ public class Internship extends BaseEntity {
 		this.endDate = endDate;
 		this.content = content;
 	}
+
+	public void update(InternshipAddRequestDTO request) {
+		this.companyName = request.getCompanyName();
+		this.position = request.getPosition();
+		this.startDate = request.getStartDate();
+		this.endDate = request.getEndDate();
+		this.content = request.getContent();
+	}
+
 }
