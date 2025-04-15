@@ -45,4 +45,22 @@ public class InternshipService {
                 .map(InternshipConverter::toResponse)
                 .collect(Collectors.toList());
     }
+
+    @Transactional
+    public void deleteInternshipsByDevExperienceId(Long devExperienceId) {
+        List<Internship> internships = internshipRepository.findAllByDevExperience_Id(devExperienceId);
+        if (internships.isEmpty()) {
+            throw new GeneralException(ErrorCode.NOT_FOUND);
+        }
+        internshipRepository.deleteAll(internships);
+    }
+
+    @Transactional
+    public InternshipResponseDTO updateInternship(Long internshipId, InternshipAddRequestDTO request) {
+        Internship internship = internshipRepository.findById(internshipId)
+                .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND));
+        internship.update(request);
+        return InternshipConverter.toResponse(internship);
+    }
+
 }

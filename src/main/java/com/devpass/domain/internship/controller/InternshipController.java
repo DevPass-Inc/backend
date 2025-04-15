@@ -28,4 +28,19 @@ public class InternshipController {
         internshipService.addInternship(devExperienceId, request);
         return ApiResponse.of(SuccessCode.CREATED);
     }
+
+    @DeleteMapping("/{devExperience_id}")
+    public ApiResponse<Void> deleteInternships(@PathVariable("devExperience_id") Long devExperienceId) {
+        internshipService.deleteInternshipsByDevExperienceId(devExperienceId);
+        return ApiResponse.of(SuccessCode.OK);
+    }
+
+    @PutMapping("/{internship_id}")
+    public ApiResponse<InternshipResponseDTO> updateInternship(
+            @PathVariable("internship_id") Long internshipId,
+            @RequestBody InternshipAddRequestDTO request) {
+        InternshipResponseDTO updated = internshipService.updateInternship(internshipId, request);
+        return ApiResponse.of(SuccessCode.OK, updated);
+    }
+
 }
