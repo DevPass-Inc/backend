@@ -10,9 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RecommendRecruitRequestDTO {
-    @JsonProperty("user_stacks")
-    private List<String> userStacks;
-
-    @JsonProperty("user_resume")
-    private String userResume;
+    @JsonProperty("resume_id")
+    private Long resumeId;
 }
