@@ -18,11 +18,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
     private final AuthUserArgumentResolver authUserArgumentResolver;
-
-    @Override
-    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-        argumentResolvers.add(authUserArgumentResolver);
-    }
+    private final JWTInterceptor jwtInterceptor;
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
@@ -32,8 +28,13 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(final InterceptorRegistry registry) {
-        registry.addInterceptor(new JWTInterceptor())
-            .addPathPatterns("/api/v1/**")
+        registry.addInterceptor(jwtInterceptor)
+            .addPathPatterns("/api/**")
             .excludePathPatterns(Constants.NO_NEED_FILTER_URLS);
+    }
+
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
+        argumentResolvers.add(authUserArgumentResolver);
     }
 }
