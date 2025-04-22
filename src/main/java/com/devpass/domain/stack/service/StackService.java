@@ -7,7 +7,7 @@ import com.devpass.domain.stack.dto.request.StackAddRequestDTO;
 import com.devpass.domain.stack.dto.response.StackStatusResponseDTO;
 import com.devpass.domain.stack.entity.Stack;
 import com.devpass.domain.stack.repository.StackRepository;
-import com.devpass.global.payload.apicode.ErrorCode;
+import com.devpass.global.payload.apicode.ErrorStatus;
 import com.devpass.global.payload.error.exception.GeneralException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ public class StackService {
     @Transactional
     public List<Stack> addStacks(Long devExperienceId, StackAddRequestDTO request) {
         DevExperience devExperience = devExperienceRepository.findById(devExperienceId)
-                .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND));
+                .orElseThrow(() -> new GeneralException(ErrorStatus.NOT_FOUND));
 
         for (String stackName : request.getStacks()) {
             Optional<Stack> existing = stackRepository.findByName(stackName);

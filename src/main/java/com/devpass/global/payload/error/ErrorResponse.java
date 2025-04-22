@@ -8,7 +8,7 @@ import java.util.Set;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 
-import com.devpass.global.payload.apicode.ErrorCode;
+import com.devpass.global.payload.apicode.ErrorStatus;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -31,7 +31,7 @@ public class ErrorResponse {
 
 	private String path;
 
-	private ErrorResponse(ErrorCode errorCode, List<ErrorField> fieldErrors, String path) {
+	private ErrorResponse(ErrorStatus errorCode, List<ErrorField> fieldErrors, String path) {
 		this.timestamp = LocalDateTime.now();
 		this.httpStatus = errorCode.getHttpStatus();
 		this.code = errorCode.getCode();
@@ -40,7 +40,7 @@ public class ErrorResponse {
 		this.path = path;
 	}
 
-	private ErrorResponse(ErrorCode errorCode, String errorMessage, String field, String path) {
+	private ErrorResponse(ErrorStatus errorCode, String errorMessage, String field, String path) {
 		this.timestamp = LocalDateTime.now();
 		this.httpStatus = errorCode.getHttpStatus();
 		this.code = errorCode.getCode();
@@ -49,25 +49,25 @@ public class ErrorResponse {
 		this.path = path;
 	}
 
-	public static ErrorResponse of(ErrorCode errorCode, List<ErrorField> fieldErrors, String path) {
+	public static ErrorResponse of(ErrorStatus errorCode, List<ErrorField> fieldErrors, String path) {
 		return new ErrorResponse(errorCode, fieldErrors, path);
 	}
 
-	public static ErrorResponse of(ErrorCode errorCode, String path) {
+	public static ErrorResponse of(ErrorStatus errorCode, String path) {
 		return new ErrorResponse(errorCode, new ArrayList<>(), path);
 	}
 
-	public static ErrorResponse of(ErrorCode errorCode, Set<ConstraintViolation<?>> violations, String path) {
+	public static ErrorResponse of(ErrorStatus errorCode, Set<ConstraintViolation<?>> violations, String path) {
 		List<ErrorField> fieldErrors = ErrorField.of(violations);
 		return new ErrorResponse(errorCode, fieldErrors, path);
 	}
 
-	public static ErrorResponse of(ErrorCode errorCode, BindingResult bindingResult, String path) {
+	public static ErrorResponse of(ErrorStatus errorCode, BindingResult bindingResult, String path) {
 		List<ErrorField> fieldErrors = ErrorField.of(bindingResult);
 		return new ErrorResponse(errorCode, fieldErrors, path);
 	}
 
-	public static ErrorResponse of(ErrorCode errorCode, String errorMessage, String field, String path) {
+	public static ErrorResponse of(ErrorStatus errorCode, String errorMessage, String field, String path) {
 		if (field == null) {
 			return new ErrorResponse(errorCode, errorMessage, null, path);
 		} else {

@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum ErrorCode implements ResponseCode {
+public enum ErrorStatus implements ResponseCode {
 
 	// Global
 	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON_500", "서버 에러입니다. 관리자에게 문의하세요."),
@@ -19,6 +19,10 @@ public enum ErrorCode implements ResponseCode {
 	INVALID_REQUEST(HttpStatus.BAD_REQUEST, "COMMON_400", "잘못된 요청입니다."),
 	INPUT_VALUE_INVALID(HttpStatus.BAD_REQUEST, "REQUEST_400", "요청사항에 필수 인자가 누락되었습니다"),
 	HTTP_MESSAGE_NOT_READABLE(HttpStatus.BAD_REQUEST, "G005", "request message body가 없거나, 값 타입이 올바르지 않습니다."),
+
+	USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER4001", "사용자가 없습니다."),
+	TOKEN_EXPIRED(HttpStatus.BAD_REQUEST, "TOKEN4001", "토큰이 만료되었습니다."),
+	INVALID_AUTH_USER_ERROR(HttpStatus.BAD_REQUEST, "COMMON4001", "사용자 인증에 실패했습니다."),
 
 	// Recruitment
 	RECRUITMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "RECRUITMENT_404", "해당 채용 정보를 찾을 수 없습니다."),
@@ -37,7 +41,7 @@ public enum ErrorCode implements ResponseCode {
 	@Override
 	public ReasonDTO getReason() {
 		return ReasonDTO.builder()
-			.status(httpStatus)
+			.httpStatus(httpStatus)
 			.code(this.code)
 			.message(this.message)
 			.build();

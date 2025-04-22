@@ -1,9 +1,9 @@
 package com.devpass.global.payload.error.exception;
 
-import com.devpass.global.payload.apicode.ErrorCode;
+import com.devpass.global.payload.apicode.ErrorStatus;
 
 public class EntityNotFoundException extends GeneralException {
-	public EntityNotFoundException(ErrorCode errorCode) {
+	public EntityNotFoundException(ErrorStatus errorCode) {
 		super(errorCode);
 	}
 }

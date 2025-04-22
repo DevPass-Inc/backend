@@ -25,14 +25,14 @@ public class ApiResponse<T> {
 	private final T result;
 
 	public static <T> ApiResponse<T> of(ResponseCode status, T result) {
-		return new ApiResponse<>(status.getReason().getStatus(),
+		return new ApiResponse<>(status.getReason().getHttpStatus(),
 			status.getReason().getCode(),
 			status.getReason().getMessage(),
 			result);
 	}
 
 	public static <T> ApiResponse<T> of(ResponseCode status) {
-		return new ApiResponse<>(status.getReason().getStatus(),
+		return new ApiResponse<>(status.getReason().getHttpStatus(),
 			status.getReason().getCode(),
 			status.getReason().getMessage(),
 			null);
