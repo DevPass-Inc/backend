@@ -37,9 +37,10 @@ public class DevExperienceController {
 	)
 	@PostMapping
 	public ApiResponse<DevExperienceResponseDTO> addDevExperience(
-		@RequestBody DevExperienceAddRequestDTO request, @AuthUser Long userId
+		@AuthUser Long userId,
+		@RequestBody DevExperienceAddRequestDTO request
 	) {
-		DevExperienceResponseDTO response = devExperienceService.addDevExperience(request);
+		DevExperienceResponseDTO response = devExperienceService.addDevExperience(userId, request);
 		return ApiResponse.of(SuccessCode.CREATED, response);
 	}
 
@@ -49,7 +50,7 @@ public class DevExperienceController {
 	)
 	@GetMapping
 	public ApiResponse<List<DevExperienceResponseDTO>> getAllDevExperiences(@AuthUser Long userId) {
-		List<DevExperienceResponseDTO> responses = devExperienceService.getAllDevExperiences();
+		List<DevExperienceResponseDTO> responses = devExperienceService.getAllDevExperiences(userId);
 		return ApiResponse.of(SuccessCode.OK, responses);
 	}
 
@@ -59,8 +60,10 @@ public class DevExperienceController {
 	)
 	@GetMapping("/{devExperienceId}")
 	public ApiResponse<DevExperienceAggregateResponseDTO> getAggregateByDevExperienceId(
-		@PathVariable("devExperienceId") Long devExperienceId, @AuthUser Long userId) {
-		DevExperienceAggregateResponseDTO response = aggregateService.getAggregateByDevExperienceId(devExperienceId);
+		@AuthUser Long userId,
+		@PathVariable("devExperienceId") Long devExperienceId) {
+		DevExperienceAggregateResponseDTO response = aggregateService.getAggregateByDevExperienceId(userId,
+			devExperienceId);
 		return ApiResponse.of(SuccessCode.OK, response);
 	}
 }

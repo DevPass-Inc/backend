@@ -33,17 +33,17 @@ public class ProjectController {
 	// 프로젝트 등록 API
 	@PostMapping("/{devExperience_id}")
 	public ApiResponse<ProjectResponseDTO> addProject(
-		@PathVariable("devExperience_id") Long devExperienceId,
 		@AuthUser Long userId,
+		@PathVariable("devExperience_id") Long devExperienceId,
 		@RequestBody ProjectAddRequestDTO request) {
-		ProjectResponseDTO projectResponseDTO = projectService.addProject(devExperienceId, request);
+		ProjectResponseDTO projectResponseDTO = projectService.addProject(userId, devExperienceId, request);
 		return ApiResponse.of(SuccessCode.CREATED, projectResponseDTO);
 	}
 
 	// 프로젝트 조회 API
 	@GetMapping("/{project_id}")
-	public ApiResponse<ProjectResponseDTO> getProject(@PathVariable("project_id") Long id, @AuthUser Long userId) {
-		ProjectResponseDTO projectResponseDTO = projectService.getProjectById(id);
+	public ApiResponse<ProjectResponseDTO> getProject(@AuthUser Long userId, @PathVariable("project_id") Long id) {
+		ProjectResponseDTO projectResponseDTO = projectService.getProjectById(userId, id);
 		return ApiResponse.of(SuccessCode.OK, projectResponseDTO);
 	}
 }

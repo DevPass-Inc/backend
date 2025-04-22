@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.devpass.domain.recruitment.dto.request.RecommendRecruitRequestDTO;
 import com.devpass.domain.recruitment.dto.response.RecommendRecruitResponseDTO;
 import com.devpass.domain.recruitment.service.RecruitmentRecommendationService;
-import com.devpass.global.annotation.AuthUser;
 import com.devpass.global.payload.ApiResponse;
 import com.devpass.global.payload.apicode.SuccessCode;
 
@@ -28,7 +27,7 @@ public class RecruitmentRecommendationController {
 	@Operation(summary = "AI 기업 매칭", description = "AI 기업 매칭 조회")
 	@PostMapping
 	public Mono<ApiResponse<List<RecommendRecruitResponseDTO>>> getRecommendRecruit(
-		@RequestBody RecommendRecruitRequestDTO request, @AuthUser Long userId) {
+		@RequestBody RecommendRecruitRequestDTO request) {
 
 		return recruitmentRecommendationService.getRecommendRecruit(request)
 			.map(recommendations -> ApiResponse.of(SuccessCode.OK, recommendations));

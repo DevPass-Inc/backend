@@ -21,16 +21,16 @@ public class ResumeController {
 	private final ResumeService resumeService;
 
 	@GetMapping("/devExprience/{devExperience_id}")
-	public ApiResponse<ResumeDocument> generateResume(@PathVariable("devExperience_id") Long devExperienceId,
-		@AuthUser Long userId) {
-		ResumeDocument resume = resumeService.generateAndSaveResume(devExperienceId);
+	public ApiResponse<ResumeDocument> generateResume(@AuthUser Long userId,
+		@PathVariable("devExperience_id") Long devExperienceId) {
+		ResumeDocument resume = resumeService.generateAndSaveResume(userId, devExperienceId);
 		return ApiResponse.of(SuccessCode.OK, resume);
 	}
 
 	@GetMapping("/{resume_id}")
-	public ApiResponse<ResumeDocument> getResume(@PathVariable("resume_id") String resumeId, @AuthUser Long userId) {
-		ResumeDocument resume = resumeService.getResumeById(resumeId);
+	public ApiResponse<ResumeDocument> getResume(@AuthUser Long userId,
+		@PathVariable("resume_id") String resumeId) {
+		ResumeDocument resume = resumeService.getResumeById(userId, resumeId);
 		return ApiResponse.of(SuccessCode.OK, resume);
 	}
-
 }

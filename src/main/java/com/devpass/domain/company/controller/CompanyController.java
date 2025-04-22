@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.devpass.domain.company.dto.response.CompanyDetailResponseDTO;
 import com.devpass.domain.company.service.CompanyService;
-import com.devpass.global.annotation.AuthUser;
 import com.devpass.global.payload.ApiResponse;
 import com.devpass.global.payload.apicode.SuccessCode;
 
@@ -22,7 +21,7 @@ public class CompanyController {
 
 	@Operation(summary = "기업 조회", description = "기업 개별 조회")
 	@GetMapping("/{companyId}")
-	public ApiResponse<CompanyDetailResponseDTO> getCompanyById(@PathVariable Long companyId, @AuthUser Long userId) {
+	public ApiResponse<CompanyDetailResponseDTO> getCompanyById(@PathVariable Long companyId) {
 		CompanyDetailResponseDTO responseDto = companyService.getCompanyById(companyId);
 
 		return ApiResponse.of(SuccessCode.OK, responseDto);

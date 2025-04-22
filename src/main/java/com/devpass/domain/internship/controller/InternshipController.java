@@ -31,10 +31,10 @@ public class InternshipController {
 	)
 	@PostMapping("/{devExperience_id}")
 	public ApiResponse<InternshipResponseDTO> addInternship(
-		@PathVariable("devExperience_id") Long devExperienceId,
 		@AuthUser Long userId,
+		@PathVariable("devExperience_id") Long devExperienceId,
 		@RequestBody InternshipAddRequestDTO request) {
-		internshipService.addInternship(devExperienceId, request);
+		internshipService.addInternship(userId, devExperienceId, request);
 		return ApiResponse.of(SuccessCode.CREATED);
 	}
 }

@@ -37,10 +37,10 @@ public class StackController {
 	)
 	@PostMapping("/{devExperience_id}")
 	public ApiResponse<StackListResponseDTO> addStacks(
-		@PathVariable("devExperience_id") Long devExperienceId,
 		@AuthUser Long userId,
+		@PathVariable("devExperience_id") Long devExperienceId,
 		@RequestBody StackAddRequestDTO request) {
-		List<Stack> stacks = stackService.addStacks(devExperienceId, request);
+		List<Stack> stacks = stackService.addStacks(userId, devExperienceId, request);
 		List<StackStatusResponseDTO> stackDTOs = StackConverter.toStatusResponseDTOList(stacks);
 		StackListResponseDTO responseDTO = new StackListResponseDTO(stackDTOs);
 		return ApiResponse.of(SuccessCode.CREATED, responseDTO);
@@ -48,7 +48,7 @@ public class StackController {
 
 	@GetMapping
 	public ApiResponse<StackListResponseDTO> getStacks(@AuthUser Long userId) {
-		List<Stack> stacks = stackService.getAllStacks();
+		List<Stack> stacks = stackService.getAllStacks(userId);
 		List<StackStatusResponseDTO> stackDTOs = StackConverter.toStatusResponseDTOList(stacks);
 		StackListResponseDTO responseDTO = new StackListResponseDTO(stackDTOs);
 		return ApiResponse.of(SuccessCode.OK, responseDTO);

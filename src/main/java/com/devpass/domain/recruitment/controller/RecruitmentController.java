@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.devpass.domain.recruitment.dto.response.RecruitmentDetailResponseDTO;
 import com.devpass.domain.recruitment.service.RecruitmentService;
-import com.devpass.global.annotation.AuthUser;
 import com.devpass.global.payload.ApiResponse;
 import com.devpass.global.payload.apicode.SuccessCode;
 
@@ -23,8 +22,7 @@ public class RecruitmentController {
 
 	@Operation(summary = "채용공고 조회", description = "채용공고 개별 조회")
 	@GetMapping("/{recruitmentId}")
-	public ApiResponse<RecruitmentDetailResponseDTO> getRecruitment(@PathVariable Long recruitmentId,
-		@AuthUser Long userId) {
+	public ApiResponse<RecruitmentDetailResponseDTO> getRecruitment(@PathVariable Long recruitmentId) {
 		RecruitmentDetailResponseDTO responseDTO = recruitmentService.getRecruitmentById(recruitmentId);
 
 		return ApiResponse.of(SuccessCode.OK, responseDTO);
