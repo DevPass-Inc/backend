@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class RecommendRecruitRequestDTO {
     @JsonProperty("resume_id")
-    private Long resumeId;
+    private String resumeId;
 }
