@@ -15,14 +15,23 @@ import com.devpass.domain.user.repository.UserRepository;
 import com.devpass.global.oauth.dto.CustomOAuth2User;
 import com.devpass.global.oauth.dto.GitHubResponseDTO;
 import com.devpass.global.oauth.dto.OAuth2Response;
+import com.devpass.global.oauth.dto.TokenDTO;
+import com.devpass.global.oauth.util.CookieUtil;
+import com.devpass.global.oauth.util.JWTUtil;
+import com.devpass.global.payload.apicode.ErrorStatus;
+import com.devpass.global.payload.error.exception.GeneralException;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 @Service
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
 	private final UserRepository userRepository;
+	private final JWTUtil jwtUtil;
 
-	public CustomOAuth2UserService(UserRepository userRepository) {
+	public CustomOAuth2UserService(UserRepository userRepository, JWTUtil jwtUtil) {
 		this.userRepository = userRepository;
+		this.jwtUtil = jwtUtil;
 	}
 
 	@Override
@@ -82,5 +91,19 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
 			return new CustomOAuth2User(userDTO);
 		}
+	}
+
+	@Transactional
+	public TokenDTO reissue(Long userId, HttpServletResponse response) {
+
+		User user = userRepository.findById(userId)
+			.orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
+
+		TokenDTO tokenDTO = jwtUtil.generateTokens(user.getProviderId());
+		long expiration = jwtUtil.getExpiration(tokenDTO.getRefreshToken()).getTime();
+
+		response.addCookie(CookieUtil.createCookie("accessToken", tokenDTO.getAccessToken(), expiration));
+
+		return tokenDTO;
 	}
 }
