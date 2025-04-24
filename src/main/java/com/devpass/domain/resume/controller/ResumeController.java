@@ -20,15 +20,20 @@ public class ResumeController {
 
 	private final ResumeService resumeService;
 
-	@GetMapping("/devExprience/{devExperience_id}")
-	public ApiResponse<ResumeDocument> generateResume(@AuthUser Long userId,
-		@PathVariable("devExperience_id") Long devExperienceId) {
-		ResumeDocument resume = resumeService.generateAndSaveResume(userId, devExperienceId);
+	// 생성 및 저장 API: devExperience_id와 recruitmentStack_id를 함께 받아 이력서를 생성 및 저장
+	@GetMapping("/generate/{devExperience_id}/{recruitmentStack_id}")
+	public ApiResponse<ResumeDocument> generateResume(
+		@AuthUser Long userId,
+		@PathVariable("devExperience_id") Long devExperienceId,
+		@PathVariable("recruitmentStack_id") Long recruitmentStackId) {
+		ResumeDocument resume = resumeService.generateAndSaveResume(userId, devExperienceId, recruitmentStackId);
 		return ApiResponse.of(SuccessCode.OK, resume);
 	}
 
+	// 조회 API: 저장된 이력서를 resume_id로 조회
 	@GetMapping("/{resume_id}")
-	public ApiResponse<ResumeDocument> getResume(@AuthUser Long userId,
+	public ApiResponse<ResumeDocument> getResume(
+		@AuthUser Long userId,
 		@PathVariable("resume_id") String resumeId) {
 		ResumeDocument resume = resumeService.getResumeById(userId, resumeId);
 		return ApiResponse.of(SuccessCode.OK, resume);

@@ -1,6 +1,9 @@
 package com.devpass.domain.resume.service;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.devpass.domain.resume.document.ResumeDocument;
 import com.devpass.domain.resume.dto.response.ResumeResponseDTO;
@@ -18,7 +21,11 @@ public class ResumePersistenceService {
 		ResumeDocument document = new ResumeDocument();
 		document.setResume(resumeResponseDTO);
 		document.setUserId(userId);
-
 		return resumeRepository.save(document);
+	}
+
+	@Transactional(readOnly = true)
+	public Optional<ResumeDocument> findById(String resumeId) {
+		return resumeRepository.findById(resumeId);
 	}
 }

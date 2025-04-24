@@ -42,11 +42,27 @@ public class InternshipService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<InternshipResponseDTO> getInternshipsByDevExperienceId(Long userId, Long devExperienceId) {
-		List<Internship> internships = internshipRepository.findAllByDevExperience_IdAndDevExperience_User_Id(
-			devExperienceId, userId);
-		return internships.stream()
+	public List<InternshipResponseDTO> getInternshipsByDevExperienceId(Long devExperienceId) {
+		return internshipRepository.findAllByDevExperience_Id(devExperienceId)
+			.stream()
 			.map(InternshipConverter::toResponse)
 			.collect(Collectors.toList());
+	}
+
+	@Transactional
+	public void deleteInternshipsByDevExperienceId(Long devExperienceId) {
+		List<Internship> internships = internshipRepository.findAllByDevExperience_Id(devExperienceId);
+		if (internships.isEmpty()) {
+			throw new GeneralException(ErrorStatus.NOT_FOUND);
+		}
+		internshipRepository.deleteAll(internships);
+	}
+
+	@Transactional
+	public InternshipResponseDTO updateInternship(Long internshipId, InternshipAddRequestDTO request) {
+		Internship internship = internshipRepository.findById(internshipId)
+			.orElseThrow(() -> new GeneralException(ErrorStatus.NOT_FOUND));
+		internship.update(request);
+		return InternshipConverter.toResponse(internship);
 	}
 }

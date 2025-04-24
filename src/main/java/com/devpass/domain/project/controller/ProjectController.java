@@ -1,8 +1,10 @@
 package com.devpass.domain.project.controller;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,5 +47,19 @@ public class ProjectController {
 	public ApiResponse<ProjectResponseDTO> getProject(@AuthUser Long userId, @PathVariable("project_id") Long id) {
 		ProjectResponseDTO projectResponseDTO = projectService.getProjectById(userId, id);
 		return ApiResponse.of(SuccessCode.OK, projectResponseDTO);
+	}
+
+	@DeleteMapping("/dev/{devExperience_id}")
+	public ApiResponse<Void> deleteProjects(@PathVariable("devExperience_id") Long devExperienceId) {
+		projectService.deleteProjectsByDevExperienceId(devExperienceId);
+		return ApiResponse.of(SuccessCode.OK);
+	}
+
+	@PutMapping("/{project_id}")
+	public ApiResponse<ProjectResponseDTO> updateProject(
+		@PathVariable("project_id") Long projectId,
+		@RequestBody ProjectAddRequestDTO request) {
+		ProjectResponseDTO updated = projectService.updateProject(projectId, request);
+		return ApiResponse.of(SuccessCode.OK, updated);
 	}
 }

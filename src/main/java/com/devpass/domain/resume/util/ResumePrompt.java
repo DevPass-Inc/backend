@@ -17,7 +17,7 @@ public class ResumePrompt {
             "      \"summary\": \"\",\n" +
             "      \"position\": \"\",\n" +
             "      \"duration\": \"\",\n" +
-            "      \"skills\": [],\n" +
+            "      \"skills\": \"\",\n" +
             "      \"description\": []\n" +
             "    }\n" +
             "  ],\n" +
@@ -38,5 +38,6 @@ public class ResumePrompt {
     public static final String NOTES = "주의사항:\n" +
             "- 'activities' 필드는 인턴십 데이터를 기반으로 채워줘.\n" +
             "- 'skills' 필드는 프로젝트 및 인턴십에서 사용한 기술 스택 데이터를 모두 포함하여 그룹화해줘.\n" +
+            "- 만약 채용 공고에 사용자 경험(UX/UI 개선, 고객 경험 등)에 대한 어필 내용이 포함되어 있다면, 이를 강조하여 이력서에 반영해줘.\n" +
             "위 데이터를 참고하여, JSON 구조에 맞게 모든 내용을 devExperience 데이터로 채워서 이력서를 생성해줘.";
 }

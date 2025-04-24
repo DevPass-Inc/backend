@@ -2,9 +2,11 @@ package com.devpass.domain.stack.controller;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -52,5 +54,30 @@ public class StackController {
 		List<StackStatusResponseDTO> stackDTOs = StackConverter.toStatusResponseDTOList(stacks);
 		StackListResponseDTO responseDTO = new StackListResponseDTO(stackDTOs);
 		return ApiResponse.of(SuccessCode.OK, responseDTO);
+	}
+
+	@Operation(
+		summary = "기술스택 수정",
+		description = "해당 devExperience_id에 연결된 기존 기술스택을 새로운 리스트로 대체"
+	)
+	@PutMapping("/{devExperience_id}")
+	public ApiResponse<StackListResponseDTO> updateStacks(
+		@PathVariable("devExperience_id") Long devExperienceId,
+		@RequestBody StackAddRequestDTO request) {
+		List<Stack> updatedStacks = stackService.updateStacks(devExperienceId, request);
+		List<StackStatusResponseDTO> stackDTOs = StackConverter.toStatusResponseDTOList(updatedStacks);
+		StackListResponseDTO responseDTO = new StackListResponseDTO(stackDTOs);
+		return ApiResponse.of(SuccessCode.OK, responseDTO);
+	}
+
+	@Operation(
+		summary = "기술스택 삭제",
+		description = "해당 devExperience_id와 연결된 모든 기술스택 삭제 API"
+	)
+	@DeleteMapping("/{devExperience_id}")
+	public ApiResponse<Void> deleteStacksByDevExperienceId(
+		@PathVariable("devExperience_id") Long devExperienceId) {
+		stackService.deleteStacksByDevExperienceId(devExperienceId);
+		return ApiResponse.of(SuccessCode.OK);
 	}
 }
