@@ -23,27 +23,39 @@ public class User extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "auth_code", nullable = false, unique = true)
-	private String authCode;
+	@Column(name = "name", nullable = false)
+	private String name;
 
-	@Column(name = "email", nullable = false, unique = true)
+	@Column(name = "email", nullable = true, unique = true)
 	private String email;
+
+	@Column(name = "provider")
+	private String provider;
+
+	@Column(name = "provider_id", nullable = false)
+	private String providerId;
 
 	@Column(name = "profile_image")
 	private String profileImage;
-
-	@Column(name = "name", nullable = false)
-	private String name;
 
 	@Column(name = "education")
 	private String education;
 
 	@Builder
-	public User(String authCode, String email, String profileImage, String name, String education) {
-		this.authCode = authCode;
+	public User(String name, String email, String provider, String providerId, String profileImage, String education){
+		this.name =name;
 		this.email = email;
+		this.provider = provider;
+		this.providerId = providerId;
 		this.profileImage = profileImage;
-		this.name = name;
 		this.education = education;
+	}
+
+	public void updateName(String name) {
+		this.name = name;
+	}
+
+	public void updateEmail(String email) {
+		this.email = email;
 	}
 }

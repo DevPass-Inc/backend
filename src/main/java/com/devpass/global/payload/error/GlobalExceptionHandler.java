@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
-import com.devpass.global.payload.apicode.ErrorCode;
+import com.devpass.global.payload.apicode.ErrorStatus;
 import com.devpass.global.payload.error.exception.GeneralException;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,7 +32,7 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ErrorResponse> handleException(Exception e, HttpServletRequest request) {
 		log.error("Unhandled exception occurred: ", e);
 		ErrorResponse errorResponse = ErrorResponse.of(
-			ErrorCode.INTERNAL_SERVER_ERROR,
+			ErrorStatus.INTERNAL_SERVER_ERROR,
 			"알 수 없는 오류가 발생했습니다.",
 			"",
 			request.getRequestURI()
@@ -45,7 +45,7 @@ public class GlobalExceptionHandler {
 	 */
 	@ExceptionHandler(GeneralException.class)
 	public ResponseEntity<ErrorResponse> handleBusinessException(GeneralException e, HttpServletRequest request) {
-		ErrorCode errorCode = e.getErrorCode();
+		ErrorStatus errorCode = e.getErrorCode();
 		List<ErrorField> fieldErrors = e.getErrors();
 		ErrorResponse errorResponse = ErrorResponse.of(errorCode, fieldErrors, request.getRequestURI());
 
@@ -68,9 +68,9 @@ public class GlobalExceptionHandler {
 	protected ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(
 		MethodArgumentNotValidException e, HttpServletRequest request) {
 		BindingResult bindingResult = e.getBindingResult();
-		ErrorResponse response = ErrorResponse.of(ErrorCode.INVALID_REQUEST, bindingResult, request.getRequestURI());
+		ErrorResponse response = ErrorResponse.of(ErrorStatus.INVALID_REQUEST, bindingResult, request.getRequestURI());
 		log.warn("MethodArgumentNotValidException: {}", e.getMessage());
-		return new ResponseEntity<>(response, ErrorCode.INVALID_REQUEST.getHttpStatus());
+		return new ResponseEntity<>(response, ErrorStatus.INVALID_REQUEST.getHttpStatus());
 	}
 
 	/**
@@ -80,13 +80,13 @@ public class GlobalExceptionHandler {
 	protected ResponseEntity<ErrorResponse> handleMissingServletRequestParameterException(
 		MissingServletRequestParameterException e, HttpServletRequest request) {
 		ErrorResponse response = ErrorResponse.of(
-			ErrorCode.INPUT_VALUE_INVALID,
+			ErrorStatus.INPUT_VALUE_INVALID,
 			e.getMessage(),
 			e.getParameterName(),
 			request.getRequestURI()
 		);
 		log.warn("MissingServletRequestParameterException: {}", e.getMessage());
-		return new ResponseEntity<>(response, ErrorCode.INPUT_VALUE_INVALID.getHttpStatus());
+		return new ResponseEntity<>(response, ErrorStatus.INPUT_VALUE_INVALID.getHttpStatus());
 	}
 
 	/**
@@ -96,13 +96,13 @@ public class GlobalExceptionHandler {
 	protected ResponseEntity<ErrorResponse> handleHttpMessageNotReadableException(
 		HttpMessageNotReadableException e, HttpServletRequest request) {
 		ErrorResponse response = ErrorResponse.of(
-			ErrorCode.HTTP_MESSAGE_NOT_READABLE,
+			ErrorStatus.HTTP_MESSAGE_NOT_READABLE,
 			e.getMessage(),
 			"",
 			request.getRequestURI()
 		);
 		log.error("HttpMessageNotReadableException: {}", e.getMessage(), e);
-		return new ResponseEntity<>(response, ErrorCode.HTTP_MESSAGE_NOT_READABLE.getHttpStatus());
+		return new ResponseEntity<>(response, ErrorStatus.HTTP_MESSAGE_NOT_READABLE.getHttpStatus());
 	}
 
 	/**
@@ -113,12 +113,12 @@ public class GlobalExceptionHandler {
 		ConstraintViolationException e, HttpServletRequest request) {
 		Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
 		ErrorResponse response = ErrorResponse.of(
-			ErrorCode.INPUT_VALUE_INVALID,
+			ErrorStatus.INPUT_VALUE_INVALID,
 			violations,
 			request.getRequestURI()
 		);
 		log.warn("ConstraintViolationException: {}", e.getMessage());
-		return new ResponseEntity<>(response, ErrorCode.INPUT_VALUE_INVALID.getHttpStatus());
+		return new ResponseEntity<>(response, ErrorStatus.INPUT_VALUE_INVALID.getHttpStatus());
 	}
 
 	/**
@@ -128,13 +128,13 @@ public class GlobalExceptionHandler {
 	protected ResponseEntity<ErrorResponse> handleMissingServletRequestPartException(
 		MissingServletRequestPartException e, HttpServletRequest request) {
 		ErrorResponse response = ErrorResponse.of(
-			ErrorCode.INPUT_VALUE_INVALID,
+			ErrorStatus.INPUT_VALUE_INVALID,
 			e.getMessage(),
 			e.getRequestPartName(),
 			request.getRequestURI()
 		);
 		log.warn("MissingServletRequestPartException: {}", e.getMessage());
-		return new ResponseEntity<>(response, ErrorCode.INPUT_VALUE_INVALID.getHttpStatus());
+		return new ResponseEntity<>(response, ErrorStatus.INPUT_VALUE_INVALID.getHttpStatus());
 	}
 
 	/**
@@ -144,26 +144,26 @@ public class GlobalExceptionHandler {
 	protected ResponseEntity<ErrorResponse> handleMissingRequestCookieException(
 		MissingRequestCookieException e, HttpServletRequest request) {
 		ErrorResponse response = ErrorResponse.of(
-			ErrorCode.INPUT_VALUE_INVALID,
+			ErrorStatus.INPUT_VALUE_INVALID,
 			e.getMessage(),
 			e.getCookieName(),
 			request.getRequestURI()
 		);
 		log.warn("MissingRequestCookieException: {}", e.getMessage());
-		return new ResponseEntity<>(response, ErrorCode.INPUT_VALUE_INVALID.getHttpStatus());
+		return new ResponseEntity<>(response, ErrorStatus.INPUT_VALUE_INVALID.getHttpStatus());
 	}
 
 	@ExceptionHandler(IllegalArgumentException.class)
 	protected ResponseEntity<ErrorResponse> handleIllegalArgumentException(
 		IllegalArgumentException e, HttpServletRequest request) {
 		ErrorResponse response = ErrorResponse.of(
-			ErrorCode.BAD_REQUEST,
+			ErrorStatus.BAD_REQUEST,
 			e.getMessage(),
 			null,
 			request.getRequestURI()
 		);
 		log.warn("IllegalArgumentException: {}", e.getMessage());
-		return new ResponseEntity<>(response, ErrorCode.BAD_REQUEST.getHttpStatus());
+		return new ResponseEntity<>(response, ErrorStatus.BAD_REQUEST.getHttpStatus());
 	}
 
 }

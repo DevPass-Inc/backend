@@ -21,7 +21,7 @@ public enum SuccessCode implements ResponseCode {
 	@Override
 	public ReasonDTO getReason() {
 		return ReasonDTO.builder()
-			.status(httpStatus)
+			.httpStatus(httpStatus)
 			.code(code)
 			.message(message)
 			.build();
