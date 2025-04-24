@@ -16,23 +16,17 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 @Configuration
 public class SwaggerConfig {
 
-    static {
-        SpringDocUtils.getConfig().addAnnotationsToIgnore(AuthUser.class);
-    }
-
     @Bean
     public OpenAPI openAPI() {
-        SecurityScheme securityScheme = new SecurityScheme()
-            .type(SecurityScheme.Type.HTTP)
-            .scheme("bearer")
-            .bearerFormat("JWT");
-
-        SecurityRequirement securityRequirement = new SecurityRequirement()
-            .addList("bearerAuth");
-
         return new OpenAPI()
-            .info(new Info().title("DevPass API").version("1.0"))
-            .addSecurityItem(securityRequirement)
-            .schemaRequirement("bearerAuth", securityScheme);
+            .components(new Components())
+            .info(apiInfo());
+    }
+
+    private Info apiInfo() {
+        return new Info()
+            .title("Devpass API")
+            .description("Devpass API Docs")
+            .version("1.0");
     }
 }
