@@ -50,4 +50,12 @@ public class User extends BaseEntity {
 		this.profileImage = profileImage;
 		this.education = education;
 	}
+
+	public void updateName(String name) {
+		this.name = name;
+	}
+
+	public void updateEmail(String email) {
+		this.email = email;
+	}
 }

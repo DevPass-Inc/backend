@@ -78,6 +78,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		} else {
 
 			User user = existData.get();
+			user.updateName(oAuth2Response.getName());
+			user.updateEmail(oAuth2Response.getEmail());
 
 			userRepository.save(user);
 
