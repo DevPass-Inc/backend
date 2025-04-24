@@ -33,10 +33,10 @@ public class ResumeService {
 	 * 저장된 ResumeDocument를 반환합니다.
 	 */
 	@Transactional
-	public ResumeDocument generateAndSaveResume(Long userId, Long devExperienceId, Long recruitmentStackId) {
+	public ResumeDocument generateAndSaveResume(Long devExperienceId, Long recruitmentStackId) {
 		// 1. 개발 경험 데이터 조회
-		DevExperienceAggregateResponseDTO aggregateData = devExperienceAggregateService.getAggregateByDevExperienceId(userId,
-			devExperienceId);
+		DevExperienceAggregateResponseDTO aggregateData = devExperienceAggregateService.getAggregateByDevExperienceId(
+			devExperienceId, recruitmentStackId);
 
 		// 2. 채용 공고 상세 정보 조회 (RecruitmentDetailResponseDTO)
 		RecruitmentDetailResponseDTO recruitmentDetail = recruitmentService.getRecruitmentById(recruitmentStackId);
@@ -74,7 +74,7 @@ public class ResumeService {
 			.build();
 
 		// 7. 이력서를 DB에 저장 후 반환
-		ResumeDocument savedDocument = resumePersistenceService.saveResume(userId, resumeResponseDTO);
+		ResumeDocument savedDocument = resumePersistenceService.saveResume(resumeResponseDTO);
 		return savedDocument;
 	}
 
@@ -109,7 +109,7 @@ public class ResumeService {
 	}
 
 	@Transactional(readOnly = true)
-	public ResumeDocument getResumeById(Long userId, String resumeId) {
+	public ResumeDocument getResumeById(String resumeId) {
 		return resumePersistenceService.findById(resumeId)
 			.orElseThrow(() -> new GeneralException(ErrorStatus.RESUME_NOT_FOUND));
 	}

@@ -50,7 +50,7 @@ public class StackService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<StackStatusResponseDTO> getStacksByDevExperienceId(Long devExperienceId) {
+	public List<StackStatusResponseDTO> getStacksByDevExperienceId(Long userId, Long devExperienceId) {
 		List<Stack> stacks = stackRepository.findAllByDevExperience_Id(devExperienceId);
 		return StackConverter.toStatusResponseDTOList(stacks);
 	}
@@ -84,5 +84,4 @@ public class StackService {
 		}
 		stackRepository.deleteAll(stacks);
 	}
-
 }

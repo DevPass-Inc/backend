@@ -43,7 +43,7 @@ public class ProjectService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<ProjectResponseDTO> getProjectsByDevExperienceId(Long devExperienceId) {
+	public List<ProjectResponseDTO> getProjectsByDevExperienceId(Long userId, Long devExperienceId) {
 		return projectRepository.findAllByDevExperience_Id(devExperienceId)
 			.stream()
 			.map(ProjectConverter::toResponse)

@@ -62,8 +62,7 @@ public class DevExperienceController {
 	public ApiResponse<DevExperienceAggregateResponseDTO> getAggregateByDevExperienceId(
 		@AuthUser Long userId,
 		@PathVariable("devExperienceId") Long devExperienceId) {
-		DevExperienceAggregateResponseDTO response = aggregateService.getAggregateByDevExperienceId(userId,
-			devExperienceId);
+		DevExperienceAggregateResponseDTO response = aggregateService.getAggregateByDevExperienceId(userId, devExperienceId);
 		return ApiResponse.of(SuccessCode.OK, response);
 	}
 }

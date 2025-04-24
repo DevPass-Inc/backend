@@ -8,7 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.devpass.domain.internship.entity.Internship;
 
 public interface InternshipRepository extends JpaRepository<Internship, Long> {
-	Optional<Internship> findByIdAndDevExperience_User_Id(Long id, Long userId);
-
-	List<Internship> findAllByDevExperience_IdAndDevExperience_User_Id(Long devExperienceId, Long userId);
+	List<Internship> findAllByDevExperience_Id(Long devExperienceId);
 }
