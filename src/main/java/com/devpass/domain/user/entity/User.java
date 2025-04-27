@@ -1,7 +1,6 @@
 package com.devpass.domain.user.entity;
 
 import com.devpass.global.common.entity.BaseEntity;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,13 +25,13 @@ public class User extends BaseEntity {
 	@Column(name = "name", nullable = false)
 	private String name;
 
-	@Column(name = "email", nullable = true, unique = true)
+	@Column(name = "email", unique = true)
 	private String email;
 
-	@Column(name = "provider")
+	@Column(name = "provider", nullable = false)
 	private String provider;
 
-	@Column(name = "provider_id", nullable = false)
+	@Column(name = "provider_id", nullable = false, unique = true)
 	private String providerId;
 
 	@Column(name = "profile_image")
@@ -41,14 +40,39 @@ public class User extends BaseEntity {
 	@Column(name = "education")
 	private String education;
 
+	@Column(name = "github_login", unique = true)
+	private String githubLogin;
+
+	@Column(name = "github_oauth_token")
+	private String githubOAuthToken;
+
+	@Column(name = "phone")
+	private String phone;
+
+	@Column(name = "blog_url")
+	private String blogUrl;
+
 	@Builder
-	public User(String name, String email, String provider, String providerId, String profileImage, String education){
-		this.name =name;
+	public User(String name,
+				String email,
+				String provider,
+				String providerId,
+				String profileImage,
+				String education,
+				String githubLogin,
+				String githubOAuthToken,
+				String phone,
+				String blogUrl) {
+		this.name = name;
 		this.email = email;
 		this.provider = provider;
 		this.providerId = providerId;
 		this.profileImage = profileImage;
 		this.education = education;
+		this.githubLogin = githubLogin;
+		this.githubOAuthToken = githubOAuthToken;
+		this.phone = phone;
+		this.blogUrl = blogUrl;
 	}
 
 	public void updateName(String name) {
