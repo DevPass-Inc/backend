@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -116,5 +117,18 @@ public class ResumeController {
 	) {
 		ResumeDocument resume = resumeService.getResumeById(resumeId);
 		return ApiResponse.of(SuccessCode.OK, resume);
+	}
+
+	@Operation(
+		summary = "사용자의 이력서 목록 조회",
+		description = "로그인된 사용자의 모든 이력서를 조회합니다."
+	)
+	@GetMapping("/list")
+	public ApiResponse<List<ResumeDocument>> getResumesByUserId(
+		@AuthenticationPrincipal CustomOAuth2User principal
+	) {
+		Long userId = principal.getId();
+		List<ResumeDocument> resumes = resumeService.getResumesByUserId(userId);
+		return ApiResponse.of(SuccessCode.OK, resumes);
 	}
 }

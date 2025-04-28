@@ -115,7 +115,7 @@ public class ResumeService {
 				.build();
 
 		// 9) 저장 후 반환
-		return resumePersistenceService.saveResume(filled);
+		return resumePersistenceService.saveResume(filled, user.getId());
 	}
 
 	@Transactional(readOnly = true)
@@ -144,5 +144,10 @@ public class ResumeService {
 		} catch (Exception e) {
 			throw new GeneralException(ErrorStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+
+	@Transactional(readOnly = true)
+	public List<ResumeDocument> getResumesByUserId(Long userId) {
+		return resumePersistenceService.findByUserId(userId);
 	}
 }
