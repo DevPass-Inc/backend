@@ -34,9 +34,9 @@ public class RecruitmentController {
 
 	@Operation(summary = "채용공고 리스트 조회", description = "채용공고 리스트를 페이지네이션으로 조회합니다.")
 	@GetMapping
-	public ApiResponse<Page<RecruitmentCardResponseDTO>> getRecruitmentList(PageRequestDTO pageRequestDTO) {
+	public ApiResponse<Page<RecruitmentCardResponseDTO>> getRecruitments(PageRequestDTO pageRequestDTO) {
 		Pageable pageable = pageRequestDTO.of();
-		Page<RecruitmentCardResponseDTO> responseDTOs = recruitmentService.getRecruitmentCards(pageable);
-		return ApiResponse.of(SuccessCode.OK, responseDTOs);
+		Page<RecruitmentCardResponseDTO> recruitmentCards = recruitmentService.getRecruitmentCards(pageable);
+		return ApiResponse.of(SuccessCode.OK, recruitmentCards);
 	}
 }
