@@ -2,6 +2,7 @@ package com.devpass.domain.resume.controller;
 
 import com.devpass.domain.resume.document.ResumeDocument;
 import com.devpass.domain.resume.service.ResumeService;
+import com.devpass.global.annotation.AuthUser;
 import com.devpass.global.oauth.dto.CustomOAuth2User;
 import com.devpass.global.payload.ApiResponse;       // 페이로드용 클래스
 import com.devpass.global.payload.apicode.SuccessCode;
@@ -12,6 +13,7 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -116,5 +118,17 @@ public class ResumeController {
 	) {
 		ResumeDocument resume = resumeService.getResumeById(resumeId);
 		return ApiResponse.of(SuccessCode.OK, resume);
+	}
+
+	@Operation(
+		summary = "사용자의 이력서 목록 조회",
+		description = "로그인된 사용자의 모든 이력서를 조회합니다."
+	)
+	@GetMapping()
+	public ApiResponse<List<ResumeDocument>> getResumesByUserId(
+      @AuthUser Long userId
+	) {
+		List<ResumeDocument> resumes = resumeService.getResumesByUserId(userId);
+		return ApiResponse.of(SuccessCode.OK, resumes);
 	}
 }

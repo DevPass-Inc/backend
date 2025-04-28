@@ -17,8 +17,9 @@ public class ResumePersistenceService {
 
 	private final ResumeRepository resumeRepository;
 
-	public ResumeDocument saveResume(ResumeResponseDTO resumeResponseDTO) {
+	public ResumeDocument saveResume(ResumeResponseDTO resumeResponseDTO, Long userId) {
 		ResumeDocument document = new ResumeDocument();
+		document.setUserId(userId);
 		document.setResume(resumeResponseDTO);
 		return resumeRepository.save(document);
 	}
