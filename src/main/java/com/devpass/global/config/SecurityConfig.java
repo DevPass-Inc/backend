@@ -1,19 +1,5 @@
 package com.devpass.global.config;
 
-import java.util.Collections;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-
 import com.devpass.domain.user.repository.UserRepository;
 import com.devpass.global.constants.Constants;
 import com.devpass.global.oauth.handler.CustomAuthenticationEntryPoint;
@@ -22,8 +8,20 @@ import com.devpass.global.oauth.handler.CustomSuccessHandler;
 import com.devpass.global.oauth.service.CustomOAuth2UserService;
 import com.devpass.global.oauth.util.JWTFilter;
 import com.devpass.global.oauth.util.JWTUtil;
-
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.Collections;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
@@ -91,7 +89,7 @@ public class SecurityConfig {
 					.userService(customOAuth2UserService))
 				.successHandler(customSuccessHandler)
 				.failureHandler(customFailureHandler)
-			)
+			).oauth2Client(Customizer.withDefaults())
 
 			.exceptionHandling(exception -> exception
 				.authenticationEntryPoint(new CustomAuthenticationEntryPoint())

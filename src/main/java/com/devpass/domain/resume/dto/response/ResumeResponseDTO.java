@@ -28,7 +28,7 @@ public class ResumeResponseDTO {
     private List<Experience> experience;
     private List<Activity> activities;
     private List<Skill> skills;
-    private Education education;
+    private List<Education> education;
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     @Getter

@@ -1,43 +1,68 @@
 package com.devpass.domain.resume.util;
 
 public class ResumePrompt {
-    public static final String HEADER = "아래 개발 경험 데이터를 참고하여, 오직 해당 내용만 사용해 다음 JSON 포맷의 이력서를 생성해줘.";
 
-    public static final String JSON_TEMPLATE = "{\n" +
-            "  \"summary\": [\n" +
-            "    \"백엔드 개발자로서 다양한 대규모 서비스의 설계 및 개발을 주도한 경험이 있습니다.\",\n" +
-            "    \"다양한 팀과 협업하며 RESTful API 및 마이크로서비스 아키텍처 개발 경험이 풍부합니다.\",\n" +
-            "    \"성능 최적화 및 보안 강화를 위한 시스템 개선 프로젝트에 참여한 경험이 있습니다.\",\n" +
-            "    \"CI/CD 자동화 파이프라인 구축 및 운영 경험이 있으며, Jenkins, GitHub Actions를 사용하여 배포 효율을 높였습니다.\",\n" +
-            "    \"클라우드 환경(AWS, GCP)에서 인프라 구축 및 운영, 비용 최적화와 보안 정책 수립까지 직접 경험했습니다.\"\n" +
-            "  ],\n" +
-            "  \"experience\": [\n" +
-            "    {\n" +
-            "      \"project\": \"\",\n" +
-            "      \"summary\": \"\",\n" +
-            "      \"position\": \"\",\n" +
-            "      \"duration\": \"\",\n" +
-            "      \"skills\": \"\",\n" +
-            "      \"description\": []\n" +
-            "    }\n" +
-            "  ],\n" +
-            "  \"activities\": [\n" +
-            "    {\n" +
-            "      \"activity\": \"\",\n" +
-            "      \"dates\": \"\"\n" +
-            "    }\n" +
-            "  ],\n" +
-            "  \"skills\": [\n" +
-            "    {\n" +
-            "      \"skill\": \"\",\n" +
-            "      \"level\": \"\"\n" +
-            "    }\n" +
-            "  ]\n" +
-            "}";
+    public static final String HEADER = """
+            아래의 개발 경험 데이터, 채용 공고 정보, (선택 시) GitHub 프로필·프로젝트 컨텍스트(프로필 README, Pinned Repos README, 커밋 히스토리 등)를
+            모두 참고하여, 수치와 구체적인 성과를 최대한 반영한 상세하고 설득력 있는 이력서를 생성해주세요.
+            오직 제공된 정보만 사용하고, 절대로 임의로 내용을 추가하지 마세요.
+            다음 JSON 포맷을 정확히 준수해야 합니다.
+            """;
 
-    public static final String NOTES = "주의사항:\n" +
-            "- 'activities' 필드는 인턴십 데이터를 기반으로 채워줘.\n" +
-            "- 'skills' 필드는 프로젝트 및 인턴십에서 사용한 기술 스택 데이터를 모두 포함하여 그룹화해줘.\n" +
-            "- 만약 채용 공고에 사용자 경험(UX/UI 개선, 고객 경험 등)에 대한 어필 내용이 포함되어 있다면, 이를 강조하여 이력서에 반영해줘.\n" +
-            "위 데이터를 참고하여, JSON 구조에 맞게 모든 내용을 devExperience 데이터로 채워서 이력서를 생성해줘.";
+    public static final String JSON_TEMPLATE = """
+            {
+              "summary": [
+                "<핵심 성과 및 전문성을 반영한 문장 3~5개>"
+              ],
+              "experience": [
+                {
+                  "project": "<프로젝트 명>",
+                  "summary": "<프로젝트 개요 및 기여 내용>",
+                  "position": "<담당 역할>",
+                  "duration": "<YYYY.MM ~ YYYY.MM>",
+                  "skills": "<주요 기술 스택 리스트>",
+                  "description": [
+                    "<구체적인 성과 #1 (숫자, 지표 포함)>",
+                    "<구체적인 성과 #2>",
+                    "..."
+                  ]
+                }
+              ],
+              "activities": [
+                {
+                  "activity": "<인턴십/활동 명칭 및 회사>",
+                  "dates": "<YYYY.MM ~ YYYY.MM>",
+                  "details": [
+                    "<구체적인 역할 및 성과>"
+                  ]
+                }
+              ],
+              "skills": [
+                {
+                  "skill": "<기술 스택>",
+                  "level": "<초급/중급/고급/전문가>"
+                }
+              ],
+              "education": [
+                {
+                  "degree": "<학위 및 전공>",
+                  "institution": "<학교명>",
+                  "period": "<YYYY.MM ~ YYYY.MM>",
+                  "details": "<GPA, 수상, 동아리 활동 등 추가 사항>"
+                }
+              ]
+            }
+            """;
+
+    public static final String NOTES = """
+            주의사항:
+            - 'summary'는 채용 공고에 맞춰 필요한 역량과 결과를 강조하는 문장으로 구성하세요.
+            - 'experience.description'과 'activities.details'에는 반드시 수치(%, 건수, 사용자 수 등)나 결과(예: 처리량 증가, 오류율 감소 등)를 포함해 구체화해야 합니다.
+            - 'skills'는 범주별(언어, 프레임워크, 도구 등)로 그룹화하고, 각 스킬의 숙련도를 레벨로 표기하세요.
+            - 'education'에는 학위·전공·기관·기간을 명확히 기재하고, 관련 프로젝트나 수상이 있다면 'details'에 추가하세요.
+            - GitHub 컨텍스트를 포함할 때는:
+              • 프로필 README에서 강조된 기술이나 주요 성과를 summary나 experience에 반영  
+              • 핀된 레포 README 텍스트로부터 프로젝트 목적, 핵심 기능, 사용 기술, 주요 커밋 내용 등을 experience.description에 녹여내세요.  
+            - 반드시 제공된 데이터만을 사용하고, 임의의 가공이나 추가는 금지됩니다.
+            """;
 }
