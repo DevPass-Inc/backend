@@ -10,6 +10,7 @@ import com.devpass.domain.recruitment.service.RecruitmentService;
 import com.devpass.domain.resume.document.ResumeDocument;
 import com.devpass.domain.resume.dto.ResumePromptDTO;
 import com.devpass.domain.resume.dto.response.ResumeResponseDTO;
+import com.devpass.domain.resume.repository.ResumeRepository;
 import com.devpass.domain.resume.util.ResumePrompt;
 import com.devpass.domain.user.entity.User;
 import com.devpass.domain.user.repository.UserRepository;
@@ -34,6 +35,7 @@ public class ResumeService {
 	private final ObjectMapper objectMapper;
 	private final ResumePersistenceService resumePersistenceService;
 	private final UserRepository userRepository;
+  private final ResumeRepository resumeRepository;
 
 	/**
 	 * 이력서 생성 및 저장
@@ -146,8 +148,8 @@ public class ResumeService {
 		}
 	}
 
-	@Transactional(readOnly = true)
-	public List<ResumeDocument> getResumesByUserId(Long userId) {
-		return resumePersistenceService.findByUserId(userId);
-	}
+    @Transactional(readOnly = true)
+    public List<ResumeDocument> getResumesByUserId(Long userId) {
+        return resumeRepository.findAllByUserId(userId);
+    }
 }

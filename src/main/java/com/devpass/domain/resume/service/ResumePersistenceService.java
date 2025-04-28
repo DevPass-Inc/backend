@@ -1,6 +1,5 @@
 package com.devpass.domain.resume.service;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -28,10 +27,5 @@ public class ResumePersistenceService {
 	@Transactional(readOnly = true)
 	public Optional<ResumeDocument> findById(String resumeId) {
 		return resumeRepository.findById(resumeId);
-	}
-
-	@Transactional(readOnly = true)
-	public List<ResumeDocument> findByUserId(Long userId) {
-		return resumeRepository.findAllByUserId(userId);
 	}
 }
