@@ -11,6 +11,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class RecommendRecruitResponseDTO {
 
+    private Long recruitmentId;
     private String companyName;
     private String position;
     private String finalScore;
