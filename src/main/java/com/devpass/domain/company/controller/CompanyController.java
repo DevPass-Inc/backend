@@ -1,6 +1,5 @@
 package com.devpass.domain.company.controller;
 
-import com.devpass.domain.company.document.CompanyDocument;
 import com.devpass.domain.company.dto.response.CompanyDetailResponseDTO;
 import com.devpass.domain.company.service.CompanyService;
 import com.devpass.global.payload.ApiResponse;
@@ -8,13 +7,9 @@ import com.devpass.global.payload.apicode.SuccessCode;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -26,16 +21,8 @@ public class CompanyController {
 	@Operation(summary = "기업 조회", description = "기업 개별 조회")
 	@GetMapping("/{companyId}")
 	public ApiResponse<CompanyDetailResponseDTO> getCompanyById(@PathVariable Long companyId) {
-		CompanyDetailResponseDTO responseDto = companyService.getCompanyById(companyId);
+      CompanyDetailResponseDTO responseDto = companyService.getCompanyById(companyId);
 
-        return ApiResponse.of(SuccessCode.OK, responseDto);
-    }
-
-    @GetMapping("/")
-    public Page<CompanyDocument> searchCompanies(
-        @RequestParam String keyword, @PageableDefault(sort = "DESC") Pageable pageable) {
-        Page<CompanyDocument> companies = companyService.searchCompanies(keyword, pageable);
-
-        return ApiResponse.of(SuccessCode.OK, companies).getResult();
-    }
+      return ApiResponse.of(SuccessCode.OK, responseDto);
+  }
 }
