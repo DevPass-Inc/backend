@@ -3,9 +3,11 @@ package com.devpass.domain.company.document;
 import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 @Getter
+@NoArgsConstructor
 @Document(indexName = "companies")
 public class CompanyDocument {
     @Id
