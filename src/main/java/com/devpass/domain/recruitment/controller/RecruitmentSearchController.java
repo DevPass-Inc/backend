@@ -6,6 +6,7 @@ import com.devpass.global.payload.ApiResponse;
 import com.devpass.global.payload.apicode.SuccessCode;
 import io.swagger.v3.oas.annotations.Operation;
 import java.io.IOException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,9 +28,10 @@ public class RecruitmentSearchController {
         @RequestParam(required = false) String keyword,
         @RequestParam(required = false) String position,
         @RequestParam(required = false) Integer minCareer,
+        @RequestParam(required = false) List<Long> stackIds,
         @PageableDefault(sort = "DESC") Pageable pageable)
         throws IOException {
-        Page<RecruitmentDocument> recruitments = recruitmentSearchService.searchByName(keyword, position, minCareer, pageable);
+        Page<RecruitmentDocument> recruitments = recruitmentSearchService.searchByName(keyword, position, minCareer, stackIds, pageable);
         return ApiResponse.of(SuccessCode.OK, recruitments);
     }
 }

@@ -1,6 +1,7 @@
 package com.devpass.domain.recruitment.document;
 
 import jakarta.persistence.Id;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,12 +26,15 @@ public class RecruitmentDocument {
     private String imageUrl;
     private Integer minCareer;
     private Integer maxCareer;
+    private List<Long> stacks;
 
     @Builder
     public RecruitmentDocument(String id, String companyName, String positionName, String position, String location, String career,
         String mainTask, String qualification, String preferred, String benefit,
         String deadline, String imageUrl,
-        Integer minCareer, Integer maxCareer) {
+        Integer minCareer, Integer maxCareer,
+        List<Long> stacks)
+    {
         this.id = id;
         this.companyName = companyName;
         this.positionName = positionName;
@@ -45,5 +49,6 @@ public class RecruitmentDocument {
         this.imageUrl = imageUrl;
         this.minCareer = minCareer;
         this.maxCareer = maxCareer;
+        this.stacks = stacks;
     }
 }

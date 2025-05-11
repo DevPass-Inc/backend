@@ -1,11 +1,14 @@
 package com.devpass.domain.recruitment.service;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch._types.FieldValue;
+import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import co.elastic.clients.json.JsonData;
 import com.devpass.domain.recruitment.document.RecruitmentDocument;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +23,7 @@ public class RecruitmentSearchService {
     private final ElasticsearchClient elasticsearchClient;
 
     // 채용공고 검색하기
-    public Page<RecruitmentDocument> searchByName(String keyword, String position, Integer minCareer, Pageable pageable) throws IOException {
+    public Page<RecruitmentDocument> searchByName(String keyword, String position, Integer minCareer, List<Long> stackIds, Pageable pageable) throws IOException {
         SearchResponse<RecruitmentDocument> response = elasticsearchClient.search(s -> s
                 .index("recruitments")
                 .from((int) pageable.getOffset())
@@ -28,12 +31,12 @@ public class RecruitmentSearchService {
                 .query(q -> {
                     if ((keyword == null || keyword.isBlank()) &&
                         (position == null || position.isBlank()) &&
-                        minCareer == null) {
+                        minCareer == null &&
+                        (stackIds == null || stackIds.isEmpty())) {
                         return q.matchAll(m -> m);
                     }
 
                     return q.bool(b -> {
-                        // 키워드 검색
                         if (keyword != null && !keyword.isBlank()) {
                             b.must(m -> m
                                 .wildcard(w -> w
@@ -43,16 +46,25 @@ public class RecruitmentSearchService {
                             );
                         }
 
-                        // 포지션 필터링
+                        List<Query> filters = new ArrayList<>();
+
                         if (position != null && !position.isBlank()) {
-                            b.filter(f -> f.term(t -> t.field("position.keyword").value(position)));
+                            filters.add(Query.of(f -> f.term(t -> t.field("position.keyword").value(position))));
                         }
 
-                        // 경럭 필터링
                         if (minCareer != null) {
-                            b.filter(f -> f.range(r -> r.field("maxCareer").gte(JsonData.of(minCareer))));
+                            filters.add(Query.of(f -> f.range(r -> r.field("maxCareer").gte(JsonData.of(minCareer)))));
                         }
 
+                        if (stackIds != null && !stackIds.isEmpty()) {
+                            filters.add(Query.of(f -> f.terms(t -> t
+                                .field("stacks")
+                                .terms(ts -> ts.value(stackIds.stream().map(FieldValue::of).toList()))
+                            )));
+                            filters.add(Query.of(f -> f.exists(e -> e.field("stacks"))));
+                        }
+
+                        b.filter(filters);
                         return b;
                     });
                 }),
