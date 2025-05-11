@@ -26,9 +26,10 @@ public class RecruitmentSearchController {
     public ApiResponse<Page<RecruitmentDocument>> searchRecruitments(
         @RequestParam(required = false) String keyword,
         @RequestParam(required = false) String position,
+        @RequestParam(required = false) Integer minCareer,
         @PageableDefault(sort = "DESC") Pageable pageable)
         throws IOException {
-        Page<RecruitmentDocument> recruitments = recruitmentSearchService.searchByName(keyword, position, pageable);
+        Page<RecruitmentDocument> recruitments = recruitmentSearchService.searchByName(keyword, position, minCareer, pageable);
         return ApiResponse.of(SuccessCode.OK, recruitments);
     }
 }

@@ -23,11 +23,14 @@ public class RecruitmentDocument {
     private String benefit;
     private String deadline;
     private String imageUrl;
+    private Integer minCareer;
+    private Integer maxCareer;
 
     @Builder
     public RecruitmentDocument(String id, String companyName, String positionName, String position, String location, String career,
-                               String mainTask, String qualification, String preferred, String benefit,
-                               String deadline, String imageUrl) {
+        String mainTask, String qualification, String preferred, String benefit,
+        String deadline, String imageUrl,
+        Integer minCareer, Integer maxCareer) {
         this.id = id;
         this.companyName = companyName;
         this.positionName = positionName;
@@ -40,5 +43,7 @@ public class RecruitmentDocument {
         this.benefit = benefit;
         this.deadline = deadline;
         this.imageUrl = imageUrl;
+        this.minCareer = minCareer;
+        this.maxCareer = maxCareer;
     }
 }
