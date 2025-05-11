@@ -19,17 +19,31 @@ public class RecruitmentSearchService {
     private final ElasticsearchClient elasticsearchClient;
 
     // 채용공고 검색하기
-    public Page<RecruitmentDocument> searchByName(String keyword, Pageable pageable) throws IOException {
+    public Page<RecruitmentDocument> searchByName(String keyword, String position, Pageable pageable) throws IOException {
         SearchResponse<RecruitmentDocument> response = elasticsearchClient.search(s -> s
-            .index("recruitments")
-            .from((int) pageable.getOffset())
-            .size(pageable.getPageSize())
-            .query(q -> q
-                .wildcard(w -> w
-                    .field("companyName.keyword")
-                    .value("*" + keyword + "*")
-                )
-            ),
+                .index("recruitments")
+                .from((int) pageable.getOffset())
+                .size(pageable.getPageSize())
+                .query(q -> {
+                    if ((keyword == null || keyword.isBlank()) && (position == null || position.isBlank())) {
+                        return q.matchAll(m -> m);
+                    } else {
+                        return q.bool(b -> {
+                            if (keyword != null && !keyword.isBlank()) {
+                                b.must(m -> m
+                                    .wildcard(w -> w
+                                        .field("companyName.keyword")
+                                        .value("*" + keyword + "*")
+                                    )
+                                );
+                            }
+                            if (position != null && !position.isBlank()) {
+                                b.filter(f -> f.term(t -> t.field("position.keyword").value(position)));
+                            }
+                            return b;
+                        });
+                    }
+                }),
             RecruitmentDocument.class
         );
 
@@ -37,6 +51,10 @@ public class RecruitmentSearchService {
             .map(Hit::source)
             .collect(Collectors.toList());
 
-        return new PageImpl<>(contents, pageable, response.hits().total() != null ? response.hits().total().value() : contents.size());
+        return new PageImpl<>(
+            contents,
+            pageable,
+            response.hits().total() != null ? response.hits().total().value() : contents.size()
+        );
     }
 }

@@ -24,9 +24,11 @@ public class RecruitmentSearchController {
     @Operation(summary = "채용공고 검색", description = "채용공고 검색하기")
     @GetMapping("/")
     public ApiResponse<Page<RecruitmentDocument>> searchRecruitments(
-        @RequestParam String keyword, @PageableDefault(sort = "DESC") Pageable pageable)
+        @RequestParam(required = false) String keyword,
+        @RequestParam(required = false) String position,
+        @PageableDefault(sort = "DESC") Pageable pageable)
         throws IOException {
-        Page<RecruitmentDocument> recruitments = recruitmentSearchService.searchByName(keyword, pageable);
+        Page<RecruitmentDocument> recruitments = recruitmentSearchService.searchByName(keyword, position, pageable);
         return ApiResponse.of(SuccessCode.OK, recruitments);
     }
 }
