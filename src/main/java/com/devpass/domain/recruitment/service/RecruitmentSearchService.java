@@ -23,16 +23,30 @@ public class RecruitmentSearchService {
     private final ElasticsearchClient elasticsearchClient;
 
     // 채용공고 검색하기
-    public Page<RecruitmentDocument> searchByName(String keyword, String position, Integer minCareer, List<Long> stackIds, Pageable pageable) throws IOException {
+    public Page<RecruitmentDocument> searchByName(
+        String keyword,
+        String position,
+        Integer minCareer,
+        List<Long> stackIds,
+        String region,
+        String district,
+        Pageable pageable
+    ) throws IOException {
+
+        boolean hasNoFilters =
+            (keyword == null || keyword.isBlank()) &&
+                (position == null || position.isBlank()) &&
+                minCareer == null &&
+                (stackIds == null || stackIds.isEmpty()) &&
+                (region == null || region.isBlank()) &&
+                (district == null || district.isBlank());
+
         SearchResponse<RecruitmentDocument> response = elasticsearchClient.search(s -> s
                 .index("recruitments")
                 .from((int) pageable.getOffset())
                 .size(pageable.getPageSize())
                 .query(q -> {
-                    if ((keyword == null || keyword.isBlank()) &&
-                        (position == null || position.isBlank()) &&
-                        minCareer == null &&
-                        (stackIds == null || stackIds.isEmpty())) {
+                    if (hasNoFilters) {
                         return q.matchAll(m -> m);
                     }
 
@@ -62,6 +76,14 @@ public class RecruitmentSearchService {
                                 .terms(ts -> ts.value(stackIds.stream().map(FieldValue::of).toList()))
                             )));
                             filters.add(Query.of(f -> f.exists(e -> e.field("stacks"))));
+                        }
+
+                        if (region != null && !region.isBlank()) {
+                            filters.add(Query.of(f -> f.term(t -> t.field("location.region").value(region))));
+                        }
+
+                        if (district != null && !district.isBlank()) {
+                            filters.add(Query.of(f -> f.term(t -> t.field("location.district").value(district))));
                         }
 
                         b.filter(filters);

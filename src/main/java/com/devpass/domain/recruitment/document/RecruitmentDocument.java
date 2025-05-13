@@ -16,7 +16,7 @@ public class RecruitmentDocument {
     private String companyName;
     private String positionName;
     private String position;
-    private String location;
+    private Location location;
     private String career;
     private String mainTask;
     private String qualification;
@@ -29,7 +29,7 @@ public class RecruitmentDocument {
     private List<Long> stacks;
 
     @Builder
-    public RecruitmentDocument(String id, String companyName, String positionName, String position, String location, String career,
+    public RecruitmentDocument(String id, String companyName, String positionName, String position, Location location, String career,
         String mainTask, String qualification, String preferred, String benefit,
         String deadline, String imageUrl,
         Integer minCareer, Integer maxCareer,
@@ -52,3 +52,4 @@ public class RecruitmentDocument {
         this.stacks = stacks;
     }
 }
+

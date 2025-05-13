@@ -23,15 +23,17 @@ public class RecruitmentSearchController {
     private final RecruitmentSearchService recruitmentSearchService;
 
     @Operation(summary = "채용공고 검색", description = "채용공고 검색하기")
-    @GetMapping("/")
+    @GetMapping()
     public ApiResponse<Page<RecruitmentDocument>> searchRecruitments(
         @RequestParam(required = false) String keyword,
         @RequestParam(required = false) String position,
         @RequestParam(required = false) Integer minCareer,
         @RequestParam(required = false) List<Long> stackIds,
+        @RequestParam(required = false) String region,
+        @RequestParam(required = false) String district,
         @PageableDefault(sort = "DESC") Pageable pageable)
         throws IOException {
-        Page<RecruitmentDocument> recruitments = recruitmentSearchService.searchByName(keyword, position, minCareer, stackIds, pageable);
+        Page<RecruitmentDocument> recruitments = recruitmentSearchService.searchByName(keyword, position, minCareer, stackIds, region, district, pageable);
         return ApiResponse.of(SuccessCode.OK, recruitments);
     }
 }
