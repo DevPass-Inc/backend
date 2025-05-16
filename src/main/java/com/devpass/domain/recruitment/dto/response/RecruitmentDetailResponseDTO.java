@@ -13,6 +13,8 @@ public class RecruitmentDetailResponseDTO {
 
       private String companyName;
 
+      private String positionName;
+
       private String position;
 
       private String location;

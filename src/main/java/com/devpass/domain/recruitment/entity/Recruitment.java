@@ -34,6 +34,9 @@ public class Recruitment extends BaseEntity {
 	@Column(name = "company_name", nullable = false, columnDefinition = "TEXT")
 	private String companyName;
 
+	@Column(name = "position_name", nullable = false)
+	private String positionName;
+
 	@Column(name = "position", nullable = false)
 	private String position;
 
@@ -70,9 +73,10 @@ public class Recruitment extends BaseEntity {
 	private List<Stack> stacks = new ArrayList<>();
 
 	@Builder
-	public Recruitment(String companyName, String position, String location, String career, String mainTask,
+	public Recruitment(String companyName, String positionName, String position, String location, String career, String mainTask,
 		String qualification, String preferred, String benefit, String deadline, String imageUrl) {
 		this.companyName = companyName;
+		this.positionName = positionName;
 		this.position = position;
 		this.location = location;
 		this.career = career;
