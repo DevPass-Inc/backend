@@ -31,9 +31,14 @@ public class RecruitmentSearchController {
         @RequestParam(required = false) List<Long> stackIds,
         @RequestParam(required = false) String region,
         @RequestParam(required = false) String district,
+        @RequestParam(required = false) Integer minEmployeeCount,
+        @RequestParam(required = false) Integer minNewHireAvgSalary,
         @PageableDefault(sort = "DESC") Pageable pageable)
         throws IOException {
-        Page<RecruitmentDocument> recruitments = recruitmentSearchService.searchByName(keyword, position, minCareer, stackIds, region, district, pageable);
+        Page<RecruitmentDocument> recruitments = recruitmentSearchService.searchByName(
+            keyword, position, minCareer, stackIds, region, district,
+            minEmployeeCount, minNewHireAvgSalary, pageable
+        );
         return ApiResponse.of(SuccessCode.OK, recruitments);
     }
 }
