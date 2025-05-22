@@ -28,19 +28,16 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/developments/stacks")
-@Tag(name = "Stack API", description = "개발 경험 등록 -> 기술 스택 관련 API")
+@Tag(name = "기술스택 API")
 public class StackController {
 
 	private final StackService stackService;
 
-	@Operation(
-		summary = "기술스택 등록",
-		description = "기술스택 등록 api"
-	)
-	@PostMapping("/{devExperience_id}")
+	@Operation(summary = "기술스택 등록")
+	@PostMapping("/{devExperienceId}")
 	public ApiResponse<StackListResponseDTO> addStacks(
 		@AuthUser Long userId,
-		@PathVariable("devExperience_id") Long devExperienceId,
+		@PathVariable("devExperienceId") Long devExperienceId,
 		@RequestBody StackAddRequestDTO request) {
 		List<Stack> stacks = stackService.addStacks(userId, devExperienceId, request);
 		List<StackStatusResponseDTO> stackDTOs = StackConverter.toStatusResponseDTOList(stacks);
@@ -48,21 +45,20 @@ public class StackController {
 		return ApiResponse.of(SuccessCode.CREATED, responseDTO);
 	}
 
+	@Operation(summary = "기술스택 조회")
 	@GetMapping
-	public ApiResponse<StackListResponseDTO> getStacks(@AuthUser Long userId) {
+	public ApiResponse<StackListResponseDTO> getStacks(
+		@AuthUser Long userId) {
 		List<Stack> stacks = stackService.getAllStacks(userId);
 		List<StackStatusResponseDTO> stackDTOs = StackConverter.toStatusResponseDTOList(stacks);
 		StackListResponseDTO responseDTO = new StackListResponseDTO(stackDTOs);
 		return ApiResponse.of(SuccessCode.OK, responseDTO);
 	}
 
-	@Operation(
-		summary = "기술스택 수정",
-		description = "해당 devExperience_id에 연결된 기존 기술스택을 새로운 리스트로 대체"
-	)
-	@PutMapping("/{devExperience_id}")
+	@Operation(summary = "기술스택 수정")
+	@PutMapping("/{devExperienceId}")
 	public ApiResponse<StackListResponseDTO> updateStacks(
-		@PathVariable("devExperience_id") Long devExperienceId,
+		@PathVariable("devExperienceId") Long devExperienceId,
 		@RequestBody StackAddRequestDTO request) {
 		List<Stack> updatedStacks = stackService.updateStacks(devExperienceId, request);
 		List<StackStatusResponseDTO> stackDTOs = StackConverter.toStatusResponseDTOList(updatedStacks);
@@ -70,13 +66,10 @@ public class StackController {
 		return ApiResponse.of(SuccessCode.OK, responseDTO);
 	}
 
-	@Operation(
-		summary = "기술스택 삭제",
-		description = "해당 devExperience_id와 연결된 모든 기술스택 삭제 API"
-	)
-	@DeleteMapping("/{devExperience_id}")
+	@Operation(summary = "기술스택 삭제")
+	@DeleteMapping("/{devExperienceId}")
 	public ApiResponse<Void> deleteStacksByDevExperienceId(
-		@PathVariable("devExperience_id") Long devExperienceId) {
+		@PathVariable("devExperienceId") Long devExperienceId) {
 		stackService.deleteStacksByDevExperienceId(devExperienceId);
 		return ApiResponse.of(SuccessCode.OK);
 	}

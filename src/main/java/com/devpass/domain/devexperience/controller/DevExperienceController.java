@@ -25,39 +25,29 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/developments/dev-experiences")
-@Tag(name = "개발경험 API", description = "새로운 개발경험 추가 및 조회")
+@Tag(name = "개발경험 API")
 public class DevExperienceController {
 
 	private final DevExperienceService devExperienceService;
 	private final DevExperienceAggregateService aggregateService;
 
-	@Operation(
-		summary = "devExprience(개발경험) 등록",
-		description = "개발 경험 등록 페이지에서 경험 추가할 때 사용"
-	)
+	@Operation(summary = "개발경험 등록")
 	@PostMapping
 	public ApiResponse<DevExperienceResponseDTO> addDevExperience(
 		@AuthUser Long userId,
-		@RequestBody DevExperienceAddRequestDTO request
-	) {
+		@RequestBody DevExperienceAddRequestDTO request) {
 		DevExperienceResponseDTO response = devExperienceService.addDevExperience(userId, request);
 		return ApiResponse.of(SuccessCode.CREATED, response);
 	}
 
-	@Operation(
-		summary = "devExprience(개발경험) 리스트 조회",
-		description = "개발 경험 리스트 조회"
-	)
+	@Operation(summary = "개발경험 리스트 조회")
 	@GetMapping
 	public ApiResponse<List<DevExperienceResponseDTO>> getAllDevExperiences(@AuthUser Long userId) {
 		List<DevExperienceResponseDTO> responses = devExperienceService.getAllDevExperiences(userId);
 		return ApiResponse.of(SuccessCode.OK, responses);
 	}
 
-	@Operation(
-		summary = "devExprience(개발경험) 상세 조회 ",
-		description = "개발 경험(프로젝트, 기술스택, 인턴십 경험)을 한 번에 조회"
-	)
+	@Operation(summary = "개발경험 상세 조회")
 	@GetMapping("/{devExperienceId}")
 	public ApiResponse<DevExperienceAggregateResponseDTO> getAggregateByDevExperienceId(
 		@AuthUser Long userId,

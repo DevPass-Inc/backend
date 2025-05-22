@@ -10,17 +10,19 @@ import com.devpass.global.payload.ApiResponse;
 import com.devpass.global.payload.apicode.SuccessCode;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/oauth")
+@RequestMapping("/api/oauth")
+@Tag(name = "OAuth API")
 public class OAuthController {
 
 	private final CustomOAuth2UserService customOAuth2UserService;
 
-	@Operation(summary = "토큰 재발급", description = "AccessToken 만료 시 RefreshToken을 이용한 재발급 요청")
+	@Operation(summary = "토큰 재발급")
 	@PostMapping("/reissue")
 	public ApiResponse<String> reissue(HttpServletResponse response, @AuthUser Long userId) {
 		customOAuth2UserService.reissue(userId, response);

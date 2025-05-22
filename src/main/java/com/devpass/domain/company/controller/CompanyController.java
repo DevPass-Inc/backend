@@ -11,19 +11,22 @@ import com.devpass.global.payload.ApiResponse;
 import com.devpass.global.payload.apicode.SuccessCode;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/companies")
+@Tag(name = "기업 API")
 public class CompanyController {
+
 	private final CompanyService companyService;
 
-	@Operation(summary = "기업 조회", description = "기업 개별 조회")
+	@Operation(summary = "기업 상세 조회")
 	@GetMapping("/{companyId}")
-	public ApiResponse<CompanyDetailResponseDTO> getCompanyById(@PathVariable Long companyId) {
+	public ApiResponse<CompanyDetailResponseDTO> getCompanyById(
+		@PathVariable Long companyId) {
 		CompanyDetailResponseDTO responseDto = companyService.getCompanyById(companyId);
-
 		return ApiResponse.of(SuccessCode.OK, responseDto);
 	}
 }

@@ -23,41 +23,40 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/developments/projects")
-@Tag(name = "Project API", description = "프로젝트 경험 등록 관련 API")
+@Tag(name = "프로젝트 API")
 public class ProjectController {
 
 	private final ProjectService projectService;
 
-	@Operation(
-		summary = "Project 경험 등록",
-		description = "경험등록 페이지 - 프로젝트 경험 등록"
-	)
-	// 프로젝트 등록 API
-	@PostMapping("/{devExperience_id}")
+	@Operation(summary = "프로젝트 경험 등록")
+	@PostMapping("/{devExperienceId}")
 	public ApiResponse<ProjectResponseDTO> addProject(
 		@AuthUser Long userId,
-		@PathVariable("devExperience_id") Long devExperienceId,
+		@PathVariable("devExperienceId") Long devExperienceId,
 		@RequestBody ProjectAddRequestDTO request) {
 		ProjectResponseDTO projectResponseDTO = projectService.addProject(userId, devExperienceId, request);
 		return ApiResponse.of(SuccessCode.CREATED, projectResponseDTO);
 	}
 
-	// 프로젝트 조회 API
-	@GetMapping("/{project_id}")
+	@Operation(summary = "프로젝트 경험 상세 조회")
+	@GetMapping("/{projectId}")
 	public ApiResponse<ProjectResponseDTO> getProject(@AuthUser Long userId, @PathVariable("project_id") Long id) {
 		ProjectResponseDTO projectResponseDTO = projectService.getProjectById(userId, id);
 		return ApiResponse.of(SuccessCode.OK, projectResponseDTO);
 	}
 
-	@DeleteMapping("/dev/{devExperience_id}")
-	public ApiResponse<Void> deleteProjects(@PathVariable("devExperience_id") Long devExperienceId) {
+	@Operation(summary = "프로젝트 경험 삭제")
+	@DeleteMapping("/dev/{devExperienceId}")
+	public ApiResponse<Void> deleteProjects(
+		@PathVariable("devExperienceId") Long devExperienceId) {
 		projectService.deleteProjectsByDevExperienceId(devExperienceId);
 		return ApiResponse.of(SuccessCode.OK);
 	}
 
-	@PutMapping("/{project_id}")
+	@Operation(summary = "프로젝트 경험 수정")
+	@PutMapping("/{projectId}")
 	public ApiResponse<ProjectResponseDTO> updateProject(
-		@PathVariable("project_id") Long projectId,
+		@PathVariable("projectId") Long projectId,
 		@RequestBody ProjectAddRequestDTO request) {
 		ProjectResponseDTO updated = projectService.updateProject(projectId, request);
 		return ApiResponse.of(SuccessCode.OK, updated);
