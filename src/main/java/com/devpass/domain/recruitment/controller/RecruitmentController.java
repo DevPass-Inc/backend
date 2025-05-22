@@ -11,16 +11,18 @@ import com.devpass.global.payload.ApiResponse;
 import com.devpass.global.payload.apicode.SuccessCode;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/recruitments")
+@Tag(name = "채용공고 API")
 public class RecruitmentController {
 
 	private final RecruitmentService recruitmentService;
 
-	@Operation(summary = "채용공고 조회", description = "채용공고 개별 조회")
+	@Operation(summary = "채용공고 상세 조회")
 	@GetMapping("/{recruitmentId}")
 	public ApiResponse<RecruitmentDetailResponseDTO> getRecruitment(@PathVariable Long recruitmentId) {
 		RecruitmentDetailResponseDTO responseDTO = recruitmentService.getRecruitmentById(recruitmentId);
