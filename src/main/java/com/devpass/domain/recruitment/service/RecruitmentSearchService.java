@@ -30,6 +30,8 @@ public class RecruitmentSearchService {
         List<Long> stackIds,
         String region,
         String district,
+        Integer minEmployeeCount,
+        Integer minNewHireAvgSalary,
         Pageable pageable
     ) throws IOException {
 
@@ -84,6 +86,20 @@ public class RecruitmentSearchService {
 
                         if (district != null && !district.isBlank()) {
                             filters.add(Query.of(f -> f.term(t -> t.field("location.district").value(district))));
+                        }
+
+                        if (minEmployeeCount != null) {
+                            filters.add(Query.of(f -> f.range(r -> r
+                                .field("employeeCount")
+                                .gte(JsonData.of(minEmployeeCount))
+                            )));
+                        }
+
+                        if (minNewHireAvgSalary != null) {
+                            filters.add(Query.of(f -> f.range(r -> r
+                                .field("newHireAvgSalary")
+                                .gte(JsonData.of(minNewHireAvgSalary))
+                            )));
                         }
 
                         b.filter(filters);

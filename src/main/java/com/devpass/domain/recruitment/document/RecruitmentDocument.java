@@ -13,7 +13,14 @@ import org.springframework.data.elasticsearch.annotations.Document;
 public class RecruitmentDocument {
     @Id
     private String id;
+
+    // 기업 정보
+    private Long companyId;
     private String companyName;
+    private String employeeCount;
+    private Integer newHireAvgSalary;
+
+    // 채용공고 정보
     private String positionName;
     private String position;
     private Location location;
@@ -29,14 +36,20 @@ public class RecruitmentDocument {
     private List<Long> stacks;
 
     @Builder
-    public RecruitmentDocument(String id, String companyName, String positionName, String position, Location location, String career,
+    public RecruitmentDocument(String id, Long companyId, String companyName,
+        String employeeCount, Integer newHireAvgSalary,
+        String positionName, String position, Location location, String career,
         String mainTask, String qualification, String preferred, String benefit,
         String deadline, String imageUrl,
         Integer minCareer, Integer maxCareer,
-        List<Long> stacks)
-    {
+        List<Long> stacks) {
+
         this.id = id;
+        this.companyId = companyId;
         this.companyName = companyName;
+        this.employeeCount = employeeCount;
+        this.newHireAvgSalary = newHireAvgSalary;
+
         this.positionName = positionName;
         this.position = position;
         this.location = location;
