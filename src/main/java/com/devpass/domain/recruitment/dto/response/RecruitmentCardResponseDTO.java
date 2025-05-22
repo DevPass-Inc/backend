@@ -14,6 +14,7 @@ public class RecruitmentCardResponseDTO {
     private Long id;
     private String imageUrl;
     private String companyName;
+    private String positionName;
     private String position;
     private String career;
     private String location;
