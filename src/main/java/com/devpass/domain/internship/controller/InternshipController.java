@@ -1,6 +1,8 @@
 package com.devpass.domain.internship.controller;
 
+import java.util.List;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -53,6 +55,14 @@ public class InternshipController {
 		@RequestBody InternshipAddRequestDTO request) {
 		InternshipResponseDTO updated = internshipService.updateInternship(internshipId, request);
 		return ApiResponse.of(SuccessCode.OK, updated);
+	}
+
+	@Operation(summary = "인턴십 경험 목록 조회")
+	@GetMapping("/{devExperienceId}")
+	public ApiResponse<List<InternshipResponseDTO>> getInternshipsByDevExperienceId(
+		@AuthUser Long userId,
+		@PathVariable("devExperienceId") Long devExperienceId) {
+		return ApiResponse.of(SuccessCode.OK, internshipService.getInternshipsByDevExperienceId(userId, devExperienceId));
 	}
 
 }
