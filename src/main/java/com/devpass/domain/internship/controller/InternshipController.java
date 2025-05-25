@@ -38,10 +38,11 @@ public class InternshipController {
 	}
 
 	@Operation(summary = "인턴십 경험 삭제")
-	@DeleteMapping("/{devExperienceId}")
+	@DeleteMapping("/{internshipId}")
 	public ApiResponse<Void> deleteInternships(
-		@PathVariable("devExperienceId") Long devExperienceId) {
-		internshipService.deleteInternshipsByDevExperienceId(devExperienceId);
+		@AuthUser Long userId,
+		@PathVariable("internshipId") Long internshipId) {
+		internshipService.deleteInternshipById(userId, internshipId);
 		return ApiResponse.of(SuccessCode.OK);
 	}
 
