@@ -2,9 +2,13 @@ package com.devpass.domain.project.entity;
 
 import com.devpass.domain.devexperience.entity.DevExperience;
 import com.devpass.domain.project.dto.request.ProjectAddRequestDTO;
+import com.devpass.domain.projectstack.entity.ProjectStack;
+import com.devpass.domain.stack.entity.Stack;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import java.time.LocalDate;
 
 import com.devpass.global.common.entity.BaseEntity;
@@ -15,6 +19,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -51,6 +57,9 @@ public class Project extends BaseEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "dev_experience_id", nullable = false)
 	private DevExperience devExperience;
+
+	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<ProjectStack> projectStacks = new ArrayList<>();
 
 	@Builder
 	public Project(DevExperience devExperience, String title, String introduce, String position, LocalDate startDate, LocalDate endDate,
