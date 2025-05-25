@@ -51,9 +51,10 @@ public class InternshipController {
 	@Operation(summary = "인턴십 경험 수정")
 	@PutMapping("/{internshipId}")
 	public ApiResponse<InternshipResponseDTO> updateInternship(
+		@AuthUser Long userId,
 		@PathVariable("internshipId") Long internshipId,
 		@RequestBody InternshipAddRequestDTO request) {
-		InternshipResponseDTO updated = internshipService.updateInternship(internshipId, request);
+		InternshipResponseDTO updated = internshipService.updateInternship(userId, internshipId, request);
 		return ApiResponse.of(SuccessCode.OK, updated);
 	}
 

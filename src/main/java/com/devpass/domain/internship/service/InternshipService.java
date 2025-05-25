@@ -56,9 +56,12 @@ public class InternshipService {
 	}
 
 	@Transactional
-	public InternshipResponseDTO updateInternship(Long internshipId, InternshipAddRequestDTO request) {
+	public InternshipResponseDTO updateInternship(Long userId, Long internshipId, InternshipAddRequestDTO request) {
 		Internship internship = internshipRepository.findById(internshipId)
 			.orElseThrow(() -> new GeneralException(ErrorStatus.NOT_FOUND));
+		if (!internship.getDevExperience().getUser().getId().equals(userId)) {
+			throw new GeneralException(ErrorStatus.UNAUTHORIZED);
+		}
 		internship.update(request);
 		return InternshipConverter.toResponse(internship);
 	}
