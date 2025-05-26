@@ -2,17 +2,11 @@ package com.devpass.domain.stack.controller;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.devpass.domain.stack.converter.StackConverter;
-import com.devpass.domain.stack.dto.request.StackAddRequestDTO;
 import com.devpass.domain.stack.dto.response.StackListResponseDTO;
 import com.devpass.domain.stack.dto.response.StackStatusResponseDTO;
 import com.devpass.domain.stack.entity.Stack;
@@ -27,23 +21,11 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/developments/stacks")
+@RequestMapping("/api/stacks")
 @Tag(name = "기술스택 API")
 public class StackController {
 
 	private final StackService stackService;
-
-	@Operation(summary = "기술스택 등록")
-	@PostMapping("/{devExperienceId}")
-	public ApiResponse<StackListResponseDTO> addStacks(
-		@AuthUser Long userId,
-		@PathVariable("devExperienceId") Long devExperienceId,
-		@RequestBody StackAddRequestDTO request) {
-		List<Stack> stacks = stackService.addStacks(userId, devExperienceId, request);
-		List<StackStatusResponseDTO> stackDTOs = StackConverter.toStatusResponseDTOList(stacks);
-		StackListResponseDTO responseDTO = new StackListResponseDTO(stackDTOs);
-		return ApiResponse.of(SuccessCode.CREATED, responseDTO);
-	}
 
 	@Operation(summary = "기술스택 조회")
 	@GetMapping
@@ -53,24 +35,5 @@ public class StackController {
 		List<StackStatusResponseDTO> stackDTOs = StackConverter.toStatusResponseDTOList(stacks);
 		StackListResponseDTO responseDTO = new StackListResponseDTO(stackDTOs);
 		return ApiResponse.of(SuccessCode.OK, responseDTO);
-	}
-
-	@Operation(summary = "기술스택 수정")
-	@PutMapping("/{devExperienceId}")
-	public ApiResponse<StackListResponseDTO> updateStacks(
-		@PathVariable("devExperienceId") Long devExperienceId,
-		@RequestBody StackAddRequestDTO request) {
-		List<Stack> updatedStacks = stackService.updateStacks(devExperienceId, request);
-		List<StackStatusResponseDTO> stackDTOs = StackConverter.toStatusResponseDTOList(updatedStacks);
-		StackListResponseDTO responseDTO = new StackListResponseDTO(stackDTOs);
-		return ApiResponse.of(SuccessCode.OK, responseDTO);
-	}
-
-	@Operation(summary = "기술스택 삭제")
-	@DeleteMapping("/{devExperienceId}")
-	public ApiResponse<Void> deleteStacksByDevExperienceId(
-		@PathVariable("devExperienceId") Long devExperienceId) {
-		stackService.deleteStacksByDevExperienceId(devExperienceId);
-		return ApiResponse.of(SuccessCode.OK);
 	}
 }

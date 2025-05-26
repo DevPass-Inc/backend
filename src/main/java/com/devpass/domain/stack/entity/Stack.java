@@ -1,6 +1,5 @@
 package com.devpass.domain.stack.entity;
 
-import com.devpass.domain.devexperience.entity.DevExperience;
 import com.devpass.domain.devexpstack.entity.DevExpStack;
 import com.devpass.domain.projectstack.entity.ProjectStack;
 import jakarta.persistence.CascadeType;

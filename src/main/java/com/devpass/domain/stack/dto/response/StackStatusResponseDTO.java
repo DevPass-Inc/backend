@@ -8,10 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StackStatusResponseDTO {
-    private String stack;
-    private boolean isRequired;
-
-    public String getName() {
-        return this.stack;
-    }
+    private Long id;
+    private String name;
 }
