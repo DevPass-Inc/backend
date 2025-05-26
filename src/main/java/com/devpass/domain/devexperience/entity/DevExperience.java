@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@Table(name = "dev-experiences")
+@Table(name = "dev_experiences")
 public class DevExperience extends BaseEntity {
 
 	@Id
