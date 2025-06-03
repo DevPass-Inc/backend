@@ -1,5 +1,6 @@
 package com.devpass.domain.stack.controller;
 
+import com.devpass.domain.stack.dto.response.StackResponseDTO;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.devpass.domain.stack.converter.StackConverter;
 import com.devpass.domain.stack.dto.response.StackListResponseDTO;
-import com.devpass.domain.stack.dto.response.StackStatusResponseDTO;
 import com.devpass.domain.stack.entity.Stack;
 import com.devpass.domain.stack.service.StackService;
 import com.devpass.global.annotation.AuthUser;
@@ -32,7 +32,7 @@ public class StackController {
 	public ApiResponse<StackListResponseDTO> getStacks(
 		@AuthUser Long userId) {
 		List<Stack> stacks = stackService.getAllStacks(userId);
-		List<StackStatusResponseDTO> stackDTOs = StackConverter.toStatusResponseDTOList(stacks);
+		List<StackResponseDTO> stackDTOs = StackConverter.toResponseDTOList(stacks);
 		StackListResponseDTO responseDTO = new StackListResponseDTO(stackDTOs);
 		return ApiResponse.of(SuccessCode.OK, responseDTO);
 	}

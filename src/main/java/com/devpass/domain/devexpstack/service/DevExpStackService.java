@@ -6,7 +6,7 @@ import com.devpass.domain.devexpstack.entity.DevExpStack;
 import com.devpass.domain.devexpstack.repository.DevExpStackRepository;
 import com.devpass.domain.stack.converter.StackConverter;
 import com.devpass.domain.stack.dto.request.StackAddRequestDTO;
-import com.devpass.domain.stack.dto.response.StackStatusResponseDTO;
+import com.devpass.domain.stack.dto.response.StackResponseDTO;
 import com.devpass.domain.stack.entity.Stack;
 import com.devpass.domain.stack.repository.StackRepository;
 import com.devpass.global.payload.apicode.ErrorStatus;
@@ -67,9 +67,9 @@ public class DevExpStackService {
     }
 
     @Transactional(readOnly = true)
-    public List<StackStatusResponseDTO> getStacksByDevExperienceId(Long userId, Long devExperienceId) {
+    public List<StackResponseDTO> getStacksByDevExperienceId(Long userId, Long devExperienceId) {
         List<Stack> stacks = devExpStackRepository.findStacksByDevExperienceId(userId, devExperienceId);
-        return StackConverter.toStatusResponseDTOList(stacks);
+        return StackConverter.toResponseDTOList(stacks);
     }
 
     @Transactional

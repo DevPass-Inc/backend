@@ -4,7 +4,7 @@ import com.devpass.domain.devexpstack.service.DevExpStackService;
 import com.devpass.domain.stack.converter.StackConverter;
 import com.devpass.domain.stack.dto.request.StackAddRequestDTO;
 import com.devpass.domain.stack.dto.response.StackListResponseDTO;
-import com.devpass.domain.stack.dto.response.StackStatusResponseDTO;
+import com.devpass.domain.stack.dto.response.StackResponseDTO;
 import com.devpass.domain.stack.entity.Stack;
 import com.devpass.global.annotation.AuthUser;
 import com.devpass.global.payload.ApiResponse;
@@ -36,7 +36,7 @@ public class DevExpStackController {
         @PathVariable("devExperienceId") Long devExperienceId,
         @RequestBody StackAddRequestDTO request) {
         List<Stack> stacks = devExpStackService.addStacksToDevExperience(userId, devExperienceId, request);
-        List<StackStatusResponseDTO> stackDTOs = StackConverter.toStatusResponseDTOList(stacks);
+        List<StackResponseDTO> stackDTOs = StackConverter.toResponseDTOList(stacks);
         StackListResponseDTO responseDTO = new StackListResponseDTO(stackDTOs);
         return ApiResponse.of(SuccessCode.CREATED, responseDTO);
     }
@@ -47,7 +47,7 @@ public class DevExpStackController {
         @PathVariable("devExperienceId") Long devExperienceId,
         @RequestBody StackAddRequestDTO request) {
         List<Stack> updatedStacks = devExpStackService.updateStacksToDevExperience(devExperienceId, request);
-        List<StackStatusResponseDTO> stackDTOs = StackConverter.toStatusResponseDTOList(updatedStacks);
+        List<StackResponseDTO> stackDTOs = StackConverter.toResponseDTOList(updatedStacks);
         StackListResponseDTO responseDTO = new StackListResponseDTO(stackDTOs);
         return ApiResponse.of(SuccessCode.OK, responseDTO);
     }
@@ -67,7 +67,7 @@ public class DevExpStackController {
         @AuthUser Long userId,
         @PathVariable("devExperienceId") Long devExperienceId) {
 
-        List<StackStatusResponseDTO> stackDTOs = devExpStackService.getStacksByDevExperienceId(userId, devExperienceId);
+        List<StackResponseDTO> stackDTOs = devExpStackService.getStacksByDevExperienceId(userId, devExperienceId);
         StackListResponseDTO responseDTO = new StackListResponseDTO(stackDTOs);
         return ApiResponse.of(SuccessCode.OK, responseDTO);
     }

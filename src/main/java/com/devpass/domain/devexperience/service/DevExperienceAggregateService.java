@@ -12,7 +12,7 @@ import com.devpass.domain.internship.dto.response.InternshipResponseDTO;
 import com.devpass.domain.internship.service.InternshipService;
 import com.devpass.domain.project.dto.response.ProjectResponseDTO;
 import com.devpass.domain.project.service.ProjectService;
-import com.devpass.domain.stack.dto.response.StackStatusResponseDTO;
+import com.devpass.domain.stack.dto.response.StackResponseDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -31,7 +31,7 @@ public class DevExperienceAggregateService {
 		List<ProjectResponseDTO> projects = projectService.getProjectsByDevExperienceId(userId, devExperienceId);
 		List<InternshipResponseDTO> internships = internshipService.getInternshipsByDevExperienceId(userId,
 			devExperienceId);
-		List<StackStatusResponseDTO> stacks = devExpStackService.getStacksByDevExperienceId(userId, devExperienceId);
+		List<StackResponseDTO> stacks = devExpStackService.getStacksByDevExperienceId(userId, devExperienceId);
 		return new DevExperienceAggregateResponseDTO(devExperience, projects, internships, stacks);
 	}
 }

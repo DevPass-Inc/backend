@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StackListResponseDTO {
-    private List<StackStatusResponseDTO> stacks;
+    private List<StackResponseDTO> stacks;
 }
