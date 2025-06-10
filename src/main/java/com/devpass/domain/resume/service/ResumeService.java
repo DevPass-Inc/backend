@@ -134,12 +134,23 @@ public class ResumeService {
 			String aggJson = objectMapper.writeValueAsString(agg);
 			String recJson = objectMapper.writeValueAsString(rec);
 
+			// 1) 채용 공고 주요 필드 추출
+			String qualification = rec.getQualification();  // 자격 요건
+			String preferred = rec.getPreferred();      // 우대 사항
+			String benefit = rec.getBenefit();        // 복리후생
+
+			StringBuilder notes = new StringBuilder(ResumePrompt.NOTES)
+					.append("\n\n## 채용 공고 정보\n")
+					.append("요구 자격:\n").append(qualification).append("\n\n")
+					.append("우대 사항:\n").append(preferred).append("\n\n")
+					.append("복리후생:\n").append(benefit).append("\n\n")
+					.append("전체 공고 JSON:\n").append(recJson)
+					.append("\n\n## GitHub Context\n").append(githubContext);
+
 			ResumePromptDTO p = ResumePromptDTO.builder()
 					.header(ResumePrompt.HEADER)
 					.jsonTemplate(ResumePrompt.JSON_TEMPLATE)
-					.notes(ResumePrompt.NOTES
-							+ "\n\n## 채용 공고\n" + recJson
-							+ "\n\n## GitHub Context\n" + githubContext)
+					.notes(notes.toString())
 					.aggregateData(aggJson)
 					.build();
 
@@ -149,7 +160,7 @@ public class ResumeService {
 		}
 	}
 
-    @Transactional(readOnly = true)
+	@Transactional(readOnly = true)
     public List<ResumeDocument> getResumesByUserId(Long userId) {
         return resumeRepository.findAllByUserId(userId);
     }
