@@ -1,5 +1,6 @@
 package com.devpass.domain.resume.controller;
 
+import io.swagger.v3.oas.annotations.Parameter;
 import java.util.List;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -34,18 +35,21 @@ public class ResumeController {
 
 	@GetMapping("/generate/{devExperienceId}/{recruitmentStackId}")
 	public ApiResponse<ResumeDocument> generateResume(
-			@RegisteredOAuth2AuthorizedClient("github") OAuth2AuthorizedClient authClient,
+			@RegisteredOAuth2AuthorizedClient("github")
+			OAuth2AuthorizedClient authClient,
 			@AuthenticationPrincipal CustomOAuth2User principal,
 			@PathVariable Long devExperienceId,
 			@PathVariable Long recruitmentStackId,
 			@RequestParam(defaultValue = "true") boolean includeGitHub
 	) {
-		// 1) GitHub 액세스 토큰 꺼내기
-		String githubToken = authClient.getAccessToken().getTokenValue();
-		// 2) providerId 대신 token 을 서비스에 전달
+		String githubToken   = authClient.getAccessToken().getTokenValue();
+		String providerId    = principal.getProviderId();
+		log.info("▶ ResumeController: token={}, providerId={}, devExp={}, recStack={}, includeGitHub={}",
+				githubToken, providerId, devExperienceId, recruitmentStackId, includeGitHub);
+
 		ResumeDocument resume = resumeService.generateAndSaveResume(
 				githubToken,
-				principal.getProviderId(),
+				providerId,
 				devExperienceId,
 				recruitmentStackId,
 				includeGitHub

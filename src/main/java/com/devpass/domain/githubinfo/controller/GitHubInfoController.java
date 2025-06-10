@@ -4,11 +4,9 @@ import com.devpass.domain.githubinfo.dto.GitHubDetailsRequestDTO;
 import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.devpass.domain.githubinfo.dto.GitHubDetailResponseDTO;

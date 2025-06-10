@@ -11,8 +11,8 @@ import com.devpass.domain.resume.document.ResumeDocument;
 import com.devpass.domain.resume.dto.ResumePromptDTO;
 import com.devpass.domain.resume.dto.response.ResumeResponseDTO;
 import com.devpass.domain.resume.repository.ResumeRepository;
-import com.devpass.domain.resume.util.ResumePrompt;
 import com.devpass.domain.user.entity.User;
+import com.devpass.domain.resume.util.ResumePrompt;
 import com.devpass.domain.user.repository.UserRepository;
 import com.devpass.global.config.OpenAIConfig;
 import com.devpass.global.payload.apicode.ErrorStatus;
@@ -35,16 +35,8 @@ public class ResumeService {
 	private final ObjectMapper objectMapper;
 	private final ResumePersistenceService resumePersistenceService;
 	private final UserRepository userRepository;
-  private final ResumeRepository resumeRepository;
+  	private final ResumeRepository resumeRepository;
 
-	/**
-	 * 이력서 생성 및 저장
-	 *
-	 * @param providerId    OAuth 로그인 시 발급된 providerId (실제 GitHub 사용자 ID)
-	 * @param devExpId      DevExperience PK
-	 * @param recStackId    RecruitmentStack PK
-	 * @param includeGitHub true면 GitHub 프로필·핀된 레포 정보를, false면 빈 컨텍스트로 생성
-	 */
 	@Transactional
 	public ResumeDocument generateAndSaveResume(
 			String githubToken,
@@ -53,15 +45,12 @@ public class ResumeService {
 			Long recStackId,
 			boolean includeGitHub
 	) {
-		// 1) providerId 로 User 조회
 		User user = userRepository.findByProviderId(providerId)
 				.orElseThrow(() -> new GeneralException(ErrorStatus.USER_NOT_FOUND));
 
-		// 2) Dev 경험 집계
 		DevExperienceAggregateResponseDTO aggregate =
 				devExperienceAggregateService.getAggregateByDevExperienceId(user.getId(), devExpId);
 
-		// 3) 채용 공고 조회
 		RecruitmentDetailResponseDTO recruitment =
 				recruitmentService.getRecruitmentById(recStackId);
 		if (recruitment == null) {
@@ -69,7 +58,6 @@ public class ResumeService {
 		}
 		GitHubDetailResponseDTO info = null;
 
-		// 4) GitHub 컨텍스트 구성 (선택적으로)
 		String githubContext = "";
 		if (includeGitHub) {
 			 info = githubInfoService.getGitHubDetails(githubToken, 6);
@@ -88,13 +76,10 @@ public class ResumeService {
 			githubContext = ctx.toString();
 		}
 
-		// 5) 프롬프트 생성
 		String prompt = buildPrompt(aggregate, recruitment, githubContext);
 
-		// 6) Function Calling 으로 GPT 호출 → 순수 JSON 인자 받아오기
 		String argsJson = openAIConfig.callGenerateResumeFunction(prompt);
 
-		// 7) JSON → DTO 파싱
 		ResumeResponseDTO dto;
 		try {
 			dto = objectMapper.readValue(argsJson, ResumeResponseDTO.class);
@@ -102,12 +87,11 @@ public class ResumeService {
 			throw new GeneralException(ErrorStatus.GPT_RESPONSE_PARSE_ERROR);
 		}
 
-		// 8) 사용자 정보 채워 최종 DTO 생성
 		ResumeResponseDTO filled = ResumeResponseDTO.builder()
 				.name(user.getName())
-				.title("") // 필요 시 설정
+				.title("")
 				.phone(user.getPhone())
-				.email(info.getEmail() != null ? info.getEmail() : user.getEmail())
+				.email(user.getEmail())
 				.github(info.getProfileUrl())
 				.blog(user.getBlogUrl())
 				.summary(dto.getSummary())
@@ -117,7 +101,6 @@ public class ResumeService {
 				.education(dto.getEducation())
 				.build();
 
-		// 9) 저장 후 반환
 		return resumePersistenceService.saveResume(filled, user.getId());
 	}
 
@@ -134,10 +117,9 @@ public class ResumeService {
 			String aggJson = objectMapper.writeValueAsString(agg);
 			String recJson = objectMapper.writeValueAsString(rec);
 
-			// 1) 채용 공고 주요 필드 추출
-			String qualification = rec.getQualification();  // 자격 요건
-			String preferred = rec.getPreferred();      // 우대 사항
-			String benefit = rec.getBenefit();        // 복리후생
+			String qualification = rec.getQualification();
+			String preferred = rec.getPreferred();
+			String benefit = rec.getBenefit();
 
 			StringBuilder notes = new StringBuilder(ResumePrompt.NOTES)
 					.append("\n\n## 채용 공고 정보\n")
