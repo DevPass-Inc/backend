@@ -67,12 +67,12 @@ public class ResumeService {
 		if (recruitment == null) {
 			throw new GeneralException(ErrorStatus.NOT_FOUND);
 		}
+		GitHubDetailResponseDTO info = null;
 
 		// 4) GitHub 컨텍스트 구성 (선택적으로)
 		String githubContext = "";
 		if (includeGitHub) {
-			GitHubDetailResponseDTO info =
-					githubInfoService.getGitHubDetails(githubToken, 6);
+			 info = githubInfoService.getGitHubDetails(githubToken, 6);
 
 			StringBuilder ctx = new StringBuilder();
 			ctx.append("## Profile README\n")
@@ -107,8 +107,8 @@ public class ResumeService {
 				.name(user.getName())
 				.title("") // 필요 시 설정
 				.phone(user.getPhone())
-				.email(user.getEmail())
-				.github(user.getGithubLogin())
+				.email(info.getEmail() != null ? info.getEmail() : user.getEmail())
+				.github(info.getProfileUrl())
 				.blog(user.getBlogUrl())
 				.summary(dto.getSummary())
 				.experience(dto.getExperience())

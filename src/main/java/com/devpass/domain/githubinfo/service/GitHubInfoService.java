@@ -33,6 +33,8 @@ public class GitHubInfoService {
                 .bodyToMono(MAP_REF)
                 .block();
         String login = (String) userInfo.get("login");
+        String email    = (String) userInfo.get("email");
+        String profileUrl = (String) userInfo.get("html_url");
         log.info("▶ 서비스: 사용자 GitHub login = {}", login);
 
         String profileReadme;
@@ -94,6 +96,8 @@ public class GitHubInfoService {
 
         return GitHubDetailResponseDTO.builder()
                 .login(login)
+                .email(email)
+                .profileUrl(profileUrl)
                 .profileReadme(profileReadme)
                 .pinnedRepos(repos)
                 .build();

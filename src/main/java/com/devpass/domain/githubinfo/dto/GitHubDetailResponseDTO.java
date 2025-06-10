@@ -15,6 +15,8 @@ public class GitHubDetailResponseDTO {
     @Schema(description = "최대 핀된 레포지토리 개수", example = "6")
     private int maxPinned;
     private String login;
+    private String email;
+    private String profileUrl;
     private String profileReadme;
     private List<PinnedRepo> pinnedRepos;
 }
