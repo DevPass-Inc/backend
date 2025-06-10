@@ -132,7 +132,6 @@ public class OpenAIConfig {
         String body = resp.getBody();
         logger.info("Received GPT FunctionCall response: {}", body);
 
-        // 4) function_call.arguments 에서 JSON 인자 추출
         try {
             JsonNode root = objectMapper.readTree(body);
             JsonNode funcCall = root.path("choices").get(0)

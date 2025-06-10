@@ -34,7 +34,7 @@ public class WebClientConfig {
     ) {
         return builder
                 .baseUrl("https://api.github.com")
-                .filter(oauth2)
+                //.filter(oauth2)
                 .build();
     }
 
