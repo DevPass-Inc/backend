@@ -7,5 +7,4 @@ import java.util.List;
 
 public interface StackRepository extends JpaRepository<Stack, Long> {
     Optional<Stack> findByName(String name);
-    List<Stack> findAllByDevExperience_Id(Long devExperienceId);
 }

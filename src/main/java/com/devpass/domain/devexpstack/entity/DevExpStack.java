@@ -1,5 +1,6 @@
 package com.devpass.domain.devexpstack.entity;
 
+import com.devpass.domain.devexperience.entity.DevExperience;
 import com.devpass.domain.project.entity.Project;
 import com.devpass.domain.stack.entity.Stack;
 import com.devpass.global.common.entity.BaseEntity;
@@ -28,16 +29,16 @@ public class DevExpStack extends BaseEntity {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "project_id", nullable = false)
-	private Project project;
+	@JoinColumn(name = "dev_experience_id", nullable = false)
+	private DevExperience devExperience;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "stack_id", nullable = false)
 	private Stack stack;
 
 	@Builder
-	public DevExpStack(Project project, Stack stack) {
-		this.project = project;
+	public DevExpStack(DevExperience devExperience, Stack stack) {
+		this.devExperience = devExperience;
 		this.stack = stack;
 	}
 }

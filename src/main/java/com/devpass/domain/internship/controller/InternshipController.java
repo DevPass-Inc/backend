@@ -1,6 +1,8 @@
 package com.devpass.domain.internship.controller;
 
+import java.util.List;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -38,20 +40,30 @@ public class InternshipController {
 	}
 
 	@Operation(summary = "인턴십 경험 삭제")
-	@DeleteMapping("/{devExperienceId}")
+	@DeleteMapping("/{internshipId}")
 	public ApiResponse<Void> deleteInternships(
-		@PathVariable("devExperienceId") Long devExperienceId) {
-		internshipService.deleteInternshipsByDevExperienceId(devExperienceId);
+		@AuthUser Long userId,
+		@PathVariable("internshipId") Long internshipId) {
+		internshipService.deleteInternshipById(userId, internshipId);
 		return ApiResponse.of(SuccessCode.OK);
 	}
 
 	@Operation(summary = "인턴십 경험 수정")
 	@PutMapping("/{internshipId}")
 	public ApiResponse<InternshipResponseDTO> updateInternship(
+		@AuthUser Long userId,
 		@PathVariable("internshipId") Long internshipId,
 		@RequestBody InternshipAddRequestDTO request) {
-		InternshipResponseDTO updated = internshipService.updateInternship(internshipId, request);
+		InternshipResponseDTO updated = internshipService.updateInternship(userId, internshipId, request);
 		return ApiResponse.of(SuccessCode.OK, updated);
+	}
+
+	@Operation(summary = "인턴십 경험 목록 조회")
+	@GetMapping("/{devExperienceId}")
+	public ApiResponse<List<InternshipResponseDTO>> getInternshipsByDevExperienceId(
+		@AuthUser Long userId,
+		@PathVariable("devExperienceId") Long devExperienceId) {
+		return ApiResponse.of(SuccessCode.OK, internshipService.getInternshipsByDevExperienceId(userId, devExperienceId));
 	}
 
 }
