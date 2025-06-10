@@ -47,6 +47,7 @@ public class ResumeService {
 	 */
 	@Transactional
 	public ResumeDocument generateAndSaveResume(
+			String githubToken,
 			String providerId,
 			Long devExpId,
 			Long recStackId,
@@ -71,7 +72,7 @@ public class ResumeService {
 		String githubContext = "";
 		if (includeGitHub) {
 			GitHubDetailResponseDTO info =
-					githubInfoService.getGitHubDetails(user.getGithubOAuthToken(), 6);
+					githubInfoService.getGitHubDetails(githubToken, 6);
 
 			StringBuilder ctx = new StringBuilder();
 			ctx.append("## Profile README\n")

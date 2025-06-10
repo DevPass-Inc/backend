@@ -3,6 +3,8 @@ package com.devpass.domain.resume.controller;
 import java.util.List;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,22 +32,23 @@ public class ResumeController {
 
 	private final ResumeService resumeService;
 
-	@Operation(summary = "이력서 생성 및 저장")
 	@GetMapping("/generate/{devExperienceId}/{recruitmentStackId}")
 	public ApiResponse<ResumeDocument> generateResume(
-		@AuthenticationPrincipal CustomOAuth2User principal,
-		@PathVariable("devExperienceId") Long devExperienceId,
-		@PathVariable("recruitmentStackId") Long recruitmentStackId,
-		@RequestParam(name = "includeGitHub", defaultValue = "true") boolean includeGitHub) {
-		String providerId = principal.getProviderId();
-		log.info("▶ ResumeController: providerId={}, devExpId={}, recStackId={}, includeGitHub={}",
-			providerId, devExperienceId, recruitmentStackId, includeGitHub);
-
+			@RegisteredOAuth2AuthorizedClient("github") OAuth2AuthorizedClient authClient,
+			@AuthenticationPrincipal CustomOAuth2User principal,
+			@PathVariable Long devExperienceId,
+			@PathVariable Long recruitmentStackId,
+			@RequestParam(defaultValue = "true") boolean includeGitHub
+	) {
+		// 1) GitHub 액세스 토큰 꺼내기
+		String githubToken = authClient.getAccessToken().getTokenValue();
+		// 2) providerId 대신 token 을 서비스에 전달
 		ResumeDocument resume = resumeService.generateAndSaveResume(
-			providerId,
-			devExperienceId,
-			recruitmentStackId,
-			includeGitHub
+				githubToken,
+				principal.getProviderId(),
+				devExperienceId,
+				recruitmentStackId,
+				includeGitHub
 		);
 		return ApiResponse.of(SuccessCode.OK, resume);
 	}
