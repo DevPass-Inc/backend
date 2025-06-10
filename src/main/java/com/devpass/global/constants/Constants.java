@@ -13,7 +13,7 @@ public final class Constants {
 		"/swagger-ui.html",
 		"/login/oauth/authorize",
 		"/api/companies/**",
-		"/api/recruitments/**",
-		"/api/resumes/**"
+		"/api/recruitments/**"
+		//"/api/resumes/**"
 	);
 }
