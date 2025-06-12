@@ -10,7 +10,7 @@ version = '0.0.1-SNAPSHOT'
 sourceSets {
     main {
         resources {
-            include '**/*.sql'
+            include '**/*.yml', '**/*.properties', '**/*.sql'
         }
     }
 }
