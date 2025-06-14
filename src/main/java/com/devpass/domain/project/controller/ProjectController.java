@@ -47,10 +47,10 @@ public class ProjectController {
 	}
 
 	@Operation(summary = "프로젝트 경험 삭제")
-	@DeleteMapping("/dev/{devExperienceId}")
+	@DeleteMapping("/dev/{projectId}")
 	public ApiResponse<Void> deleteProjects(
-		@PathVariable("devExperienceId") Long devExperienceId) {
-		projectService.deleteProjectsByDevExperienceId(devExperienceId);
+		@PathVariable("projectId") Long projectId) {
+		projectService.deleteByProjectId(projectId);
 		return ApiResponse.of(SuccessCode.OK);
 	}
 

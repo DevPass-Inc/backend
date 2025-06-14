@@ -69,12 +69,11 @@ public class ProjectService {
 	}
 
 	@Transactional
-	public void deleteProjectsByDevExperienceId(Long devExperienceId) {
-		List<Project> projects = projectRepository.findAllByDevExperience_Id(devExperienceId);
-		if (projects.isEmpty()) {
-			throw new GeneralException(ErrorStatus.NOT_FOUND);
-		}
-		projectRepository.deleteAll(projects);
+	public void deleteByProjectId(Long projectId) {
+		Project project = projectRepository.findById(projectId)
+			.orElseThrow(() -> new GeneralException(ErrorStatus.NOT_FOUND));
+		projectStackRepository.deleteAll(project.getProjectStacks());
+		projectRepository.delete(project);
 	}
 
 	@Transactional
