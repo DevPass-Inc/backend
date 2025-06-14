@@ -1,5 +1,7 @@
 package com.devpass.domain.project.service;
 
+import com.devpass.domain.devexpproject.entity.DevExpProject;
+import com.devpass.domain.devexpproject.repository.DevExpProjectRepository;
 import com.devpass.domain.project.dto.response.ProjectAddResponseDto;
 import com.devpass.domain.projectstack.converter.ProjectStackConverter;
 import com.devpass.domain.projectstack.entity.ProjectStack;
@@ -32,6 +34,7 @@ public class ProjectService {
 	private final DevExperienceRepository devExperienceRepository;
 	private final StackRepository stackRepository;
 	private final ProjectStackRepository projectStackRepository;
+	private final DevExpProjectRepository devExpProjectRepository;
 
 	@Transactional
 	public ProjectAddResponseDto addProject(Long userId, Long devExperienceId, ProjectAddRequestDTO request) {
@@ -48,6 +51,14 @@ public class ProjectService {
 
 		List<ProjectStack> projectStacks = ProjectStackConverter.toProjectStacks(stacks, savedProject);
 		projectStackRepository.saveAll(projectStacks);
+
+		DevExpProject devExpProject = DevExpProject.builder()
+			.devExperience(devExperience)
+			.project(savedProject)
+			.build();
+
+		devExpProjectRepository.save(devExpProject);
+
 
 		return ProjectConverter.toResponse(savedProject);
 	}
@@ -73,6 +84,7 @@ public class ProjectService {
 		Project project = projectRepository.findById(projectId)
 			.orElseThrow(() -> new GeneralException(ErrorStatus.NOT_FOUND));
 		projectStackRepository.deleteAll(project.getProjectStacks());
+		devExpProjectRepository.deleteByProjectId(projectId);
 		projectRepository.delete(project);
 	}
 
