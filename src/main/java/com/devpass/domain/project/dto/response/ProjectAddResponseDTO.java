@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProjectAddResponseDto {
+public class ProjectAddResponseDTO {
     private Long id;
 
     @Schema(description = "프로젝트 명", example = "devPass")

@@ -1,6 +1,8 @@
 package com.devpass.domain.project.controller;
 
-import com.devpass.domain.project.dto.response.ProjectAddResponseDto;
+import com.devpass.domain.project.dto.response.ProjectAddResponseDTO;
+import com.devpass.domain.project.dto.response.ProjectsResponseDTO;
+import java.util.List;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,11 +33,11 @@ public class ProjectController {
 
 	@Operation(summary = "프로젝트 경험 등록")
 	@PostMapping("/{devExperienceId}")
-	public ApiResponse<ProjectAddResponseDto> addProject(
+	public ApiResponse<ProjectAddResponseDTO> addProject(
 		@AuthUser Long userId,
 		@PathVariable("devExperienceId") Long devExperienceId,
 		@RequestBody ProjectAddRequestDTO request) {
-		ProjectAddResponseDto projectResponseDTO = projectService.addProject(userId, devExperienceId, request);
+		ProjectAddResponseDTO projectResponseDTO = projectService.addProject(userId, devExperienceId, request);
 		return ApiResponse.of(SuccessCode.CREATED, projectResponseDTO);
 	}
 
@@ -47,7 +49,7 @@ public class ProjectController {
 	}
 
 	@Operation(summary = "프로젝트 경험 삭제")
-	@DeleteMapping("/dev/{projectId}")
+	@DeleteMapping("/{projectId}")
 	public ApiResponse<Void> deleteProjects(
 		@PathVariable("projectId") Long projectId) {
 		projectService.deleteByProjectId(projectId);
@@ -61,5 +63,15 @@ public class ProjectController {
 		@RequestBody ProjectAddRequestDTO request) {
 		ProjectResponseDTO updated = projectService.updateProject(projectId, request);
 		return ApiResponse.of(SuccessCode.OK, updated);
+	}
+
+	@Operation(summary = "개발 경험에 속한 프로젝트 리스트 조회")
+	@GetMapping("/dev-experience/{devExperienceId}")
+	public ApiResponse<ProjectsResponseDTO> getProjectsByDevExperienceId(
+		@AuthUser Long userId,
+		@PathVariable("devExperienceId") Long devExperienceId) {
+		List<ProjectAddResponseDTO> projects = projectService.getProjectsByDevExperienceId(userId, devExperienceId);
+		ProjectsResponseDTO response = new ProjectsResponseDTO(projects);
+		return ApiResponse.of(SuccessCode.OK, response);
 	}
 }

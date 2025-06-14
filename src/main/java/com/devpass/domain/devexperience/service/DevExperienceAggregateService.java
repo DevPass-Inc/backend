@@ -1,7 +1,7 @@
 package com.devpass.domain.devexperience.service;
 
 import com.devpass.domain.devexpstack.service.DevExpStackService;
-import com.devpass.domain.project.dto.response.ProjectAddResponseDto;
+import com.devpass.domain.project.dto.response.ProjectAddResponseDTO;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -11,7 +11,6 @@ import com.devpass.domain.devexperience.dto.response.DevExperienceAggregateRespo
 import com.devpass.domain.devexperience.dto.response.DevExperienceResponseDTO;
 import com.devpass.domain.internship.dto.response.InternshipResponseDTO;
 import com.devpass.domain.internship.service.InternshipService;
-import com.devpass.domain.project.dto.response.ProjectResponseDTO;
 import com.devpass.domain.project.service.ProjectService;
 import com.devpass.domain.stack.dto.response.StackResponseDTO;
 
@@ -29,7 +28,7 @@ public class DevExperienceAggregateService {
 	@Transactional(readOnly = true)
 	public DevExperienceAggregateResponseDTO getAggregateByDevExperienceId(Long userId, Long devExperienceId) {
 		DevExperienceResponseDTO devExperience = devExperienceService.getDevExperienceById(userId, devExperienceId);
-		List<ProjectAddResponseDto> projects = projectService.getProjectsByDevExperienceId(userId, devExperienceId);
+		List<ProjectAddResponseDTO> projects = projectService.getProjectsByDevExperienceId(userId, devExperienceId);
 		List<InternshipResponseDTO> internships = internshipService.getInternshipsByDevExperienceId(userId,
 			devExperienceId);
 		List<StackResponseDTO> stacks = devExpStackService.getStacksByDevExperienceId(userId, devExperienceId);

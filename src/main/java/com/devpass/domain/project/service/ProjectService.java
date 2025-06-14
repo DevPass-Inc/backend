@@ -2,7 +2,7 @@ package com.devpass.domain.project.service;
 
 import com.devpass.domain.devexpproject.entity.DevExpProject;
 import com.devpass.domain.devexpproject.repository.DevExpProjectRepository;
-import com.devpass.domain.project.dto.response.ProjectAddResponseDto;
+import com.devpass.domain.project.dto.response.ProjectAddResponseDTO;
 import com.devpass.domain.projectstack.converter.ProjectStackConverter;
 import com.devpass.domain.projectstack.entity.ProjectStack;
 import com.devpass.domain.projectstack.repository.ProjectStackRepository;
@@ -37,7 +37,7 @@ public class ProjectService {
 	private final DevExpProjectRepository devExpProjectRepository;
 
 	@Transactional
-	public ProjectAddResponseDto addProject(Long userId, Long devExperienceId, ProjectAddRequestDTO request) {
+	public ProjectAddResponseDTO addProject(Long userId, Long devExperienceId, ProjectAddRequestDTO request) {
 		DevExperience devExperience = devExperienceRepository.findByIdAndUserId(devExperienceId, userId)
 			.orElseThrow(() -> new GeneralException(ErrorStatus.NOT_FOUND));
 
@@ -72,9 +72,13 @@ public class ProjectService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<ProjectAddResponseDto> getProjectsByDevExperienceId(Long userId, Long devExperienceId) {
-		return projectRepository.findAllByDevExperience_Id(devExperienceId)
-			.stream()
+	public List<ProjectAddResponseDTO> getProjectsByDevExperienceId(Long userId, Long devExperienceId) {
+		DevExperience devExperience = devExperienceRepository.findByIdAndUserId(devExperienceId, userId)
+			.orElseThrow(() -> new GeneralException(ErrorStatus.NOT_FOUND));
+
+		List<Project> projects = projectRepository.findAllByDevExperienceId(devExperience.getId());
+
+		return projects.stream()
 			.map(ProjectConverter::toResponse)
 			.collect(Collectors.toList());
 	}
