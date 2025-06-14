@@ -56,10 +56,10 @@ public class ProjectController {
 
 	@Operation(summary = "프로젝트 경험 수정")
 	@PutMapping("/{projectId}")
-	public ApiResponse<ProjectAddResponseDto> updateProject(
+	public ApiResponse<ProjectResponseDTO> updateProject(
 		@PathVariable("projectId") Long projectId,
 		@RequestBody ProjectAddRequestDTO request) {
-		ProjectAddResponseDto updated = projectService.updateProject(projectId, request);
+		ProjectResponseDTO updated = projectService.updateProject(projectId, request);
 		return ApiResponse.of(SuccessCode.OK, updated);
 	}
 }

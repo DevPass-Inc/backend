@@ -78,10 +78,25 @@ public class ProjectService {
 	}
 
 	@Transactional
-	public ProjectAddResponseDto updateProject(Long projectId, ProjectAddRequestDTO request) {
+	public ProjectResponseDTO updateProject(Long projectId, ProjectAddRequestDTO request) {
 		Project project = projectRepository.findById(projectId)
 			.orElseThrow(() -> new GeneralException(ErrorStatus.NOT_FOUND));
+
 		project.update(request);
-		return ProjectConverter.toResponse(project);
+
+		projectStackRepository.deleteAll(project.getProjectStacks());
+		project.getProjectStacks().clear();
+
+		List<Stack> stacks = request.getStackIds().stream()
+			.map(id -> stackRepository.findById(id)
+				.orElseThrow(() -> new GeneralException(ErrorStatus.NOT_FOUND)))
+			.toList();
+
+		List<ProjectStack> newProjectStacks = ProjectStackConverter.toProjectStacks(stacks, project);
+		projectStackRepository.saveAll(newProjectStacks);
+		project.getProjectStacks().addAll(newProjectStacks);
+
+		// 6. DTO 변환
+		return ProjectConverter.toResponseDto(project);
 	}
 }
