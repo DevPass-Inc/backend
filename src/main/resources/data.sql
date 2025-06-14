@@ -1,4 +1,4 @@
-INSERT INTO stacks (name, created_at, updated_at)
+INSERT IGNORE INTO stacks (name, created_at, updated_at)
 VALUES
     ('Java', NOW(), NOW()),
     ('Spring Boot', NOW(), NOW()),
