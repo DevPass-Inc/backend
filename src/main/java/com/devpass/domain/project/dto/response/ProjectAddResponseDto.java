@@ -1,9 +1,7 @@
 package com.devpass.domain.project.dto.response;
 
-import com.devpass.domain.stack.dto.response.StackResponseDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProjectResponseDTO {
+public class ProjectAddResponseDto {
     private Long id;
 
     @Schema(description = "프로젝트 명", example = "devPass")
@@ -31,6 +29,4 @@ public class ProjectResponseDTO {
 
     @Schema(description = "구현 내용", example = "openai Api와 github api, 사용자의 경험 정보를 통한 이력서 자동 생성 기능 구현")
     private String content;
-
-    private List<StackResponseDTO> stacks;
 }
