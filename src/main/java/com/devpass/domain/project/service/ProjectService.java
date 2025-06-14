@@ -1,5 +1,10 @@
 package com.devpass.domain.project.service;
 
+import com.devpass.domain.projectstack.converter.ProjectStackConverter;
+import com.devpass.domain.projectstack.entity.ProjectStack;
+import com.devpass.domain.projectstack.repository.ProjectStackRepository;
+import com.devpass.domain.stack.entity.Stack;
+import com.devpass.domain.stack.repository.StackRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,14 +29,26 @@ public class ProjectService {
 
 	private final ProjectRepository projectRepository;
 	private final DevExperienceRepository devExperienceRepository;
+	private final StackRepository stackRepository;
+	private final ProjectStackRepository projectStackRepository;
 
 	@Transactional
 	public ProjectResponseDTO addProject(Long userId, Long devExperienceId, ProjectAddRequestDTO request) {
 		DevExperience devExperience = devExperienceRepository.findByIdAndUserId(devExperienceId, userId)
 			.orElseThrow(() -> new GeneralException(ErrorStatus.NOT_FOUND));
+
 		Project project = ProjectConverter.toEntity(request, devExperience);
-		Project saved = projectRepository.save(project);
-		return ProjectConverter.toResponse(saved);
+		Project savedProject = projectRepository.save(project);
+
+		List<Stack> stacks = request.getStackIds().stream()
+			.map(id -> stackRepository.findById(id)
+				.orElseThrow(() -> new GeneralException(ErrorStatus.NOT_FOUND)))
+			.toList();
+
+		List<ProjectStack> projectStacks = ProjectStackConverter.toProjectStacks(stacks, savedProject);
+		projectStackRepository.saveAll(projectStacks);
+
+		return ProjectConverter.toResponse(savedProject);
 	}
 
 	@Transactional(readOnly = true)
