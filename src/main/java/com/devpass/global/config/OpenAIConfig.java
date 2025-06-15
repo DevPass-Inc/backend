@@ -29,16 +29,12 @@ public class OpenAIConfig {
     @Value("${openai.api.key}")
     private String openaiApiKey;
 
-    /**
-     * Function Calling 방식으로 GPT에 요청하여, 함수 인자(JSON)만 돌려받습니다.
-     */
     public String callGenerateResumeFunction(String promptJson) {
         String url = "https://api.openai.com/v1/chat/completions";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(openaiApiKey);
 
-        // 1) 함수 스펙 정의 (JSON Schema 형식)
         Map<String, Object> paramsSchema = Map.of(
                 "type", "object",
                 "properties", Map.of(
@@ -108,14 +104,12 @@ public class OpenAIConfig {
                 Map.of("role", "user", "content", promptJson)
         );
 
-        // 3) 요청 바디 구성
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("model", "gpt-4o");
         requestBody.put("messages", messages);
         requestBody.put("functions", List.of(functionDef));
         requestBody.put("function_call", Map.of("name", "generate_resume_response"));
 
-        // 로깅
         try {
             logger.info("Sending GPT FunctionCall request: {}", objectMapper.writeValueAsString(requestBody));
         } catch (Exception ignored) {

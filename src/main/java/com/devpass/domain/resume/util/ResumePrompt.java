@@ -3,13 +3,12 @@ package com.devpass.domain.resume.util;
 public class ResumePrompt {
 
     public static final String HEADER = """
-            아래의 개발 경험 데이터, 채용 공고 정보(qualification, main_task, preferred 포함), 
-            (선택 시) GitHub 컨텍스트를 모두 참고하여,
-            채용 공고의 **우대사항(preferred)** 과 **자격요건(qualification)**, **주요업무(main_task)** 를 
-            이력서에 효과적으로 반영해 주세요.
-            오직 제공된 정보만 사용하고, 임의로 내용을 추가하지 마세요.
-            다음 JSON 포맷을 정확히 준수해야 합니다.
-            """;
+        아래의 개발 경험 데이터, 채용 공고 정보, (선택 시) GitHub 프로필·프로젝트 컨텍스트(프로필 README, Pinned Repos README, 커밋 히스토리 등)를
+        모두 참고하여, 수치와 구체적인 성과를 최대한 반영한 상세하고 설득력 있는 이력서를 생성해주세요.
+        오직 제공된 정보만 사용하고, 절대로 임의로 내용을 추가하지 마세요.
+        GitHub 컨텍스트가 주어졌다면, 아래 지침을 반드시 따르세요.
+        다음 JSON 포맷을 정확히 준수해야 합니다.
+        """;
 
     public static final String JSON_TEMPLATE = """
             {
@@ -57,16 +56,18 @@ public class ResumePrompt {
             """;
 
     public static final String NOTES = """
-            주의사항:
-            - 'summary' 섹션은 채용 공고의 qualification(자격요건), main_task(주요업무), preferred(우대사항)을 
-              핵심 키워드로 요약·강조하는 문장으로 작성하세요.
-            - 'experience.summary' 에 프로젝트 경험 중 채용 공고의 우대사항과 직접 연결되는 기여 내용을 기술하세요.
-            - 'experience.description' 과 'activities.details' 에는 반드시 수치(%, 건수, 사용자 수 등)나 결과 지표를 포함해 구체화해야 합니다.
-            - 'skills' 는 언어·프레임워크·도구별로 그룹화하고, 각 스킬의 숙련도를 레벨로 표기하세요.
-            - 'education' 에는 학위·전공·기관·기간을 기재하고, 관련 수상이나 프로젝트 경험이 있으면 'details' 에 추가하세요.
-            - GitHub 컨텍스트를 활용할 경우:
-              • 프로필 README와 핀된 레포 README에서 확인된 기술 및 성과를 'summary'와 'experience.description'에 반영  
-              • 주요 커밋 히스토리 중 채용 공고 우대사항과 연관된 기능 구현 내역을 강조  
-            - 제공된 데이터만 사용하고, 임의로 내용을 추가하지 마세요.
-            """;
+        주의사항:
+        - includeGitHub=true일 때, GitHub 컨텍스트는 *선별적*으로 사용해야 합니다.
+        - 채용공고의 '우대사항', '요구자격', '복리후생' 키워드와 **매칭되는** 레포만 experience에 반영하세요.
+          예: 공고에 “AWS”, “Neo4j”가 있으면, 해당 기술을 사용한 핀된 레포만 선택.
+        - Profile README 배지·기술은 summary에 간략히 언급하되, 구체적 수치는 experience.description으로.
+        - 선택된 레포 각각에 대해:
+            • project = repo.name  
+            • summary = repo.description + " (Tech: …)"  
+            • skills = README에서 드러난 핵심 스택  
+            • description = 해당 레포에서 공고 키워드와 매치되는 성과·기능·수치 나열  
+        - 공고와 전혀 연관 없는 레포는 무시합니다.
+        - 절대 임의 생성 금지. 제공된 컨텍스트만 활용하세요.
+        """;
+
 }

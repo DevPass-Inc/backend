@@ -11,18 +11,21 @@ import com.devpass.domain.resume.document.ResumeDocument;
 import com.devpass.domain.resume.dto.ResumePromptDTO;
 import com.devpass.domain.resume.dto.response.ResumeResponseDTO;
 import com.devpass.domain.resume.repository.ResumeRepository;
-import com.devpass.domain.user.entity.User;
 import com.devpass.domain.resume.util.ResumePrompt;
+import com.devpass.domain.user.entity.User;
 import com.devpass.domain.user.repository.UserRepository;
 import com.devpass.global.config.OpenAIConfig;
 import com.devpass.global.payload.apicode.ErrorStatus;
 import com.devpass.global.payload.error.exception.GeneralException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
+import java.util.Objects;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +38,7 @@ public class ResumeService {
 	private final ObjectMapper objectMapper;
 	private final ResumePersistenceService resumePersistenceService;
 	private final UserRepository userRepository;
-  	private final ResumeRepository resumeRepository;
+	private final ResumeRepository resumeRepository;
 
 	@Transactional
 	public ResumeDocument generateAndSaveResume(
@@ -56,19 +59,17 @@ public class ResumeService {
 		if (recruitment == null) {
 			throw new GeneralException(ErrorStatus.NOT_FOUND);
 		}
-		GitHubDetailResponseDTO info = null;
 
+		// GitHub 정보 조회 (조건부)
+		GitHubDetailResponseDTO info = null;
 		String githubContext = "";
 		if (includeGitHub) {
-			 info = githubInfoService.getGitHubDetails(githubToken, 6);
-
+			info = githubInfoService.getGitHubDetails(githubToken, 6);
 			StringBuilder ctx = new StringBuilder();
 			ctx.append("## Profile README\n")
 					.append(info.getProfileReadme()).append("\n\n")
 					.append("## Pinned Repositories\n");
-
-			List<PinnedRepo> pinned = info.getPinnedRepos();
-			for (PinnedRepo pr : pinned) {
+			for (PinnedRepo pr : info.getPinnedRepos()) {
 				ctx.append("### ").append(pr.getName()).append("\n")
 						.append(pr.getDescription()).append("\n")
 						.append("README:\n").append(pr.getReadme()).append("\n---\n");
@@ -76,10 +77,11 @@ public class ResumeService {
 			githubContext = ctx.toString();
 		}
 
-		String prompt = buildPrompt(aggregate, recruitment, githubContext);
+		// 프롬프트 생성
+		String prompt = buildPrompt(aggregate, recruitment, githubContext, info, includeGitHub);
 
+		// GPT 호출 및 결과 파싱
 		String argsJson = openAIConfig.callGenerateResumeFunction(prompt);
-
 		ResumeResponseDTO dto;
 		try {
 			dto = objectMapper.readValue(argsJson, ResumeResponseDTO.class);
@@ -87,12 +89,13 @@ public class ResumeService {
 			throw new GeneralException(ErrorStatus.GPT_RESPONSE_PARSE_ERROR);
 		}
 
+		// 최종 DTO에 GitHub URL 반영
 		ResumeResponseDTO filled = ResumeResponseDTO.builder()
 				.name(user.getName())
 				.title("")
 				.phone(user.getPhone())
 				.email(user.getEmail())
-				.github(info.getProfileUrl())
+				.github(includeGitHub && info != null ? info.getProfileUrl() : null)
 				.blog(user.getBlogUrl())
 				.summary(dto.getSummary())
 				.experience(dto.getExperience())
@@ -112,22 +115,59 @@ public class ResumeService {
 
 	private String buildPrompt(Object agg,
 							   RecruitmentDetailResponseDTO rec,
-							   String githubContext) {
+							   String githubContext,
+							   GitHubDetailResponseDTO info,
+							   boolean includeGitHub) {
 		try {
 			String aggJson = objectMapper.writeValueAsString(agg);
 			String recJson = objectMapper.writeValueAsString(rec);
 
-			String qualification = rec.getQualification();
-			String preferred = rec.getPreferred();
-			String benefit = rec.getBenefit();
+			// 1) 공고 키워드
+			List<String> keywords = List.of(
+							rec.getQualification(),
+							rec.getPreferred(),
+							rec.getBenefit()
+					).stream()
+					.filter(Objects::nonNull)
+					.flatMap(s -> Arrays.stream(s.split("[,\\n]")))
+					.map(String::trim)
+					.collect(Collectors.toList());
 
 			StringBuilder notes = new StringBuilder(ResumePrompt.NOTES)
-					.append("\n\n## 채용 공고 정보\n")
-					.append("요구 자격:\n").append(qualification).append("\n\n")
-					.append("우대 사항:\n").append(preferred).append("\n\n")
-					.append("복리후생:\n").append(benefit).append("\n\n")
-					.append("전체 공고 JSON:\n").append(recJson)
-					.append("\n\n## GitHub Context\n").append(githubContext);
+					.append("\n\n## 공고 키워드\n")
+					.append(keywords.isEmpty() ? "없음" : String.join(" • ", keywords))
+					.append("\n\n## 전체 공고 JSON\n")
+					.append(recJson)
+					.append("\n\n");
+
+			if (includeGitHub && info != null) {
+				// 2) 키워드 매칭된 레포 필터
+				List<PinnedRepo> matched = info.getPinnedRepos().stream()
+						.filter(pr -> {
+							String hay = (pr.getName() + " "
+									+ Objects.toString(pr.getDescription(), "") + " "
+									+ Objects.toString(pr.getReadme(), ""))
+									.toLowerCase();
+							return keywords.stream().anyMatch(kw -> hay.contains(kw.toLowerCase()));
+						})
+						.collect(Collectors.toList());
+
+				if (matched.isEmpty()) {
+					matched = info.getPinnedRepos();
+					notes.append("※ 키워드 매칭 레포 없음 → 모든 Pinned Repo 반영\n");
+				} else {
+					notes.append("## GitHub 컨텍스트 (키워드 매칭된 리포지토리)\n");
+				}
+
+				// 3) 기술 스택 추출은 LLM에게 맡기기 위해, 전체 텍스트를 함께 보냄
+				for (PinnedRepo pr : matched) {
+					notes.append("### ").append(pr.getName()).append("\n")
+							.append("설명: ").append(pr.getDescription()).append("\n")
+							.append("README 전체:\n").append(pr.getReadme()).append("\n\n");
+				}
+			} else {
+				notes.append("(※ GitHub Context 제외)\n");
+			}
 
 			ResumePromptDTO p = ResumePromptDTO.builder()
 					.header(ResumePrompt.HEADER)
@@ -143,7 +183,7 @@ public class ResumeService {
 	}
 
 	@Transactional(readOnly = true)
-    public List<ResumeDocument> getResumesByUserId(Long userId) {
-        return resumeRepository.findAllByUserId(userId);
-    }
+	public List<ResumeDocument> getResumesByUserId(Long userId) {
+		return resumeRepository.findAllByUserId(userId);
+	}
 }

@@ -35,6 +35,7 @@ public class ResumeController {
 
 	@GetMapping("/generate/{devExperienceId}/{recruitmentStackId}")
 	public ApiResponse<ResumeDocument> generateResume(
+			@Parameter(hidden = true)
 			@RegisteredOAuth2AuthorizedClient("github")
 			OAuth2AuthorizedClient authClient,
 			@AuthenticationPrincipal CustomOAuth2User principal,
