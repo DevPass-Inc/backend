@@ -56,4 +56,13 @@ public class DevExperienceService {
 		return DevExperienceConverter.toResponse(devExperience);
 	}
 
+	@Transactional
+	public void deleteDevExperience(Long userId, Long devExperienceId) {
+		User user = userRepository.findById(userId).orElseThrow(() -> new GeneralException(ErrorStatus.NOT_FOUND));
+
+		DevExperience devExperience = devExperienceRepository.findByIdAndUser(devExperienceId, user)
+			.orElseThrow(() -> new GeneralException(ErrorStatus.NOT_FOUND));
+
+		devExperienceRepository.delete(devExperience);
+	}
 }

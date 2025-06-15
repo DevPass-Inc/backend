@@ -2,6 +2,7 @@ package com.devpass.domain.devexperience.controller;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -54,5 +55,14 @@ public class DevExperienceController {
 		@PathVariable("devExperienceId") Long devExperienceId) {
 		DevExperienceAggregateResponseDTO response = aggregateService.getAggregateByDevExperienceId(userId, devExperienceId);
 		return ApiResponse.of(SuccessCode.OK, response);
+	}
+
+	@Operation(summary = "개발경험 삭제")
+	@DeleteMapping("/{devExperienceId}")
+	public ApiResponse<Void> deleteDevExperience(
+		@AuthUser Long userId,
+		@PathVariable("devExperienceId") Long devExperienceId) {
+		devExperienceService.deleteDevExperience(userId, devExperienceId);
+		return ApiResponse.of(SuccessCode.OK);
 	}
 }

@@ -53,11 +53,12 @@ public class DevExpStackController {
     }
 
     @Operation(summary = "기술스택 삭제")
-    @DeleteMapping("/{devExperienceId}")
+    @DeleteMapping("/{devExperienceId}/{stackId}")
     public ApiResponse<Void> deleteStacksByDevExperienceId(
         @AuthUser Long userId,
-        @PathVariable("devExperienceId") Long devExperienceId) {
-        devExpStackService.deleteStacksByDevExperienceId(userId, devExperienceId);
+        @PathVariable("devExperienceId") Long devExperienceId,
+        @PathVariable("stackId") Long stackId) {
+        devExpStackService.deleteStacksByDevExperienceId(userId, devExperienceId, stackId);
         return ApiResponse.of(SuccessCode.OK);
     }
 
