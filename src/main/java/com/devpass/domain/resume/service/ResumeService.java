@@ -60,7 +60,6 @@ public class ResumeService {
 			throw new GeneralException(ErrorStatus.NOT_FOUND);
 		}
 
-		// GitHub 정보 조회 (조건부)
 		GitHubDetailResponseDTO info = null;
 		String githubContext = "";
 		if (includeGitHub) {
@@ -77,10 +76,8 @@ public class ResumeService {
 			githubContext = ctx.toString();
 		}
 
-		// 프롬프트 생성
 		String prompt = buildPrompt(aggregate, recruitment, githubContext, info, includeGitHub);
 
-		// GPT 호출 및 결과 파싱
 		String argsJson = openAIConfig.callGenerateResumeFunction(prompt);
 		ResumeResponseDTO dto;
 		try {
@@ -89,7 +86,6 @@ public class ResumeService {
 			throw new GeneralException(ErrorStatus.GPT_RESPONSE_PARSE_ERROR);
 		}
 
-		// 최종 DTO에 GitHub URL 반영
 		ResumeResponseDTO filled = ResumeResponseDTO.builder()
 				.name(user.getName())
 				.title("")
@@ -122,7 +118,6 @@ public class ResumeService {
 			String aggJson = objectMapper.writeValueAsString(agg);
 			String recJson = objectMapper.writeValueAsString(rec);
 
-			// 1) 공고 키워드
 			List<String> keywords = List.of(
 							rec.getQualification(),
 							rec.getPreferred(),
@@ -141,7 +136,6 @@ public class ResumeService {
 					.append("\n\n");
 
 			if (includeGitHub && info != null) {
-				// 2) 키워드 매칭된 레포 필터
 				List<PinnedRepo> matched = info.getPinnedRepos().stream()
 						.filter(pr -> {
 							String hay = (pr.getName() + " "
@@ -159,7 +153,6 @@ public class ResumeService {
 					notes.append("## GitHub 컨텍스트 (키워드 매칭된 리포지토리)\n");
 				}
 
-				// 3) 기술 스택 추출은 LLM에게 맡기기 위해, 전체 텍스트를 함께 보냄
 				for (PinnedRepo pr : matched) {
 					notes.append("### ").append(pr.getName()).append("\n")
 							.append("설명: ").append(pr.getDescription()).append("\n")

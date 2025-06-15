@@ -93,7 +93,6 @@ public class OpenAIConfig {
                 "parameters", paramsSchema
         );
 
-        // 2) 메시지 구성
         List<Map<String, String>> messages = List.of(
                 Map.of("role", "system", "content",
                         "You are a helpful assistant. " +
