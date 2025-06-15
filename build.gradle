@@ -7,6 +7,14 @@ plugins {
 group = 'com.devpass'
 version = '0.0.1-SNAPSHOT'
 
+sourceSets {
+    main {
+        resources {
+            include '**/*.yml', '**/*.properties', '**/*.sql'
+        }
+    }
+}
+
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
