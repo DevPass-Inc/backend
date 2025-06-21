@@ -1,5 +1,6 @@
 package com.devpass.domain.recruitment.document;
 
+import com.devpass.domain.stack.value.StackSummary;
 import jakarta.persistence.Id;
 import java.util.List;
 import lombok.Builder;
@@ -33,7 +34,7 @@ public class RecruitmentDocument {
     private String imageUrl;
     private Integer minCareer;
     private Integer maxCareer;
-    private List<Long> stacks;
+    private List<StackSummary> stacks;
 
     @Builder
     public RecruitmentDocument(String id, Long companyId, String companyName,
@@ -42,7 +43,7 @@ public class RecruitmentDocument {
         String mainTask, String qualification, String preferred, String benefit,
         String deadline, String imageUrl,
         Integer minCareer, Integer maxCareer,
-        List<Long> stacks) {
+        List<StackSummary> stacks) {
 
         this.id = id;
         this.companyId = companyId;

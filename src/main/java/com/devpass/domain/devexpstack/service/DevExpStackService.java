@@ -12,6 +12,7 @@ import com.devpass.domain.stack.repository.StackRepository;
 import com.devpass.global.payload.apicode.ErrorStatus;
 import com.devpass.global.payload.error.exception.GeneralException;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -73,11 +74,11 @@ public class DevExpStackService {
     }
 
     @Transactional
-    public void deleteStacksByDevExperienceId(Long userId, Long devExperienceId) {
-        List<Stack> stacks = devExpStackRepository.findStacksByDevExperienceId(userId, devExperienceId);
-        if (stacks.isEmpty()) {
+    public void deleteStacksByDevExperienceId(Long userId, Long devExperienceId, Long stackId) {
+        Optional<DevExpStack> stack = devExpStackRepository.findDevExpStackByDevExperienceIdAndStackId(devExperienceId, stackId);
+        if (stack.isEmpty()) {
             throw new GeneralException(ErrorStatus.NOT_FOUND);
         }
-        devExpStackRepository.deleteByDevExperienceId(devExperienceId);
+        devExpStackRepository.deleteByDevExperienceIdAndStackId(devExperienceId, stackId);
     }
 }

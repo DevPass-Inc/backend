@@ -1,5 +1,13 @@
 package com.devpass.domain.project.service;
 
+import com.devpass.domain.devexpproject.entity.DevExpProject;
+import com.devpass.domain.devexpproject.repository.DevExpProjectRepository;
+import com.devpass.domain.project.dto.response.ProjectAddResponseDTO;
+import com.devpass.domain.projectstack.converter.ProjectStackConverter;
+import com.devpass.domain.projectstack.entity.ProjectStack;
+import com.devpass.domain.projectstack.repository.ProjectStackRepository;
+import com.devpass.domain.stack.entity.Stack;
+import com.devpass.domain.stack.repository.StackRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,14 +32,35 @@ public class ProjectService {
 
 	private final ProjectRepository projectRepository;
 	private final DevExperienceRepository devExperienceRepository;
+	private final StackRepository stackRepository;
+	private final ProjectStackRepository projectStackRepository;
+	private final DevExpProjectRepository devExpProjectRepository;
 
 	@Transactional
-	public ProjectResponseDTO addProject(Long userId, Long devExperienceId, ProjectAddRequestDTO request) {
+	public ProjectAddResponseDTO addProject(Long userId, Long devExperienceId, ProjectAddRequestDTO request) {
 		DevExperience devExperience = devExperienceRepository.findByIdAndUserId(devExperienceId, userId)
 			.orElseThrow(() -> new GeneralException(ErrorStatus.NOT_FOUND));
+
 		Project project = ProjectConverter.toEntity(request, devExperience);
-		Project saved = projectRepository.save(project);
-		return ProjectConverter.toResponse(saved);
+		Project savedProject = projectRepository.save(project);
+
+		List<Stack> stacks = request.getStackIds().stream()
+			.map(id -> stackRepository.findById(id)
+				.orElseThrow(() -> new GeneralException(ErrorStatus.NOT_FOUND)))
+			.toList();
+
+		List<ProjectStack> projectStacks = ProjectStackConverter.toProjectStacks(stacks, savedProject);
+		projectStackRepository.saveAll(projectStacks);
+
+		DevExpProject devExpProject = DevExpProject.builder()
+			.devExperience(devExperience)
+			.project(savedProject)
+			.build();
+
+		devExpProjectRepository.save(devExpProject);
+
+
+		return ProjectConverter.toResponse(savedProject);
 	}
 
 	@Transactional(readOnly = true)
@@ -39,31 +68,50 @@ public class ProjectService {
 		Project project = projectRepository.findById(projectId)
 			.filter(p -> p.getDevExperience().getUser().getId().equals(userId))
 			.orElseThrow(() -> new GeneralException(ErrorStatus.NOT_FOUND));
-		return ProjectConverter.toResponse(project);
+		return ProjectConverter.toResponseDto(project);
 	}
 
 	@Transactional(readOnly = true)
-	public List<ProjectResponseDTO> getProjectsByDevExperienceId(Long userId, Long devExperienceId) {
-		return projectRepository.findAllByDevExperience_Id(devExperienceId)
-			.stream()
+	public List<ProjectAddResponseDTO> getProjectsByDevExperienceId(Long userId, Long devExperienceId) {
+		DevExperience devExperience = devExperienceRepository.findByIdAndUserId(devExperienceId, userId)
+			.orElseThrow(() -> new GeneralException(ErrorStatus.NOT_FOUND));
+
+		List<Project> projects = projectRepository.findAllByDevExperienceId(devExperience.getId());
+
+		return projects.stream()
 			.map(ProjectConverter::toResponse)
 			.collect(Collectors.toList());
 	}
 
 	@Transactional
-	public void deleteProjectsByDevExperienceId(Long devExperienceId) {
-		List<Project> projects = projectRepository.findAllByDevExperience_Id(devExperienceId);
-		if (projects.isEmpty()) {
-			throw new GeneralException(ErrorStatus.NOT_FOUND);
-		}
-		projectRepository.deleteAll(projects);
+	public void deleteByProjectId(Long projectId) {
+		Project project = projectRepository.findById(projectId)
+			.orElseThrow(() -> new GeneralException(ErrorStatus.NOT_FOUND));
+		projectStackRepository.deleteAll(project.getProjectStacks());
+		devExpProjectRepository.deleteByProjectId(projectId);
+		projectRepository.delete(project);
 	}
 
 	@Transactional
 	public ProjectResponseDTO updateProject(Long projectId, ProjectAddRequestDTO request) {
 		Project project = projectRepository.findById(projectId)
 			.orElseThrow(() -> new GeneralException(ErrorStatus.NOT_FOUND));
+
 		project.update(request);
-		return ProjectConverter.toResponse(project);
+
+		projectStackRepository.deleteAll(project.getProjectStacks());
+		project.getProjectStacks().clear();
+
+		List<Stack> stacks = request.getStackIds().stream()
+			.map(id -> stackRepository.findById(id)
+				.orElseThrow(() -> new GeneralException(ErrorStatus.NOT_FOUND)))
+			.toList();
+
+		List<ProjectStack> newProjectStacks = ProjectStackConverter.toProjectStacks(stacks, project);
+		projectStackRepository.saveAll(newProjectStacks);
+		project.getProjectStacks().addAll(newProjectStacks);
+
+		// 6. DTO 변환
+		return ProjectConverter.toResponseDto(project);
 	}
 }

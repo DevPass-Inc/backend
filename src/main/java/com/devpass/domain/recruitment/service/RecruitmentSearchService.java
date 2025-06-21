@@ -73,11 +73,12 @@ public class RecruitmentSearchService {
                         }
 
                         if (stackIds != null && !stackIds.isEmpty()) {
-                            filters.add(Query.of(f -> f.terms(t -> t
-                                .field("stacks")
-                                .terms(ts -> ts.value(stackIds.stream().map(FieldValue::of).toList()))
-                            )));
-                            filters.add(Query.of(f -> f.exists(e -> e.field("stacks"))));
+                            filters.add(Query.of(f -> f
+                                .terms(t -> t
+                                    .field("stacks.id")
+                                    .terms(ts -> ts.value(stackIds.stream().map(FieldValue::of).toList()))
+                                )
+                            ));
                         }
 
                         if (region != null && !region.isBlank()) {
