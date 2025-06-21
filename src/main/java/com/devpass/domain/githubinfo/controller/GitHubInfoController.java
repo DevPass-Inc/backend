@@ -1,10 +1,12 @@
 package com.devpass.domain.githubinfo.controller;
 
+import com.devpass.domain.githubinfo.dto.GitHubDetailsRequestDTO;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.devpass.domain.githubinfo.dto.GitHubDetailResponseDTO;
@@ -27,13 +29,15 @@ public class GitHubInfoController {
 	private final GitHubInfoService githubInfoService;
 
 	@Operation(summary = "로그인된 사용자의 GitHub 정보 조회")
-	@GetMapping("/details")
+	@PostMapping("/details")
 	public ApiResponse<GitHubDetailResponseDTO> getGitHubDetails(
-		@RegisteredOAuth2AuthorizedClient("github") OAuth2AuthorizedClient authClient,
-		@RequestParam(defaultValue = "6") int maxPinned) {
+			@Parameter(hidden = true)
+			@RegisteredOAuth2AuthorizedClient("github") OAuth2AuthorizedClient authClient,
+		@RequestBody GitHubDetailsRequestDTO request
+	) {
 		String token = authClient.getAccessToken().getTokenValue();
 		log.info("▶ 컨트롤러: 액세스 토큰 조회 완료");
-		GitHubDetailResponseDTO details = githubInfoService.getGitHubDetails(token, maxPinned);
+		GitHubDetailResponseDTO details = githubInfoService.getGitHubDetails(token, request.getMaxPinned());
 		return ApiResponse.of(SuccessCode.OK, details);
 	}
 }

@@ -34,7 +34,7 @@ public class Recruitment extends BaseEntity {
 	@Column(name = "company_name", nullable = false, columnDefinition = "TEXT")
 	private String companyName;
 
-	@Column(name = "position_name", nullable = false)
+	@Column(name = "position_name")
 	private String positionName;
 
 	@Column(name = "position", nullable = false)
