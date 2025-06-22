@@ -1,5 +1,10 @@
 package com.devpass.global.oauth.service;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -20,6 +25,7 @@ import com.devpass.global.oauth.util.CookieUtil;
 import com.devpass.global.oauth.util.JWTUtil;
 import com.devpass.global.payload.apicode.ErrorStatus;
 import com.devpass.global.payload.error.exception.GeneralException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -52,6 +58,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		}
 
 		String providerId = oAuth2Response.getProviderId();
+		String email = oAuth2Response.getEmail();
+
+		if (email == null || email.isBlank()) {
+			String accessToken = userRequest.getAccessToken().getTokenValue();
+			email = fetchPrimaryEmailFromGitHub(accessToken);
+		}
 
 		Optional<User> existData = userRepository.findByProviderId(providerId);
 
@@ -59,7 +71,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
 			User userEntity = User.builder()
 				.name(oAuth2Response.getName())
-				.email(oAuth2Response.getEmail())
+				.email(email)
 				.provider(oAuth2Response.getProvider())
 				.providerId(oAuth2Response.getProviderId())
 				.build();
@@ -82,6 +94,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 			user.updateEmail(oAuth2Response.getEmail());
 
 			userRepository.save(user);
+			userRepository.flush();
 
 			UserDTO userDTO = UserDTO.builder()
 				.id(user.getId())
@@ -107,5 +120,31 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		response.addCookie(CookieUtil.createCookie("accessToken", tokenDTO.getAccessToken(), expiration));
 
 		return tokenDTO;
+	}
+
+	private String fetchPrimaryEmailFromGitHub(String accessToken) {
+		try {
+			URL url = new URL("https://api.github.com/user/emails");
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			connection.setRequestMethod("GET");
+			connection.setRequestProperty("Authorization", "Bearer " + accessToken);
+			connection.setRequestProperty("Accept", "application/vnd.github+json");
+
+			int responseCode = connection.getResponseCode();
+			if (responseCode == 200) {
+				ObjectMapper objectMapper = new ObjectMapper();
+				List<Map<String, Object>> emails = objectMapper.readValue(connection.getInputStream(), List.class);
+				for (Map<String, Object> emailObj : emails) {
+					Boolean primary = (Boolean) emailObj.get("primary");
+					Boolean verified = (Boolean) emailObj.get("verified");
+					if (Boolean.TRUE.equals(primary) && Boolean.TRUE.equals(verified)) {
+						return emailObj.get("email").toString();
+					}
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
