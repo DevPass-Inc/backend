@@ -11,7 +11,7 @@ public class WebClientConfig {
 
     @Bean
     public WebClient webClient(WebClient.Builder builder) {
-        return builder.baseUrl("http://fastapi-container:8000").build();
+        return builder.baseUrl("http://devpass-python-backend:8000").build();
     }
 
     /**

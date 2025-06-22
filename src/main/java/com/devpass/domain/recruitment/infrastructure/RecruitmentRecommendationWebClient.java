@@ -33,16 +33,16 @@ public class RecruitmentRecommendationWebClient implements RecruitmentRecommenda
 			.retrieve()
 			.bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {
 			})
-			.map(response -> {
-				Object data = response.get("data");
-				if (data instanceof List<?> list) {
-					return list.stream()
-						.map(item -> objectMapper.convertValue(item,
-							RecommendRecruitResponseDTO.class))
-						.collect(Collectors.toList());
-				} else {
-					throw new GeneralException(ErrorStatus.BAD_REQUEST);
-				}
-			});
+        .handle((response, sink) -> {
+            Object data = response.get("data");
+            if (data instanceof List<?> list) {
+                sink.next(list.stream()
+                    .map(item -> objectMapper.convertValue(item,
+                        RecommendRecruitResponseDTO.class))
+                    .collect(Collectors.toList()));
+            } else {
+                sink.error(new GeneralException(ErrorStatus.BAD_REQUEST));
+            }
+        });
 	}
 }
